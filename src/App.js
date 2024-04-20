@@ -11,7 +11,7 @@ function App() {
   return (
     <>
     <Routes>
-      <Route path='/' element={/*<Body/>*/<Main/>}/>
+      <Route path='/' element={<Body/>/*<Main/>*/}/>
       <Route path='/register' element={<SignUp/>}/>
       <Route path='/find' element={<FindPass/>}/>
       <Route path='/main' element={<Main/>}/>
