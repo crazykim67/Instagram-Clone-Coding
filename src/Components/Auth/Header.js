@@ -11,7 +11,7 @@ return (
       <div className='area'>
         <div className='logo'>
           <div>
-            <h1 onClick={()=>{navigate('/')}}>Pilstagram</h1>
+            <h1 onClick={()=>{navigate('/Instagram-Clone-Coding/')}}>Pilstagram</h1>
           </div>
         </div>
       </div>

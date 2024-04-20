@@ -75,7 +75,7 @@ function SignUp(){
           nickname : user[2],
       });
       alert('회원가입이 성공적으로 완료되었습니다.');
-      navigate('/');
+      navigate('/Instagram-Clone-Coding/');
       }catch(err){
         switch(err.code) {
           case 'auth/weak-password' :
@@ -182,7 +182,7 @@ function SignUp(){
               <p>
                 계정이 있으신가요?
                 <a>
-                  <span onClick={()=>{navigate('/');}}> 로그인</span>
+                  <span onClick={()=>{navigate('/Instagram-Clone-Coding/');}}> 로그인</span>
                 </a>
               </p>
             </span>

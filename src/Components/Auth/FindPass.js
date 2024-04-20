@@ -37,7 +37,7 @@ function FindPass() {
       try {
         await sendPasswordResetEmail(firebaseAuth, value);
         alert('성공적으로 메일을 보냈습니다.');
-        navigate('/');
+        navigate('/Instagram-Clone-Coding/');
       }
       catch(err)
       {
