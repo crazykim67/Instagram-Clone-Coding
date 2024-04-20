@@ -37,7 +37,7 @@ function FindPass() {
       try {
         await sendPasswordResetEmail(firebaseAuth, value);
         alert('성공적으로 메일을 보냈습니다.');
-        navigate('/Instagram-Clone-Coding/');
+        navigate('/Instagram/');
       }
       catch(err)
       {
@@ -100,7 +100,7 @@ function FindPass() {
           </div>
 
           <div className='backLogin'>
-            <span onClick={()=>{ navigate('/');}}>로그인으로 돌아가기</span>
+            <span onClick={()=>{ navigate('/Instagram/');}}>로그인으로 돌아가기</span>
           </div>
         </div>
       </div>

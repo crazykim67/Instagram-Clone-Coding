@@ -182,7 +182,7 @@ function SignUp(){
               <p>
                 계정이 있으신가요?
                 <a>
-                  <span onClick={()=>{navigate('/Instagram-Clone-Coding/');}}> 로그인</span>
+                  <span onClick={()=>{navigate('/Instagram/');}}> 로그인</span>
                 </a>
               </p>
             </span>
