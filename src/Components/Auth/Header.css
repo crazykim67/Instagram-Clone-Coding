@@ -1,0 +1,36 @@
+.area {
+  background-color: white;
+  border-bottom: 1px solid rgb(219, 219, 219);
+
+  align-items: center;
+  display: flex;
+  position: fixed;
+  height: 60px;
+  top: 0;
+  z-index: 3;
+  width: 100%;
+}
+
+.logo {
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+}
+
+@font-face {
+  font-family: 'logoFont';
+  src: url(../Font/Billabong.otf);
+}
+
+.logo > div {
+  top: 0;
+  margin-left: 50px;
+  padding: 0;
+}
+
+.logo > div > h1 {
+  cursor: pointer;
+  font-family: 'logoFont';
+  font-size: 1.5em;
+}
+

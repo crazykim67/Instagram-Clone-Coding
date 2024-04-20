@@ -1,0 +1,209 @@
+html {
+  height: 100%;
+}
+
+@font-face {
+  font-family: 'logoFont';
+  src: url(../Font/Billabong.otf);
+}
+
+.base {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  align-self: auto;
+  flex-grow: 1;
+  margin-top: 32px;
+}
+
+.panel {
+  flex-direction: column;
+  flex-grow: 1;
+  max-width: 350px;
+  margin-top: 12px;
+}
+
+.box {
+  align-items: center;
+  background-color: white;
+  border: 1px solid rgb(219, 219, 219);
+  border-radius: 1px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  position: relative;
+  margin: 0 0 10px;
+  padding: 10px 0;
+  vertical-align: baseline;
+}
+
+.logo {
+  margin: 36px 0 12px 0;
+}
+
+.logo > h1 {
+  font-family: 'logoFont';
+  font-size: 3em;
+  margin: 0;
+  text-align: center;
+}
+
+.formBox {
+  margin-bottom: 20px;
+}
+
+.formContent {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  max-width: 350px;
+}
+
+.formContent > span {
+  margin: 0 40px 10px;
+  position: relative;
+  text-align: center;
+  max-width: 100%;
+  font-weight: 600;
+  color: rgb(115, 115, 115);
+}
+
+.input-li {
+  margin: 0 40px 6px;
+}
+
+.input-li > div {
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+  border: 1px solid;
+  font-size: 14px;
+
+  border-color: rgb(219, 219, 219);
+  align-items: center;
+
+  width: 100%;
+  min-width: 0;
+  height: 36px;
+
+  display: flex;
+  position: relative;
+}
+
+.focus {
+  border-color: rgb(168 , 168, 168);
+}
+
+.input-li > div > span {
+  color: rgb(115, 115, 115);
+  font-size: 12px;
+  height: 36px;
+  left: 8px;
+  right: 0;
+  line-height: 36px;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  pointer-events: none;
+  position: absolute;
+  text-overflow: ellipsis;
+  transform-origin: left;
+}
+
+.register-input {
+  font-size: 16px;
+  text-align: left;
+  background: rgb(250, 250, 250);
+  border: 0;
+  flex: 1 0 auto;
+  margin: 0;
+  outline: none;
+  overflow: hidden;
+  padding: 9px 0 7px 8px;
+  text-overflow: ellipsis;
+  font-weight: normal;
+}
+
+.registerArea {
+  flex-direction: column;
+  display: flex;
+
+  margin: 8px 40px 8px 40px;
+
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.registerArea > button {
+  background-color: rgba(0, 149, 246, 1);
+  width: auto;
+  display: block;
+  box-sizing: border-box;
+  margin: 0;
+
+  border-radius: 8px;
+  border: none;
+  color: white;
+
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 14px;
+  height: 32px;
+}
+
+.registerArea > button[disabled] {
+  opacity: .7;
+}
+
+.disable {
+  pointer-events: none;
+}
+
+.enable {
+  pointer-events: pointer;
+}
+
+.go-to-login {
+  align-items: center;
+  border: 1px solid rgb(219, 219, 219);
+  border-radius: 1px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+}
+
+.go-to-login > span {
+  min-width: 0;
+  max-width: 100%;
+  margin: 0 !important;
+
+  font-weight: 400;
+}
+
+.go-to-login > span > p {
+  color: black;
+  font-size: 14px;
+  margin: 15px;
+}
+
+.go-to-login > span > p > a {
+  color: rgb(0, 149, 246);
+  text-decoration: none;
+  padding: 0;
+  margin: 0;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+} 
+
+.registerFoot {
+  margin-top: 22vh;
+  bottom: 0;
+}

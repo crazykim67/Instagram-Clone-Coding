@@ -1,0 +1,216 @@
+.MainPanel {
+  position: relative;
+  display: flex;
+  z-index: 0;
+  justify-content: space-between;
+}
+
+.leftPanel {
+  width: 250px;
+  height: 100vh;
+  padding: 8px 12px 20px 12px;
+  flex-direction: column;
+  display: flex;
+  align-items: flex-start;
+  border-right: 1px solid rgb(219, 219, 219);
+}
+
+@font-face {
+  font-family: 'logoFont';
+  src: url(../Font/Billabong.otf);
+}
+
+.l-top {
+  width: 100%;
+  font-family: 'logoFont';
+  font-size: 30px;
+  margin: 0 0 20px;
+  padding: 25px 10px 10px;
+}
+
+.l-top > span {
+  display: flex;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.l-body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.body-item {
+  margin: 4px 0;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  transition: 0.3s;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.body-item > span {
+  padding-left: 16px;
+  font-weight: 600;
+}
+
+.l-body-item-hover {
+  background-color: rgb(219, 219, 219);
+  transition: 0.3s;
+}
+
+.img {
+  width: 24px;
+  height: 24px;
+  background-size: cover;
+  scale: 100%;
+  transition: 0.4s;
+}
+
+.home {
+  background-image: url('../Image/Home.png');
+}
+
+.search {
+  background-image: url('../Image/search.png');
+}
+
+.create {
+  background-image: url('../Image/Create.png');
+}
+
+.img-hover {
+  scale: 110%;
+  transition: 0.4s;
+}
+
+.l-footer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.more {
+  background-image: url('../Image/more.png');
+  background-size: cover;
+}
+
+.MainContent {
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+}
+
+.main-content {
+  max-width: 650px;
+  width: 100%;
+}
+
+.rightPanel {
+  width: 320px;
+  height: 100vh;
+  padding-left: 60px;
+}
+
+.rightPanel > div {
+  margin-top: 32px;
+  flex-direction: column;
+  display: flex;
+  position: static;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+.profile {
+  flex-direction: column;
+  display: flex;
+  align-items: stretch;
+  align-self: auto;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  flex-grow: 0;
+  padding: 8px 0 8px 0;
+}
+
+.profile > div {
+  flex-wrap: nowrap;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  justify-content: space-between;
+  flex-direction: row;
+  position: relative;
+}
+
+.profile-img {
+  max-width: 100%;
+  display: flex;
+  flex-shrink: 0;
+  margin-right: 12px;
+}
+
+.profile-img > a {
+  text-decoration: none;
+  top: -5px;
+  left: -5px;
+  width: 50px;
+  height: 50px;
+}
+
+.profile-img > a > img {
+  cursor: pointer;
+  width: 46px;
+  height: 46px;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.user-info > div {
+  font-weight: 600;
+  line-height: 18px;
+  font-size: 14px;
+}
+
+.user-info > span {
+  color: rgb(115, 115, 115);
+  font-weight: 400;
+  line-height: 18px;
+  font-size: 14px;
+}
+
+.recommend-panel {
+  margin-top: 24px;
+  margin-bottom: 8px;
+  flex-direction: column;
+  display: flex;
+  flex-shrink: 0;
+  flex-grow: 0;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+.for-recommend {
+  display: flex;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(115, 115, 115);
+}
+
+.profile_Btn {
+  cursor: pointer;
+  color: #0095f6;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.profile_Btn:hover {
+  color: #144d37;
+}
