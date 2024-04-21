@@ -2,8 +2,9 @@ import { useNavigate } from 'react-router-dom';
 import Footer from './Footer.js';
 import './SignUp.css';
 import { useState } from 'react';
-import { db, firebaseAuth, createUserWithEmailAndPassword } from '../firebase.js';
+import { fire, firebaseAuth, createUserWithEmailAndPassword } from '../firebase.js';
 import { ref, set } from 'firebase/database';
+import { addDoc, doc, setDoc } from 'firebase/firestore';
 
 function SignUp(){
 
@@ -69,24 +70,38 @@ function SignUp(){
         const userId = user[0].substring(0, index);
 
         // TODO: ReatimeDatabase Write
-        set(ref(db, `users/${userId}`), {
-          email : user[0],
-          name : user[1],
-          nickname : user[2],
+      //   set(ref(db, `users/${userId}`), {
+      //     email : user[0],
+      //     name : user[1],
+      //     nickname : user[2],
+      // });
+      
+      await setDoc(doc(fire, 'userList', userId), {
+        email: user[0],
+        name: user[1],
+        nickname: user[2],
       });
+
       alert('회원가입이 성공적으로 완료되었습니다.');
-      navigate('/Instagram-Clone-Coding/');
+      navigate('/Instagram/');
       }catch(err){
         switch(err.code) {
-          case 'auth/weak-password' :
-            // 비밀번호 6자리 이상
-            break;
-          case 'auth/invalid-email':
-            // 잘못된 이메일
-            break;
-          case 'auth/email-already-in-use':
-            // 이미 가입되어 있는 계정
-            break;
+          case 'auth/weak-password':
+        // 약한 비밀번호 오류 처리
+        alert('비밀번호는 6자리 이상이어야 합니다.');
+        break;
+      case 'auth/invalid-email':
+        // 유효하지 않은 이메일 오류 처리
+        alert('유효하지 않은 이메일 주소입니다.');
+        break;
+      case 'auth/email-already-in-use':
+        // 이미 사용 중인 이메일 오류 처리
+        alert('이미 가입된 이메일 주소입니다.');
+        break;
+      default:{
+        alert('회원가입 오류가 발생하였습니다.');
+        break;
+      }
       } 
     }
   }

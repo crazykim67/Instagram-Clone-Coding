@@ -1,23 +1,22 @@
 import { useState } from 'react';
 import './Main.css';
 import { useNavigate } from 'react-router-dom';
+import { db, signOut, firebaseAuth, createUserWithEmailAndPassword } from '../firebase.js';
 
 function Main() {
 
   let navigate = useNavigate();
+  const [dummy] = useState([false,false,false]);
 
-  const [isHover, SetHover] = useState([false, false, false, false, false])
-
-  const onMouseOver = (index) => {
-    let copy = [...isHover];
-    copy[index] = true;
-    SetHover(copy);
-  }
-
-  const onMouseOut = (index) => {
-    let copy = [...isHover];
-    copy[index] = false;
-    SetHover(copy);
+  const onSignOut = async () => {
+    await signOut(firebaseAuth)
+    .then(()=>{
+      alert('로그아웃되었습니다. 로그인 후 이용해주세요.');
+      navigate('/Instagram/');
+    })
+    .catch((err)=>{
+      console.log(err);
+    })
   }
 
   return (
@@ -31,34 +30,34 @@ function Main() {
             <span onClick={()=>{navigate('/main')}}>Pilstagram</span>
           </div>
           <div className='l-body'>
-            <div onClick={()=>{navigate('/main')}} className={`body-item ${isHover[0] == true ? 'l-body-item-hover' : ''}`} onMouseOver={()=>{onMouseOver(0)}} onMouseOut={()=>{onMouseOut(0)}}>
-              <div className={`img home ${isHover[0] == true ? 'img-hover' : ''}`}></div>
+            <div onClick={()=>{navigate('/main')}} className={`body-item`}>
+              <div className={`img home`}></div>
               <span>
                 홈
               </span>
             </div>
-            <div className={`body-item ${isHover[1] == true ? 'l-body-item-hover' : ''}`} onMouseOver={()=>{onMouseOver(1)}} onMouseOut={()=>{onMouseOut(1)}}>
-              <div className={`img search ${isHover[1] == true ? 'img-hover' : ''}`}></div>
+            <div className={`body-item`}>
+              <div className={`img search`}></div>
               <span>
                 검색
               </span>
             </div>
-            <div className={`body-item ${isHover[2] == true ? 'l-body-item-hover' : ''}`} onMouseOver={()=>{onMouseOver(2)}} onMouseOut={()=>{onMouseOut(2)}}>
-              <div className={`img create ${isHover[2] == true ? 'img-hover' : ''}`}></div>
+            <div className={`body-item`}>
+              <div className={`img create`}></div>
               <span>
                 만들기
               </span>
             </div>
-            <div className={`body-item ${isHover[3] == true ? 'l-body-item-hover' : ''}`} onMouseOver={()=>{onMouseOver(3)}} onMouseOut={()=>{onMouseOut(3)}}>
-            <div className={`img search ${isHover[3] == true ? 'img-hover' : ''}`}></div>
+            <div className={`body-item`}>
+            <div className={`img search`}></div>
               <span>
                 프로필
               </span>
             </div>
           </div>
           <div className='l-footer'>
-            <div className={`body-item ${isHover[4] == true ? 'l-body-item-hover' : ''}`} onMouseOver={()=>{onMouseOver(4)}} onMouseOut={()=>{onMouseOut(4)}}>
-              <div className={`img more ${isHover[4] == true ? 'img-hover' : ''}`}></div>
+            <div className={`body-item`}>
+              <div className={`img more`}></div>
               <span>
                 더 보기
               </span>
@@ -99,153 +98,12 @@ function Main() {
                           </div>
                         </div>
                       </div>
-                    </li><li className='main-to-list'>
-                      <div>
-                        <div className='list-in-panel'>
-                          <div className='list-profile'>
-                            <span className='none-story-wrap'>
-                              <img src={require('../Image/my.jpg')}/>
-                            </span>
-                          </div>
-                          <div className='list-nickname'>
-                            닉네임
-                          </div>
-                        </div>
-                      </div>
-                    </li><li className='main-to-list'>
-                      <div>
-                        <div className='list-in-panel'>
-                          <div className='list-profile'>
-                            <span className='none-story-wrap'>
-                              <img src={require('../Image/my.jpg')}/>
-                            </span>
-                          </div>
-                          <div className='list-nickname'>
-                            닉네임
-                          </div>
-                        </div>
-                      </div>
-                    </li><li className='main-to-list'>
-                      <div>
-                        <div className='list-in-panel'>
-                          <div className='list-profile'>
-                            <span className='none-story-wrap'>
-                              <img src={require('../Image/my.jpg')}/>
-                            </span>
-                          </div>
-                          <div className='list-nickname'>
-                            닉네임
-                          </div>
-                        </div>
-                      </div>
-                    </li><li className='main-to-list'>
-                      <div>
-                        <div className='list-in-panel'>
-                          <div className='list-profile'>
-                            <span className='none-story-wrap'>
-                              <img src={require('../Image/my.jpg')}/>
-                            </span>
-                          </div>
-                          <div className='list-nickname'>
-                            닉네임
-                          </div>
-                        </div>
-                      </div>
-                    </li><li className='main-to-list'>
-                      <div>
-                        <div className='list-in-panel'>
-                          <div className='list-profile'>
-                            <span className='none-story-wrap'>
-                              <img src={require('../Image/my.jpg')}/>
-                            </span>
-                          </div>
-                          <div className='list-nickname'>
-                            닉네임
-                          </div>
-                        </div>
-                      </div>
-                    </li><li className='main-to-list'>
-                      <div>
-                        <div className='list-in-panel'>
-                          <div className='list-profile'>
-                            <span className='none-story-wrap'>
-                              <img src={require('../Image/my.jpg')}/>
-                            </span>
-                          </div>
-                          <div className='list-nickname'>
-                            닉네임
-                          </div>
-                        </div>
-                      </div>
-                    </li><li className='main-to-list'>
-                      <div>
-                        <div className='list-in-panel'>
-                          <div className='list-profile'>
-                            <span className='none-story-wrap'>
-                              <img src={require('../Image/my.jpg')}/>
-                            </span>
-                          </div>
-                          <div className='list-nickname'>
-                            닉네임
-                          </div>
-                        </div>
-                      </div>
-                    </li><li className='main-to-list'>
-                      <div>
-                        <div className='list-in-panel'>
-                          <div className='list-profile'>
-                            <span className='none-story-wrap'>
-                              <img src={require('../Image/my.jpg')}/>
-                            </span>
-                          </div>
-                          <div className='list-nickname'>
-                            닉네임
-                          </div>
-                        </div>
-                      </div>
-                    </li><li className='main-to-list'>
-                      <div>
-                        <div className='list-in-panel'>
-                          <div className='list-profile'>
-                            <span className='none-story-wrap'>
-                              <img src={require('../Image/my.jpg')}/>
-                            </span>
-                          </div>
-                          <div className='list-nickname'>
-                            닉네임
-                          </div>
-                        </div>
-                      </div>
-                    </li><li className='main-to-list'>
-                      <div>
-                        <div className='list-in-panel'>
-                          <div className='list-profile'>
-                            <span className='none-story-wrap'>
-                              <img src={require('../Image/my.jpg')}/>
-                            </span>
-                          </div>
-                          <div className='list-nickname'>
-                            닉네임
-                          </div>
-                        </div>
-                      </div>
-                    </li><li className='main-to-list'>
-                      <div>
-                        <div className='list-in-panel'>
-                          <div className='list-profile'>
-                            <span className='none-story-wrap'>
-                              <img src={require('../Image/my.jpg')}/>
-                            </span>
-                          </div>
-                          <div className='list-nickname'>
-                            닉네임
-                          </div>
-                        </div>
-                      </div>
                     </li>
+                    
                   </ul>
                 </div>
               </div>
+
               <div className='main-body'>
               
               </div>
@@ -269,8 +127,8 @@ function Main() {
                       닉네임
                     </span>
                   </div>
-                  <div className='profile_Btn'>
-                    전환
+                  <div onClick={()=>{onSignOut();}} className='profile_Btn'>
+                    로그아웃
                   </div>
                 </div>
               </div>
@@ -283,7 +141,7 @@ function Main() {
 
             <div className='re-user-list'>
               {
-                isHover.map((i)=>{
+                dummy.map((i)=>{
                   return(
                 <div className='profile'>
                   <div>
