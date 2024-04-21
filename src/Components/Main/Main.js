@@ -67,7 +67,189 @@ function Main() {
         </div>
         <div className='MainContent'>
           <div className='main-content'>
+            <div>
+              <div className='main-top'>
+                <div>
+                  <ul>
 
+                    <li className='main-to-list'>
+                      <div>
+                        <div className='list-in-panel'>
+                          <div className='list-profile'>
+                            <span className='story-wrap'>
+                              <img src={require('../Image/my.jpg')}/>
+                            </span>
+                          </div>
+                          <div className='list-nickname'>
+                            닉네임
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li className='main-to-list'>
+                      <div>
+                        <div className='list-in-panel'>
+                          <div className='list-profile'>
+                            <span className='none-story-wrap'>
+                              <img src={require('../Image/my.jpg')}/>
+                            </span>
+                          </div>
+                          <div className='list-nickname'>
+                            닉네임
+                          </div>
+                        </div>
+                      </div>
+                    </li><li className='main-to-list'>
+                      <div>
+                        <div className='list-in-panel'>
+                          <div className='list-profile'>
+                            <span className='none-story-wrap'>
+                              <img src={require('../Image/my.jpg')}/>
+                            </span>
+                          </div>
+                          <div className='list-nickname'>
+                            닉네임
+                          </div>
+                        </div>
+                      </div>
+                    </li><li className='main-to-list'>
+                      <div>
+                        <div className='list-in-panel'>
+                          <div className='list-profile'>
+                            <span className='none-story-wrap'>
+                              <img src={require('../Image/my.jpg')}/>
+                            </span>
+                          </div>
+                          <div className='list-nickname'>
+                            닉네임
+                          </div>
+                        </div>
+                      </div>
+                    </li><li className='main-to-list'>
+                      <div>
+                        <div className='list-in-panel'>
+                          <div className='list-profile'>
+                            <span className='none-story-wrap'>
+                              <img src={require('../Image/my.jpg')}/>
+                            </span>
+                          </div>
+                          <div className='list-nickname'>
+                            닉네임
+                          </div>
+                        </div>
+                      </div>
+                    </li><li className='main-to-list'>
+                      <div>
+                        <div className='list-in-panel'>
+                          <div className='list-profile'>
+                            <span className='none-story-wrap'>
+                              <img src={require('../Image/my.jpg')}/>
+                            </span>
+                          </div>
+                          <div className='list-nickname'>
+                            닉네임
+                          </div>
+                        </div>
+                      </div>
+                    </li><li className='main-to-list'>
+                      <div>
+                        <div className='list-in-panel'>
+                          <div className='list-profile'>
+                            <span className='none-story-wrap'>
+                              <img src={require('../Image/my.jpg')}/>
+                            </span>
+                          </div>
+                          <div className='list-nickname'>
+                            닉네임
+                          </div>
+                        </div>
+                      </div>
+                    </li><li className='main-to-list'>
+                      <div>
+                        <div className='list-in-panel'>
+                          <div className='list-profile'>
+                            <span className='none-story-wrap'>
+                              <img src={require('../Image/my.jpg')}/>
+                            </span>
+                          </div>
+                          <div className='list-nickname'>
+                            닉네임
+                          </div>
+                        </div>
+                      </div>
+                    </li><li className='main-to-list'>
+                      <div>
+                        <div className='list-in-panel'>
+                          <div className='list-profile'>
+                            <span className='none-story-wrap'>
+                              <img src={require('../Image/my.jpg')}/>
+                            </span>
+                          </div>
+                          <div className='list-nickname'>
+                            닉네임
+                          </div>
+                        </div>
+                      </div>
+                    </li><li className='main-to-list'>
+                      <div>
+                        <div className='list-in-panel'>
+                          <div className='list-profile'>
+                            <span className='none-story-wrap'>
+                              <img src={require('../Image/my.jpg')}/>
+                            </span>
+                          </div>
+                          <div className='list-nickname'>
+                            닉네임
+                          </div>
+                        </div>
+                      </div>
+                    </li><li className='main-to-list'>
+                      <div>
+                        <div className='list-in-panel'>
+                          <div className='list-profile'>
+                            <span className='none-story-wrap'>
+                              <img src={require('../Image/my.jpg')}/>
+                            </span>
+                          </div>
+                          <div className='list-nickname'>
+                            닉네임
+                          </div>
+                        </div>
+                      </div>
+                    </li><li className='main-to-list'>
+                      <div>
+                        <div className='list-in-panel'>
+                          <div className='list-profile'>
+                            <span className='none-story-wrap'>
+                              <img src={require('../Image/my.jpg')}/>
+                            </span>
+                          </div>
+                          <div className='list-nickname'>
+                            닉네임
+                          </div>
+                        </div>
+                      </div>
+                    </li><li className='main-to-list'>
+                      <div>
+                        <div className='list-in-panel'>
+                          <div className='list-profile'>
+                            <span className='none-story-wrap'>
+                              <img src={require('../Image/my.jpg')}/>
+                            </span>
+                          </div>
+                          <div className='list-nickname'>
+                            닉네임
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div className='main-body'>
+              
+              </div>
+            </div>
           </div>
 
           <div className='rightPanel'>

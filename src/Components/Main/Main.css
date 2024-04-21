@@ -103,17 +103,15 @@
   justify-content: center;
   display: flex;
   flex-direction: row;
-}
-
-.main-content {
-  max-width: 650px;
-  width: 100%;
+  flex-shrink: 1;
 }
 
 .rightPanel {
   width: 320px;
   height: 100vh;
   padding-left: 60px;
+  background-color: white;
+  z-index: 0;
 }
 
 .rightPanel > div {
@@ -213,4 +211,116 @@
 
 .profile_Btn:hover {
   color: #144d37;
+}
+
+.main-content {
+  max-width: 650px;
+  width: 100%;
+}
+
+.main-content > div {
+  margin-top: 16px;
+  width: 100%;
+}
+
+.main-top {
+  margin-bottom: 20px;
+}
+
+.main-top > div {
+  margin-top: 0;
+  padding: 8px 0;
+  height: 85px;
+  flex-direction: column;
+  align-items: stretch;
+  display: flex;
+  scrollbar-width: none;
+}
+
+.main-top > div > ul {
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+}
+
+
+.main-to-list > div {
+  width: 72px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  padding: 0 4px;
+  top: 2px;
+}
+
+.list-in-panel {
+  padding: 0;
+  margin: 0;
+  width: 66px;
+  flex-direction: column;
+  align-self: center;
+  display: flex;
+  text-align: center;
+  cursor: pointer;
+}
+
+.list-profile {
+  flex: none;
+  display: block;
+  align-self: center;
+  position: relative;
+  width: 56px;
+  height: 56px;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+.list-profile > span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 60px;
+  height: 60px;
+}
+
+.list-profile > span > img {
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  border-radius: 70%;
+  border: 2px solid transparent;
+}
+
+.story-wrap {
+  border: 2px solid transparent;
+  border-radius: 70%;
+  background-image: linear-gradient(#fff, #fff), 
+  linear-gradient(to left bottom, rgb(255, 0, 255) 0%,  rgb(255, 187, 0) 100%);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+}
+
+.none-story-wrap {
+  border: 2px solid transparent;
+  border-radius: 70%;
+  background-image: linear-gradient(#fff, #fff), 
+  linear-gradient(to left bottom, rgb(211, 211, 211) 0%,  rgba(219, 219, 219) 100%);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+}
+
+.list-nickname {
+  max-width: 74px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+  position: relative;
+  display: block;
+  padding-left: 2px;
+  padding-right: 2px;
+  font-weight: 500;
+  font-size: 12px;
 }
