@@ -3,8 +3,7 @@ import Footer from './Footer.js';
 import './SignUp.css';
 import { useState } from 'react';
 import { fire, firebaseAuth, createUserWithEmailAndPassword } from '../firebase.js';
-import { ref, set } from 'firebase/database';
-import { addDoc, doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 
 function SignUp(){
 
@@ -76,7 +75,7 @@ function SignUp(){
       //     nickname : user[2],
       // });
       
-      await setDoc(doc(fire, 'userList', userId), {
+      await setDoc(doc(fire, 'userList', user[0]), {
         email: user[0],
         name: user[1],
         nickname: user[2],

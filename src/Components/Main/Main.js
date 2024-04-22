@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import './Main.css';
 import { useNavigate } from 'react-router-dom';
-import { db, signOut, firebaseAuth, createUserWithEmailAndPassword } from '../firebase.js';
+import { signOut, firebaseAuth } from '../firebase.js';
+import { useSelector, useDispatch } from 'react-redux';
 
 function Main() {
 
@@ -19,6 +20,9 @@ function Main() {
     })
   }
 
+  let userData = useSelector((state) => state.currentUser );
+  // TODO: userSlice로 요청보내주는 함수
+  let dispatch = useDispatch();
   return (
     <>
       <div className='MainPanel'>
@@ -121,10 +125,10 @@ function Main() {
                   </div>
                   <div className='user-info'>
                     <div>
-                      아이디
+                      {userData.nickname}
                     </div>
                     <span>
-                      닉네임
+                      {userData.name}
                     </span>
                   </div>
                   <div onClick={()=>{onSignOut();}} className='profile_Btn'>
@@ -143,7 +147,7 @@ function Main() {
               {
                 dummy.map((i)=>{
                   return(
-                <div className='profile'>
+                <div key={i} className='profile'>
                   <div>
                     <div className='profile-img'>
                       <a>

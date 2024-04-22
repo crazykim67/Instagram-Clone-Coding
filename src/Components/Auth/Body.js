@@ -1,10 +1,11 @@
 import './Body.css';
 import Footer from './Footer.js';
 import { useState } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
-import SignUp from './SignUp.js';
-import FindPass from './FindPass.js';
-import { firebaseAuth, signInWithEmailAndPassword } from '../firebase.js';
+import { useNavigate } from 'react-router-dom';
+import { fire, firebaseAuth, signInWithEmailAndPassword } from '../firebase.js';
+import { useSelector, useDispatch } from 'react-redux';
+import { setEmail, setName, setNickName  } from '../userSlice.js'
+import { doc, onSnapshot } from 'firebase/firestore';
 
 function Body(){
 
@@ -59,11 +60,22 @@ function Body(){
     SetError(copy)
   }
 
+  // TODO: 유저 정보 state(Redux)
+  // TODO: userSlice로 요청보내주는 함수
+  let dispatch = useDispatch();
   const onLogin = async (e) => {
     e.preventDefault();
     await signInWithEmailAndPassword(firebaseAuth, value[0], value[1])
     .then(() => {
-      navigate('/main');
+      onSnapshot(
+        doc(fire, 'userList', value[0]), (snapshot) => {
+          const userData = snapshot.data();
+          dispatch(setEmail(userData.email));
+          dispatch(setName(userData.name));
+          dispatch(setNickName(userData.nickname));
+          navigate('/main');
+          }
+      )
     })
     .catch((err) => {
       console.log(err);
