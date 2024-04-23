@@ -3,6 +3,8 @@ import './Main.css';
 import { useNavigate } from 'react-router-dom';
 import { signOut, firebaseAuth } from '../firebase.js';
 import { useSelector, useDispatch } from 'react-redux';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleChevronLeft, faCircleChevronRight } from "@fortawesome/free-solid-svg-icons";
 
 function Main() {
 
@@ -75,9 +77,23 @@ function Main() {
                 <div>
                   <ul>
 
-                    <li className='main-to-list'>
+                  <li className='main-to-list'>
                       <div>
                         <div className='list-in-panel'>
+                          <div className='list-profile'>
+                            <span>
+                              <img src={require('../Image/my.jpg')}/>
+                            </span>
+                          </div>
+                          <div className='list-nickname'>
+                            내 스토리
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li className='main-to-list'>
+                      <div>
+                        <div className='list-in-panel on-story'>
                           <div className='list-profile'>
                             <span className='story-wrap'>
                               <img src={require('../Image/my.jpg')}/>
@@ -91,7 +107,7 @@ function Main() {
                     </li>
                     <li className='main-to-list'>
                       <div>
-                        <div className='list-in-panel'>
+                        <div className='list-in-panel on-story'>
                           <div className='list-profile'>
                             <span className='none-story-wrap'>
                               <img src={require('../Image/my.jpg')}/>
@@ -103,13 +119,91 @@ function Main() {
                         </div>
                       </div>
                     </li>
-                    
+
                   </ul>
                 </div>
               </div>
 
               <div className='main-body'>
-              
+                <div className='main-body-content'>
+                  <div>
+                  {
+                    // TODO: 게시물 List
+                  }
+                    <div className='post-panel'>
+                      <div className='post-top'>
+                        <div>
+                          <div className='post-top-profile'>
+
+                            <div>
+                              <span>
+                                <img src={require('../Image/my.jpg')}/>
+                              </span>
+                            </div>
+
+                          </div>
+
+                          <div className='post-top-info'>
+                            <div className='post-top-info-nick'>
+                              <div className='info-nick'>닉네임</div>
+                              <span>●</span>
+                              <div className='info-date'>1시간</div>
+                            </div>
+                            <div className='info-type'>
+                              <span>
+                                원본 오디오
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className='post-top-more'>
+                            <div>
+                              <span>
+                                ●●●
+                              </span>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                      <div className='post-body'>
+                        {
+
+                          // TODO: Picture
+                          <div style={{width: '468px'}}>
+                            <div className='post-pic-content'>
+                                <div className='img-list'>
+
+                                  <ul>
+                                    <li style={{transform: "translateX(0px)"}}>
+                                      <img className='post-img' alt='이미지' src={require('../Image/my.jpg')}/>
+                                    </li>
+                                    <li style={{transform: "translateX(468px)"}}>
+                                      <img className='post-img' alt='이미지' src={require('../Image/my.jpg')}/>
+                                    </li>
+                                  </ul>
+                                  <button className='nextBtn'>
+                                  </button>
+                                  <button className='prevBtn'></button>
+                                </div>
+                              
+                            </div>
+                          </div>
+                        
+                        }
+                        {
+                          // TODO: Video
+
+                        }
+
+                      </div>
+
+                      <div className='post-footer'>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -133,6 +227,9 @@ function Main() {
                   </div>
                   <div onClick={()=>{onSignOut();}} className='profile_Btn'>
                     로그아웃
+                    {
+                      // <FontAwesomeIcon icon={faCircleChevronRight} />
+                    }
                   </div>
                 </div>
               </div>
@@ -145,7 +242,7 @@ function Main() {
 
             <div className='re-user-list'>
               {
-                dummy.map((i)=>{
+                dummy.map((item, i)=>{
                   return(
                 <div key={i} className='profile'>
                   <div>
