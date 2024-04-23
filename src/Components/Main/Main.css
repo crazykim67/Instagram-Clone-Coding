@@ -497,7 +497,7 @@
   align-items: stretch;
   display: flex;
   flex-direction: row;
-  height: 468px;
+  height: 585px;
   position: relative;
   overflow-x: auto hidden;
   scrollbar-width: none;
@@ -532,4 +532,31 @@
   height: 100%;
   user-select: none;
   border: 0;
+}
+
+.postBtn {
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  outline: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.postBtn > div {
+  color: white;
+  align-content: center;
+  width: 30px;
+  height: 30px;
+}
+
+.prev {
+  left: 0;
+  padding-left: 10px;
+}
+
+.next {
+  right: 0;
+  padding-right: 10px;
 }

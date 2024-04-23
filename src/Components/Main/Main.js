@@ -173,18 +173,34 @@ function Main() {
                           <div style={{width: '468px'}}>
                             <div className='post-pic-content'>
                                 <div className='img-list'>
-
+
                                   <ul>
                                     <li style={{transform: "translateX(0px)"}}>
-                                      <img className='post-img' alt='이미지' src={require('../Image/my.jpg')}/>
+                                      <img className='post-img' alt='비디오' src={require('../Image/my.jpg')}/>
                                     </li>
                                     <li style={{transform: "translateX(468px)"}}>
                                       <img className='post-img' alt='이미지' src={require('../Image/my.jpg')}/>
                                     </li>
+                                    <li style={{transform: "translateX(936px)"}}>
+                                      <img className='post-img' alt='이미지' src={require('../Image/my.jpg')}/>
+                                    </li>
                                   </ul>
-                                  <button className='nextBtn'>
-                                  </button>
-                                  <button className='prevBtn'></button>
+                                  {
+                                    <button className='prev postBtn'>
+                                      <div>
+                                        <FontAwesomeIcon icon={faCircleChevronLeft} size="xl" />
+                                      </div>
+                                    </button>
+                                  }
+                                  {
+                                    <button className='next postBtn'>
+                                      <div>
+                                        <FontAwesomeIcon icon={faCircleChevronRight} size="xl" />
+                                      </div>
+                                    </button>
+                                  }
+                                  
+                                  
                                 </div>
                               
                             </div>
@@ -227,9 +243,6 @@ function Main() {
                   </div>
                   <div onClick={()=>{onSignOut();}} className='profile_Btn'>
                     로그아웃
-                    {
-                      // <FontAwesomeIcon icon={faCircleChevronRight} />
-                    }
                   </div>
                 </div>
               </div>
