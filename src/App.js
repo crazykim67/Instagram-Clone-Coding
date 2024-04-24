@@ -12,8 +12,8 @@ function App() {
   return (
     <>
     <Routes>
-      {/* <Route path='/Instagram/' element={<Body/>}/> */}
-      <Route path='/Instagram/' element={<Main/>}/>
+      <Route path='/Instagram/' element={<Body/>}/>
+      {/* <Route path='/Instagram/' element={<Main/>}/> */}
       {/* <Route path='/Instagram/' element={<Modal/>}/> */}
       <Route path='/register' element={<SignUp/>}/>
       <Route path='/find' element={<FindPass/>}/>

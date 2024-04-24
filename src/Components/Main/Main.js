@@ -5,6 +5,7 @@ import { signOut, firebaseAuth } from '../firebase.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleChevronLeft, faCircleChevronRight } from "@fortawesome/free-solid-svg-icons";
+import ReactPlayer from 'react-player';
 
 function Main() {
 
@@ -167,16 +168,19 @@ function Main() {
                         </div>
                       </div>
                       <div className='post-body'>
-                        {
 
-                          // TODO: Picture
                           <div style={{width: '468px'}}>
                             <div className='post-pic-content'>
                                 <div className='img-list'>
 
                                   <ul>
                                     <li style={{transform: "translateX(0px)"}}>
-                                      <img className='post-img' alt='비디오' src={require('../Image/my.jpg')}/>
+                                      <video className='post-video' controls={false} autoPlay preload='auto'>
+                                        <source src={require('../videos/video.mp4')}/>
+                                      </video>
+                                      <div className='volumeBtn'>
+                                        <img src={require('../Image/volume.png')}/>
+                                      </div>
                                     </li>
                                     <li style={{transform: "translateX(468px)"}}>
                                       <img className='post-img' alt='이미지' src={require('../Image/my.jpg')}/>
@@ -205,19 +209,44 @@ function Main() {
                               
                             </div>
                           </div>
-                        
-                        }
-                        {
-                          // TODO: Video
-
-                        }
 
                       </div>
 
                       <div className='post-footer'>
+                        <div className='footer-content'>
+                          <div>
+                            <span className='like'>
+                              <img className='footer-content-img' src={require('../Image/un_like.png')}/>
+                            </span>
+                            <span className='comment'>
+                              <img className='footer-content-img' src={require('../Image/bubble.png')}/>
+                            </span>
+                          </div>
+                        </div>
+                        <div className='footer-like'>
+                          좋아요 0개
+                        </div>
+                        <div className='post-write'>
+                          <span className='post-write-nick'>
+                            닉네임
+                          </span>
+                          <div className='post-writing'>
+                            <span>
+                              게시물 글
+                            </span>
+                          </div>
+                          <div className='post-write-more'>
+                            ...
+                            <span>&nbsp;더 보기</span>
+                          </div>
+                        </div>
+                        <div className='post-write-comment'>
+                            댓글 0개 보기
+                        </div>
                       </div>
 
                     </div>
+                    
                   </div>
                 </div>
               </div>
