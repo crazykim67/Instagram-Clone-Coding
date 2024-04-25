@@ -510,13 +510,12 @@
 .img-list > ul {
   display: flex;
   flex-direction: row;
-  vertical-align: baseline;
+  /* vertical-align: baseline; */
   margin: 0;
   padding: 0;
 }
 
 .img-list > ul > li {
-  transform: translateX(468);
   position: absolute;
   margin: 0;
   padding: 0;

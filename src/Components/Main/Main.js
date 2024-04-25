@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleChevronLeft, faCircleChevronRight } from "@fortawesome/free-solid-svg-icons";
 import ReactPlayer from 'react-player';
+import Post from './Post.js';
 
 function Main() {
 
@@ -25,9 +26,10 @@ function Main() {
 
   let userData = useSelector((state) => state.currentUser );
   // TODO: userSlice로 요청보내주는 함수
-  let dispatch = useDispatch();
+  
   return (
     <>
+      {/* <Post/> */}
       <div className='MainPanel'>
         {
           // TODO: left Menu
@@ -131,7 +133,7 @@ function Main() {
                   {
                     // TODO: 게시물 List
                   }
-                    <div className='post-panel'>
+                    <section className='post-panel'>
                       <div className='post-top'>
                         <div>
                           <div className='post-top-profile'>
@@ -175,7 +177,7 @@ function Main() {
 
                                   <ul>
                                     <li style={{transform: "translateX(0px)"}}>
-                                      <video className='post-video' controls={false} autoPlay preload='auto'>
+                                      <video className='post-video' controls={false} autoPlay={true} loop={true} preload={'auto'}>
                                         <source src={require('../videos/video.mp4')}/>
                                       </video>
                                       <div className='volumeBtn'>
@@ -245,7 +247,7 @@ function Main() {
                         </div>
                       </div>
 
-                    </div>
+                    </section>
                     
                   </div>
                 </div>
@@ -316,7 +318,6 @@ function Main() {
           </div>
         </div>
       </div>
-
     </>
   )
 }

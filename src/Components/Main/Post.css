@@ -1,0 +1,485 @@
+.postBody {
+  position: fixed;
+  z-index: 4;
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.dim {
+  position: fixed;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0 , 0, 0, 0.5);
+}
+
+.close {
+  height: 46px;
+  z-index: 3;
+  top: 10px;
+  right: 10px;
+  position: absolute;
+  padding: 8px;
+  justify-content: center;
+}
+
+.close > img {
+  cursor: pointer;
+  color: white;
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+}
+
+.post-detail-panel {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  display: flex;
+  align-items: flex-start;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.post-box {
+  margin: auto;
+  overflow: auto;
+  width: 100%;
+  max-height: calc(100vh-40px);
+  max-width: calc(100%-64px-64px);
+  border-radius: 4px;
+}
+
+.post-box > div {
+  flex-direction: row;
+  justify-content: center;
+  display: flex;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.post-detail-content {
+  height: 870px;
+  width: 700px;
+  display: flex;
+  flex-direction: row;
+  padding: 0;
+  margin: 0;
+}
+
+.post-detail-content > div {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: auto hidden;
+  scrollbar-width: none;
+}
+
+.post-detail-content > div > ul {
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  padding: 0;
+}
+
+.detail-img-list {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.detail-img-list > div {
+  width: 100%;
+  height: 100%;
+}
+
+.post-detail-img {
+  object-fit: cover;
+  user-select: none;
+  top: 0;
+  left: 0;
+  border: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.post-in-Btn {
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  outline: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.prev {
+  padding: 16px 8px;
+  left: 0;
+}
+
+.next {
+  right: 0;
+  padding: 16px 8px;
+}
+
+.detail-comment {
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+}
+
+.detail-comment > div {
+  overflow: visible;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.detail-comment-panel {
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.detail-comment-top > div {
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.detail-profile {
+  max-width: calc(100%-48px);
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 1;
+  flex-grow: 1;
+  padding: 14px 4px 14px 16px;
+  position: relative;
+  margin-bottom: 4px;
+}
+
+.detail-profile > div > img {
+  width: 42px;
+  height: 42px;
+  position: absolute;
+  cursor: pointer;
+  left: 5px;
+  top: 5px;
+  border-radius: 50%;
+}
+
+.detail-nick {
+  margin-left: 40px;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 1;
+  overflow: hidden;
+  position: relative;  
+}
+
+.detail-nick > div {
+  width: 100%;
+  align-items: baseline;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+.detail-nick > div > span {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.detail-nick > div > button {
+  border: 0;
+  background: none;
+  color: rgb(0, 149, 246);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.detail-comment-main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  flex-grow: 1;
+}
+
+.detail-content {
+  padding: 6px 10px 8px 10px;
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+}
+
+.detail-content > span > img {
+  padding: 8px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+/* TODO: 좋아요 */
+.detail-like {
+  margin-bottom: 4px;
+  padding-left: 16px;
+  padding-right: 16px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* TODO: 게시물 날짜 */
+.detail-date {
+  margin-bottom: 12px;
+  padding-left: 16px;
+  font-size: 12px;
+  color: rgb(115, 115, 115);
+}
+
+/* TODO: 댓글 입력*/
+.detail-input {
+  padding: 6px 16px 6px 16px;
+  border-top: 1px solid rgb(219, 219, 219);
+}
+
+.detail-input > div {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+.detail-input > div > form {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  height: 80%;
+  display: flex;
+  flex-direction: row;
+}
+
+.detail-input > div > form > textarea {
+  height: 16px;
+  font-size: inherit;
+  border-style: none;
+  resize: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  color: black;
+  flex-grow: 1;
+  outline: none;
+}
+
+.detail-input > div > form > span {
+  margin-left: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(179, 219, 255);
+}
+
+/* TODO: 댓글 창 */
+.detail-comments {
+  overflow: hidden auto;
+  min-height: 0;
+  padding: 0 16px 0 16px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 1;
+  margin-bottom: auto;
+  position: relative;
+}
+
+.detail-comments > ul {
+  flex-grow: 1;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  padding: 16px;
+  scrollbar-width: none;
+  position: absolute;
+  left: 0;
+}
+
+/* TODO: 게시물 본문 */
+.writer-comment {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  position: relative;
+}
+
+/* <-- TODO: 작성자 댓글  시작 --> */
+.writer-comment > li {
+  padding: 5px 16px 16px 0;
+  width: auto;
+  overflow: visible;
+}
+
+.comment-writing {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: relative;
+}
+
+.comment-writing > div {
+  /* TODO: 댓글 한개 부분 패널 */
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.text-like {
+  margin-top: 10px;
+  width: 12px;
+  height: 12px;
+}
+
+.text-like > img {
+  height: 100%;
+  position: relative;
+  cursor: pointer;
+}
+
+/* TODO: 댓글 프로필 */
+.write-profile {
+  position: relative;
+  margin-right: 18px;
+}
+
+/* TODO: 댓글 프로필 이미지 */
+.write-profile > img {
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+}
+
+.write-comment {
+  display: inline-block;
+  flex-shrink: 1;
+  position: relative;
+}
+
+/* TODO: 댓글 닉네임 */
+.write-comment > h2 {
+  align-items: center;
+  display: inline-flex;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+/* TODO: 댓글 본문 */
+.main-text {
+  margin-left: 8px;
+  font-size: 14px;
+}
+
+.text-time {
+  margin-top: 8px;
+  font-size: 12px;
+  color: rgb(115, 115, 115);
+}
+
+/* <-- TODO: 작성자 댓글  끝 --> */
+
+/* <-- TODO: 팔로워 댓글 시작 --> */
+
+.follower-comment-area {
+  overflow: visible;
+  flex-direction: column;
+  display: flex;
+  position: static;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  flex-grow: 0;
+  align-self: auto;
+}
+
+.follower-comment {
+  flex-grow: 0;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  position: static;
+  align-self: auto;
+  justify-content: flex-start;
+}
+
+.text-content {
+  margin-top: 8px;
+}
+
+.text-content :nth-child(1) {
+  font-size: 12px;
+  color: rgb(115, 115, 115);
+  margin-right: 12px;
+}
+
+.text-content :nth-child(2) {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgb(115, 115, 115);
+  margin-right: 12px;
+}
+
+.text-content :nth-child(3) {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgb(115, 115, 115);
+  cursor: pointer;
+}
+
+.reply-panel {
+  margin: 16px 0 0 50px;
+  padding: 0;
+  width: calc(100%-50px);
+}
+
+.comment-Hide-Show {
+  color: rgb(115, 115, 115);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.reply-comment {
+  padding-top: 12px;
+  margin-bottom: 8px;
+}
+
+/* <-- TODO: 팔로워 댓글 끝 --> */
