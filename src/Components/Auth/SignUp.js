@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import Footer from './Footer.js';
 import './SignUp.css';
-import { useState } from 'react';
-import { fire, firebaseAuth, createUserWithEmailAndPassword } from '../firebase.js';
+import { useEffect, useState } from 'react';
+import { fire, firebaseAuth, createUserWithEmailAndPassword, storage } from '../firebase.js';
 import { doc, setDoc } from 'firebase/firestore';
+import { ref, getDownloadURL, uploadBytes, updateMetadata  } from "firebase/storage";
+import { type } from '@testing-library/user-event/dist/type/index.js';
 
 function SignUp(){
 
@@ -65,10 +67,10 @@ function SignUp(){
     e.preventDefault();
     const createdUser = await createUserWithEmailAndPassword(firebaseAuth, user[0], user[3])
       try{
-        const index = user[0].indexOf('@');
-        const userId = user[0].substring(0, index);
+      // const index = user[0].indexOf('@');
+      // const userId = user[0].substring(0, index);
 
-        // TODO: ReatimeDatabase Write
+      // TODO: ReatimeDatabase Write
       //   set(ref(db, `users/${userId}`), {
       //     email : user[0],
       //     name : user[1],
@@ -80,6 +82,21 @@ function SignUp(){
         name: user[1],
         nickname: user[2],
       });
+
+      // TODO: 초기 이미지 업로드
+      fetch(require('../Image/empty_profile.jpg'))
+      .then(response => response.blob({ type: 'image/jpeg'}))
+      .then(blob => {
+        const storageRef = ref(storage, `userProfile/${user[0]}.jpg`);
+        const metaData = {
+          contentType: 'image/jpeg'
+        };
+        updateMetadata(storageRef, metaData);
+        uploadBytes(storageRef, blob);
+      })
+      .catch((err)=>{
+        console.log(err);
+      })
 
       alert('회원가입이 성공적으로 완료되었습니다.');
       navigate('/Instagram/');
@@ -104,14 +121,12 @@ function SignUp(){
       } 
     }
   }
-
-  return (
+  
+    return (
     <>
       <div className="base">
         <div className="panel">
-
           <div className='box'>
-
             <div className='logo'>
               <h1>Pilstagram</h1>
             </div>

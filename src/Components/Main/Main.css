@@ -59,7 +59,7 @@
 }
 
 .body-item:hover {
-  background-color: rgb(219, 219, 219);
+  background-color: #f4f4f4;
   transition: 0.3s;
 }
 
@@ -82,6 +82,11 @@
 
 .search {
   background-image: url('../Image/search.png');
+}
+
+.my-profile {
+  /* background-image: url('../Image/my.jpg'); */
+  border-radius: 50%;
 }
 
 .create {
@@ -162,6 +167,7 @@
 }
 
 .profile-img > a > img {
+  border-radius: 50%;
   cursor: pointer;
   width: 46px;
   height: 46px;
@@ -505,6 +511,16 @@
   flex-shrink: 0;
   margin: 0;
   padding: 0;
+}
+
+.act-prev {
+  transform: translateX(+468px);
+  transition: transform 0.2s ease-in-out;
+}
+
+.act-next {
+  transform: translateX(-468px);
+  transition: transform 0.2s ease-in-out;
 }
 
 .img-list > ul {

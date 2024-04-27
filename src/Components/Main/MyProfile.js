@@ -1,0 +1,164 @@
+import './MyProfile.css';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { storage } from '../firebase.js';
+import { useEffect, useState } from 'react';
+import { ref, getDownloadURL } from "firebase/storage";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTableCells } from "@fortawesome/free-solid-svg-icons";
+
+function MyProfile() {
+
+  let navigate = useNavigate();
+  let userData = useSelector((state) => state.currentUser );
+  let [profile, setProfile] = useState('');
+  useEffect(()=> {
+
+    if(userData.email != ''){
+      const storageRef = ref(storage, `userProfile/${userData.email}.jpg`)
+      getDownloadURL(storageRef)
+      .then((url)=>{
+        setProfile(url);
+      })
+    }
+
+  });
+  return(
+    <>
+    <div className='MainPanel'>
+      <div className='leftPanel'>
+            <div className='l-top'>
+              <span onClick={()=>{navigate('/main')}}>Pilstagram</span>
+            </div>
+            <div className='l-body'>
+              <div onClick={()=>{navigate('/main')}} className={`body-item`}>
+                <div className={`img home`}></div>
+                <span>
+                  홈
+                </span>
+              </div>
+              <div className={`body-item`}>
+                <div className={`img search`}></div>
+                <span>
+                  검색
+                </span>
+              </div>
+              <div className={`body-item`}>
+                <div className={`img create`}></div>
+                <span>
+                  만들기
+                </span>
+              </div>
+              <div className={`body-item`}>
+              <div className={`img my-profile`} style={{backgroundImage:`url(${profile})`}}></div>
+                <span>
+                  프로필
+                </span>
+              </div>
+            </div>
+            <div className='l-footer'>
+              <div className={`body-item`}>
+                <div className={`img more`}></div>
+                <span>
+                  더 보기
+                </span>
+              </div>
+            </div>
+      </div>
+      <div className='profile-panel'>
+        <div>
+          <div className='profile-main'>
+            <main>
+              <div>
+
+                <div className='profile-header'>
+
+                  <div className='profile-img-area'>
+                    <div>
+                      <div>
+                        <img alt='프로필사진' src={require('../Image/my.jpg')}/>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className='profile-content'>
+
+                    <div>
+                      <span className='profile-content-nick'>
+                        닉네임
+                      </span>
+                      <div className='profile-change'>
+                        <span>
+                          프로필 편집
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <ul className='follow-ul'>
+                      <li>게시물 20</li>
+                      <li>팔로워 220</li>
+                      <li>팔로우 211</li>
+                    </ul>
+                  </div>
+
+                </div>
+
+                <div className='profile-nav'>
+                  <a>
+                    <span><FontAwesomeIcon icon={faTableCells} /></span>
+                    게시물
+                  </a>
+                </div>
+
+                <div className='profile-body'>
+                  <div className='content-images'>
+
+                    <div className='c-image'>
+                        <img alt='이미지' src={require('../Image/my.jpg')}/>
+                    </div>
+                    <div className='c-image'>
+                      <img alt='이미지' src={require('../Image/my.jpg')}/>
+                    </div>
+                    <div className='c-image last'>
+                      <img alt='이미지' src={require('../Image/my.jpg')}/>
+                    </div>
+
+                  </div>
+                  <div className='content-images'>
+
+                    <div className='c-image'>
+                        <img alt='이미지' src={require('../Image/my.jpg')}/>
+                    </div>
+                    <div className='c-image'>
+                      <img alt='이미지' src={require('../Image/my.jpg')}/>
+                    </div>
+                    <div className='c-image last'>
+                      <img alt='이미지' src={require('../Image/my.jpg')}/>
+                    </div>
+
+                  </div>
+                  <div className='content-images'>
+
+                    <div className='c-image'>
+                        <img alt='이미지' src={require('../Image/my.jpg')}/>
+                    </div>
+                    <div className='c-image'>
+                      <img alt='이미지' src={require('../Image/my.jpg')}/>
+                    </div>
+                    <div className='c-image last'>
+                      <img alt='이미지' src={require('../Image/my.jpg')}/>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </main>
+          </div>
+        </div>
+      </div>
+    </div>
+    </>
+  )
+}
+
+export default MyProfile

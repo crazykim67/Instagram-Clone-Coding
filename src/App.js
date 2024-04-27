@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import Main from './Components/Main/Main.js';
 import Modal from './Components/Modal/Modal.js';
+import MyProfile from './Components/Main/MyProfile.js';
 
 function App() {
   return (
@@ -14,10 +15,10 @@ function App() {
     <Routes>
       <Route path='/Instagram/' element={<Body/>}/>
       {/* <Route path='/Instagram/' element={<Main/>}/> */}
-      {/* <Route path='/Instagram/' element={<Modal/>}/> */}
       <Route path='/register' element={<SignUp/>}/>
       <Route path='/find' element={<FindPass/>}/>
       <Route path='/main' element={<Main/>}/>
+      <Route path='/profile' element={<MyProfile/>}/>
     </Routes>
     {/* <FindPass/> */}
     </>

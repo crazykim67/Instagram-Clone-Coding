@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fire, firebaseAuth, signInWithEmailAndPassword } from '../firebase.js';
 import { useSelector, useDispatch } from 'react-redux';
-import { setEmail, setName, setNickName  } from '../userSlice.js'
+import { setEmail, setName, setNickName } from '../userSlice.js'
 import { doc, onSnapshot } from 'firebase/firestore';
 
 function Body(){

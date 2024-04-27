@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './Main.css';
 import { useNavigate } from 'react-router-dom';
-import { signOut, firebaseAuth } from '../firebase.js';
+import { signOut, firebaseAuth, storage } from '../firebase.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleChevronLeft, faCircleChevronRight } from "@fortawesome/free-solid-svg-icons";
-import ReactPlayer from 'react-player';
+import { ref, getDownloadURL } from "firebase/storage";
 import Post from './Post.js';
+import Create from './Create.js';
 
 function Main() {
 
@@ -25,11 +26,25 @@ function Main() {
   }
 
   let userData = useSelector((state) => state.currentUser );
-  // TODO: userSlice로 요청보내주는 함수
   
+  // TODO: 로그인 후 프로필 이미지 설정
+  let [profile, setProfile] = useState('');
+  useEffect(()=> {
+
+    if(userData.email != ''){
+      const storageRef = ref(storage, `userProfile/${userData.email}.jpg`)
+      getDownloadURL(storageRef)
+      .then((url)=>{
+        setProfile(url);
+      })
+    }
+
+  });
+
   return (
     <>
       {/* <Post/> */}
+      {/* <Create/> */}
       <div className='MainPanel'>
         {
           // TODO: left Menu
@@ -58,7 +73,7 @@ function Main() {
               </span>
             </div>
             <div className={`body-item`}>
-            <div className={`img search`}></div>
+            <div className={`img my-profile`} style={{backgroundImage:`url(${profile})`}}></div>
               <span>
                 프로필
               </span>
@@ -85,7 +100,7 @@ function Main() {
                         <div className='list-in-panel'>
                           <div className='list-profile'>
                             <span>
-                              <img src={require('../Image/my.jpg')}/>
+                              <img src={profile}/>
                             </span>
                           </div>
                           <div className='list-nickname'>
@@ -173,7 +188,7 @@ function Main() {
 
                           <div style={{width: '468px'}}>
                             <div className='post-pic-content'>
-                                <div className='img-list'>
+                                <div className={`img-list`}>
 
                                   <ul>
                                     <li style={{transform: "translateX(0px)"}}>
@@ -237,10 +252,6 @@ function Main() {
                               게시물 글
                             </span>
                           </div>
-                          <div className='post-write-more'>
-                            ...
-                            <span>&nbsp;더 보기</span>
-                          </div>
                         </div>
                         <div className='post-write-comment'>
                             댓글 0개 보기
@@ -248,7 +259,6 @@ function Main() {
                       </div>
 
                     </section>
-                    
                   </div>
                 </div>
               </div>
@@ -261,7 +271,7 @@ function Main() {
                 <div>
                   <div className='profile-img'>
                     <a>
-                      <img src={require('../Image/empty_profile.jpg')}/>
+                      <img src={profile}/>
                     </a>
                   </div>
                   <div className='user-info'>

@@ -16,7 +16,7 @@
 
 .close {
   height: 46px;
-  z-index: 3;
+  z-index: 5;
   top: 10px;
   right: 10px;
   position: absolute;
