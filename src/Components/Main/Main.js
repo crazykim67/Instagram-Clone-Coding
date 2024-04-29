@@ -8,6 +8,7 @@ import { faCircleChevronLeft, faCircleChevronRight } from "@fortawesome/free-sol
 import { ref, getDownloadURL } from "firebase/storage";
 import Post from './Post.js';
 import Create from './Create.js';
+import CPopup from '../Popup/CPopup.js';
 
 function Main() {
 
@@ -43,6 +44,7 @@ function Main() {
 
   return (
     <>
+      {/* {<CPopup/>} */}
       {/* <Post/> */}
       <Create/>
       <div className='MainPanel'>
