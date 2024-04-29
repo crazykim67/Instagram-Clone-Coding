@@ -34,6 +34,7 @@
   height: 750px;
   border-radius: 12px;
   background-color: white;
+  transition: width 0.3s ease-in-out;
 }
 
 .create-box > div {
@@ -51,7 +52,9 @@
   justify-content: center;
   align-items: center;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  height: 44px;
+  border-bottom: 1px solid rgb(219, 219, 219);
 }
 
 .create-post-top > h1 {
@@ -61,9 +64,68 @@
   text-align: center;
   display: flex;
   flex-direction: column;
-  line-height: 42px;
-  border-bottom: 1px solid rgb(219, 219, 219);
 }
+
+.create-post-selected-top {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  justify-content: center;
+  border-bottom: 1px solid rgb(219, 219, 219);
+  height: 44px;
+}
+
+.create-selected-font {
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  flex-grow: 1;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.create-selected-prev {
+  padding: 16px;
+  float: left;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  color: rgb(0, 149, 246);
+}
+
+.create-selected-next {
+  padding: 16px;
+  float: right;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  color: rgb(0, 149, 246);
+}
+
+.create-selected-prev:hover {
+  color: #0064e0;
+}
+
+.create-selected-next:hover {
+  color: #0064e0;
+}
+
 
 .create-post-body {
   width: 100%;
@@ -126,4 +188,225 @@
 
 .file-upload-btn > button:hover {
   background-color: #0064e0;
+}
+
+.file-upload-btn > input {
+  background-color: rgb(0, 149, 246);
+  border: none;
+  outline: none;
+  padding: 10px;
+  border-radius: 8px;
+  position: relative;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.file-upload-btn > input:hover {
+  background-color: #0064e0;
+}
+
+.create-select-body {
+  width: 700px;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.create-select-body > div {
+  width: 100%;
+  height: 100%;
+}
+
+.create-select-body > div > img {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.create-select-body > .prev {
+  position: absolute;
+  padding: 0;
+  margin: 8px;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+}
+
+.create-select-body > .next {
+  position: absolute;
+  padding: 0;
+  margin: 8px;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+}
+
+.write {
+  width: 1050px;
+  transition: width 0.3s ease-in-out;
+}
+
+.w-create-select {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.create-select-write-body {
+  flex-direction: column;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+}
+
+.w-create-body {
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  position: relative;
+}
+
+.w-create-select-body {
+  width: 700px;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.w-create-select-body > div {
+  width: 100%;
+  height: 100%;
+}
+
+.w-create-select-body > div > img {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.w-create-select-body > .prev {
+  position: absolute;
+  padding: 0;
+  margin: 8px;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+}
+
+.w-create-select-body > .next {
+  position: absolute;
+  padding: 0;
+  margin: 8px;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+}
+
+.w-create-main {
+  width: 350px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.w-create-main > div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+}
+
+.w-create-profile {
+  overflow: visible;
+  margin: 18px 16px 18px 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.w-create-profile > div {
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+}
+
+.w-create-profile-img {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.w-create-profile-img > img {
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+}
+
+.w-create-profile-nickname {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.w-create-input {
+  width: 100%;
+  display: flex;
+  position: relative;
+  align-items: center;
+  border-top: 1px solid rgb(219, 219, 219);
+  border-bottom: 1px solid rgb(219, 219, 219);
+}
+
+.w-create-textBox {
+  width: 100%;
+  height: 180px;
+  overflow: auto;
+  padding: 16px;
+  position: relative;
+  user-select: text;
+  outline: none;
+  border: 0;
+  user-select: text;
+  line-height: 24px;
+}
+
+.w-create-placeHolder {
+  width: 100%;
+  height: 180px;
+  position: absolute;
+  padding: 16px;
+  color: rgb(200, 200, 200);
+  font-size: 16px;
+  margin: 0;
+  pointer-events: none;
 }

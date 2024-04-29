@@ -80,12 +80,7 @@
   background-image: url('../Image/Home.png');
 }
 
-.search {
-  background-image: url('../Image/search.png');
-}
-
 .my-profile {
-  /* background-image: url('../Image/my.jpg'); */
   border-radius: 50%;
 }
 

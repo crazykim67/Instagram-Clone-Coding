@@ -123,14 +123,10 @@ function Post(){
                                           
                                           <div className='text-content'>
                                             <span>41주</span>
-                                            <span>좋아요 12개</span>
                                             <span>답글달기</span>
                                           </div>
 
                                         </div>
-                                        <span className='text-like'>
-                                            <img alt='like' src={require('../Image/un_like.png')}/>
-                                        </span>
                                       </div>
                                     </div>
                                     
@@ -163,15 +159,10 @@ function Post(){
 
                                                     <div className='text-content'>
                                                       <span>41주</span>
-                                                      <span>좋아요 12개</span>
                                                       <span>답글달기</span>
                                                     </div>
 
                                                   </div>
-
-                                                  <span className='text-like'>
-                                                    <img alt='like' src={require('../Image/un_like.png')}/>
-                                                  </span>
 
                                                 </div>
                                               </div>
@@ -196,16 +187,11 @@ function Post(){
 
                                                     <div className='text-content'>
                                                       <span>41주</span>
-                                                      <span>좋아요 12개</span>
                                                       <span>답글달기</span>
                                                     </div>
 
                                                   </div>
 
-                                                  <span className='text-like'>
-                                                    <img alt='like' src={require('../Image/un_like.png')}/>
-                                                  </span>
-                                                  
                                                 </div>
                                               </div>
                                             </li>

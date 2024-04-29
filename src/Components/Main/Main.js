@@ -44,13 +44,14 @@ function Main() {
   return (
     <>
       {/* <Post/> */}
-      {/* <Create/> */}
+      <Create/>
       <div className='MainPanel'>
         {
           // TODO: left Menu
         }
         <div className='leftPanel'>
           <div className='l-top'>
+
             <span onClick={()=>{navigate('/main')}}>Pilstagram</span>
           </div>
           <div className='l-body'>
@@ -58,12 +59,6 @@ function Main() {
               <div className={`img home`}></div>
               <span>
                 홈
-              </span>
-            </div>
-            <div className={`body-item`}>
-              <div className={`img search`}></div>
-              <span>
-                검색
               </span>
             </div>
             <div className={`body-item`}>
