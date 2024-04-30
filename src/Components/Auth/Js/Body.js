@@ -1,10 +1,10 @@
-import './Body.css';
+import '../Css/Body.css';
 import Footer from './Footer.js';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fire, firebaseAuth, signInWithEmailAndPassword } from '../firebase.js';
+import { fire, firebaseAuth, signInWithEmailAndPassword } from '../../firebase.js';
 import { useSelector, useDispatch } from 'react-redux';
-import { setEmail, setName, setNickName } from '../userSlice.js'
+import { setEmail, setName, setNickName } from '../../userSlice.js'
 import { doc, onSnapshot } from 'firebase/firestore';
 
 function Body(){
@@ -64,23 +64,39 @@ function Body(){
   // TODO: userSlice로 요청보내주는 함수
   let dispatch = useDispatch();
   const onLogin = async (e) => {
-    e.preventDefault();
-    await signInWithEmailAndPassword(firebaseAuth, value[0], value[1])
-    .then(() => {
+    try {
+      e.preventDefault();
+      await signInWithEmailAndPassword(firebaseAuth, value[0], value[1])
       onSnapshot(
         doc(fire, 'userList', value[0]), (snapshot) => {
-          const userData = snapshot.data();
-          dispatch(setEmail(userData.email));
-          dispatch(setName(userData.name));
-          dispatch(setNickName(userData.nickname));
-          navigate('/main');
+            const userData = snapshot.data();
+            dispatch(setEmail(userData.email));
+            dispatch(setName(userData.name));
+            dispatch(setNickName(userData.nickname));
+            navigate('/main');
           }
       )
-    })
-    .catch((err) => {
+    }
+    catch(err){
       console.log(err);
       LoginFailed('잘못된 계정입니다.');
-    });
+    }
+    // e.preventDefault();
+    // await signInWithEmailAndPassword(firebaseAuth, value[0], value[1])
+    // .then(() => {
+    //   onSnapshot(
+    //     doc(fire, 'userList', value[0]), (snapshot) => {
+    //       const userData = snapshot.data();
+    //       dispatch(setEmail(userData.email));
+    //       dispatch(setName(userData.name));
+    //       dispatch(setNickName(userData.nickname));
+    //       navigate('/main');
+    //       }
+    //   )
+    // })
+    // .catch((err) => {
+      
+    // });
   }
 
   return(

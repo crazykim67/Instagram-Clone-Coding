@@ -88,7 +88,7 @@ form {
 .mainL {
   height: 581.15px;
 
-  background-image: url('../Image/home-phones.png');
+  background-image: url('../../Image/home-phones.png');
   background-size: 468.32px 634.15px;
 
   margin-bottom: 12px;
@@ -127,7 +127,7 @@ form {
   width: 250px;
   height: 538.84px;
 
-  background: url('../Image/screenshot1.png');
+  background: url('../../Image/screenshot1.png');
 
   margin: 0;
 
@@ -136,16 +136,16 @@ form {
 
 @keyframes slide {
   25% {
-    background: url('../Image/screenshot2.png');
+    background: url('../../Image/screenshot2.png');
   }
   50% {
-    background: url('../Image/screenshot3.png');
+    background: url('../../Image/screenshot3.png');
   }
   75% {
-    background: url('../Image/screenshot4.png');
+    background: url('../../Image/screenshot4.png');
   }
   100% {
-    background: url('../Image/screenshot1.png');
+    background: url('../../Image/screenshot1.png');
   }
 }
 
@@ -350,7 +350,7 @@ form {
 
 @font-face {
   font-family: 'logoFont';
-  src: url(../Font/Billabong.otf);
+  src: url(../../Font/Billabong.otf);
 }
 
 .R-logo {

@@ -1,7 +1,7 @@
-import './MyProfile.css';
+import '../Css/MyProfile.css';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { storage } from '../firebase.js';
+import { storage } from '../../firebase.js';
 import { useEffect, useState } from 'react';
 import { ref, getDownloadURL } from "firebase/storage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -76,7 +76,7 @@ function MyProfile() {
                   <div className='profile-img-area'>
                     <div>
                       <div>
-                        <img alt='프로필사진' src={require('../Image/my.jpg')}/>
+                        <img alt='프로필사진' src={require('../../Image/my.jpg')}/>
                       </div>
                     </div>
                   </div>
@@ -114,39 +114,39 @@ function MyProfile() {
                   <div className='content-images'>
 
                     <div className='c-image'>
-                        <img alt='이미지' src={require('../Image/my.jpg')}/>
+                        <img alt='이미지' src={require('../../Image/my.jpg')}/>
                     </div>
                     <div className='c-image'>
-                      <img alt='이미지' src={require('../Image/my.jpg')}/>
+                      <img alt='이미지' src={require('../../Image/my.jpg')}/>
                     </div>
                     <div className='c-image last'>
-                      <img alt='이미지' src={require('../Image/my.jpg')}/>
+                      <img alt='이미지' src={require('../../Image/my.jpg')}/>
                     </div>
 
                   </div>
                   <div className='content-images'>
 
                     <div className='c-image'>
-                        <img alt='이미지' src={require('../Image/my.jpg')}/>
+                        <img alt='이미지' src={require('../../Image/my.jpg')}/>
                     </div>
                     <div className='c-image'>
-                      <img alt='이미지' src={require('../Image/my.jpg')}/>
+                      <img alt='이미지' src={require('../../Image/my.jpg')}/>
                     </div>
                     <div className='c-image last'>
-                      <img alt='이미지' src={require('../Image/my.jpg')}/>
+                      <img alt='이미지' src={require('../../Image/my.jpg')}/>
                     </div>
 
                   </div>
                   <div className='content-images'>
 
                     <div className='c-image'>
-                        <img alt='이미지' src={require('../Image/my.jpg')}/>
+                        <img alt='이미지' src={require('../../Image/my.jpg')}/>
                     </div>
                     <div className='c-image'>
-                      <img alt='이미지' src={require('../Image/my.jpg')}/>
+                      <img alt='이미지' src={require('../../Image/my.jpg')}/>
                     </div>
                     <div className='c-image last'>
-                      <img alt='이미지' src={require('../Image/my.jpg')}/>
+                      <img alt='이미지' src={require('../../Image/my.jpg')}/>
                     </div>
 
                   </div>

@@ -1,4 +1,4 @@
-import './CPopup.css';
+import '../Css/CPopup.css';
 
 function CPopup(){
   return(

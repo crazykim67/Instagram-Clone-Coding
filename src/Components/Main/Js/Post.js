@@ -1,4 +1,4 @@
-import './Post.css';
+import '../Css/Post.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleChevronLeft, faCircleChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { height } from '@fortawesome/free-brands-svg-icons/fa42Group';
@@ -9,7 +9,7 @@ function Post(){
     <div className='dim'></div>
     <div className='postBody'>
       <div className='close'>
-        <img alt='Close' src={require('../Image/close.png')}/>
+        <img alt='Close' src={require('../../Image/close.png')}/>
       </div>
       <div className='post-detail-panel'>
           <div className='post-box'>
@@ -22,11 +22,11 @@ function Post(){
                   <ul>
 
                     <li className='detail-img-list' style={{transform: "translateX(0px)"}}>
-                      <img className='post-detail-img' alt='이미지' src={require('../Image/my.jpg')} />
+                      <img className='post-detail-img' alt='이미지' src={require('../../Image/my.jpg')} />
                     </li>
 
                     <li className='detail-img-list' style={{transform: "translateX(700px)"}}>
-                      <img className='post-detail-img' alt='이미지' src={require('../Image/my.jpg')} />
+                      <img className='post-detail-img' alt='이미지' src={require('../../Image/my.jpg')} />
                     </li>
 
                   </ul>
@@ -47,7 +47,7 @@ function Post(){
                       <div>
                         <div className='detail-profile'>
                           <div>
-                            <img alt='이미지' src={require('../Image/my.jpg')} />
+                            <img alt='이미지' src={require('../../Image/my.jpg')} />
                           </div>
 
                           <div className='detail-nick'>
@@ -76,7 +76,7 @@ function Post(){
                               <div className='comment-writing'>
                                 <div>
                                   <div className='write-profile'>
-                                    <img alt='프로필' src={require('../Image/my.jpg')}/>
+                                    <img alt='프로필' src={require('../../Image/my.jpg')}/>
                                   </div>
                                   <div className='write-comment'>
                                     <h2>닉네임</h2>
@@ -111,7 +111,7 @@ function Post(){
                                     <div className='comment-writing'>
                                       <div>
                                         <div className='write-profile'>
-                                          <img alt='프로필' src={require('../Image/my.jpg')}/>
+                                          <img alt='프로필' src={require('../../Image/my.jpg')}/>
                                         </div>
 
                                         <div className='write-comment'>
@@ -147,7 +147,7 @@ function Post(){
                                                 <div>
 
                                                   <div className='write-profile'>
-                                                    <img alt='프로필' src={require('../Image/my.jpg')}/>
+                                                    <img alt='프로필' src={require('../../Image/my.jpg')}/>
                                                   </div>
 
                                                   <div className='write-comment'>
@@ -175,7 +175,7 @@ function Post(){
                                                 <div>
 
                                                   <div className='write-profile'>
-                                                    <img alt='프로필' src={require('../Image/my.jpg')}/>
+                                                    <img alt='프로필' src={require('../../Image/my.jpg')}/>
                                                   </div>
 
                                                   <div className='write-comment'>
@@ -211,10 +211,10 @@ function Post(){
 
                       <section className='detail-content'>
                         <span>
-                          <img src={require('../Image/un_like.png')}/>
+                          <img src={require('../../Image/un_like.png')}/>
                         </span>
                         <span>
-                          <img src={require('../Image/bubble.png')}/>
+                          <img src={require('../../Image/bubble.png')}/>
                         </span>
                       </section>
 

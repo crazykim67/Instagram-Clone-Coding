@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import Footer from './Footer.js';
-import './SignUp.css';
+import '../Css/SignUp.css';
 import { useEffect, useState } from 'react';
-import { fire, firebaseAuth, createUserWithEmailAndPassword, storage } from '../firebase.js';
+import { fire, firebaseAuth, createUserWithEmailAndPassword, storage } from '../../firebase.js';
 import { doc, setDoc } from 'firebase/firestore';
 import { ref, getDownloadURL, uploadBytes, updateMetadata  } from "firebase/storage";
 import { type } from '@testing-library/user-event/dist/type/index.js';

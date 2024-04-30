@@ -1,9 +1,9 @@
-import './FindPass.css';
+import '../Css/FindPass.css';
 import Header from './Header.js';
 import Footer from './Footer.js';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { db, firebaseAuth, sendPasswordResetEmail } from '../firebase.js';
+import { db, firebaseAuth, sendPasswordResetEmail } from '../../firebase.js';
 import { ref, set } from 'firebase/database';
 
 function FindPass() {

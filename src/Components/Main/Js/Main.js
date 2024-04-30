@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
-import './Main.css';
+import '../Css/Main.css';
 import { useNavigate } from 'react-router-dom';
-import { signOut, firebaseAuth, storage } from '../firebase.js';
+import { signOut, firebaseAuth, storage } from '../../firebase.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleChevronLeft, faCircleChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { ref, getDownloadURL } from "firebase/storage";
 import Post from './Post.js';
 import Create from './Create.js';
-import CPopup from '../Popup/CPopup.js';
+import CPopup from '../../Popup/Js/CPopup.js';
 
 function Main() {
 
@@ -16,14 +16,14 @@ function Main() {
   const [dummy] = useState([false,false,false]);
 
   const onSignOut = async () => {
-    await signOut(firebaseAuth)
-    .then(()=>{
+    try{
+      await signOut(firebaseAuth)
       alert('로그아웃되었습니다. 로그인 후 이용해주세요.');
       navigate('/Instagram/');
-    })
-    .catch((err)=>{
+    }
+    catch(err){
       console.log(err);
-    })
+    }
   }
 
   let userData = useSelector((state) => state.currentUser );
@@ -31,7 +31,6 @@ function Main() {
   // TODO: 로그인 후 프로필 이미지 설정
   let [profile, setProfile] = useState('');
   useEffect(()=> {
-
     if(userData.email != ''){
       const storageRef = ref(storage, `userProfile/${userData.email}.jpg`)
       getDownloadURL(storageRef)
@@ -39,14 +38,13 @@ function Main() {
         setProfile(url);
       })
     }
-
   });
 
   return (
     <>
       {/* {<CPopup/>} */}
       {/* <Post/> */}
-      <Create/>
+      {/* <Create/> */}
       <div className='MainPanel'>
         {
           // TODO: left Menu
@@ -111,7 +109,7 @@ function Main() {
                         <div className='list-in-panel on-story'>
                           <div className='list-profile'>
                             <span className='story-wrap'>
-                              <img src={require('../Image/my.jpg')}/>
+                              <img src={require('../../Image/my.jpg')}/>
                             </span>
                           </div>
                           <div className='list-nickname'>
@@ -125,7 +123,7 @@ function Main() {
                         <div className='list-in-panel on-story'>
                           <div className='list-profile'>
                             <span className='none-story-wrap'>
-                              <img src={require('../Image/my.jpg')}/>
+                              <img src={require('../../Image/my.jpg')}/>
                             </span>
                           </div>
                           <div className='list-nickname'>
@@ -152,7 +150,7 @@ function Main() {
 
                             <div>
                               <span>
-                                <img src={require('../Image/my.jpg')}/>
+                                <img src={require('../../Image/my.jpg')}/>
                               </span>
                             </div>
 
@@ -190,17 +188,17 @@ function Main() {
                                   <ul>
                                     <li style={{transform: "translateX(0px)"}}>
                                       <video className='post-video' controls={false} autoPlay={true} loop={true} preload={'auto'}>
-                                        <source src={require('../videos/video.mp4')}/>
+                                        <source src={require('../../videos/video.mp4')}/>
                                       </video>
                                       <div className='volumeBtn'>
-                                        <img src={require('../Image/volume.png')}/>
+                                        <img src={require('../../Image/volume.png')}/>
                                       </div>
                                     </li>
                                     <li style={{transform: "translateX(468px)"}}>
-                                      <img className='post-img' alt='이미지' src={require('../Image/my.jpg')}/>
+                                      <img className='post-img' alt='이미지' src={require('../../Image/my.jpg')}/>
                                     </li>
                                     <li style={{transform: "translateX(936px)"}}>
-                                      <img className='post-img' alt='이미지' src={require('../Image/my.jpg')}/>
+                                      <img className='post-img' alt='이미지' src={require('../../Image/my.jpg')}/>
                                     </li>
                                   </ul>
                                   {
@@ -230,10 +228,10 @@ function Main() {
                         <div className='footer-content'>
                           <div>
                             <span className='like'>
-                              <img className='footer-content-img' src={require('../Image/un_like.png')}/>
+                              <img className='footer-content-img' src={require('../../Image/un_like.png')}/>
                             </span>
                             <span className='comment'>
-                              <img className='footer-content-img' src={require('../Image/bubble.png')}/>
+                              <img className='footer-content-img' src={require('../../Image/bubble.png')}/>
                             </span>
                           </div>
                         </div>
@@ -299,7 +297,7 @@ function Main() {
                   <div>
                     <div className='profile-img'>
                       <a>
-                        <img src={require('../Image/empty_profile.jpg')}/>
+                        <img src={require('../../Image/empty_profile.jpg')}/>
                       </a>
                     </div>
                     <div className='user-info'>

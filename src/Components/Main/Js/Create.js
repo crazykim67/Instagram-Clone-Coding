@@ -1,13 +1,19 @@
-import './Create.css';
+import '../Css/Create.css';
 import { useEffect, useState, useRef } from 'react';
 import { faPhotoFilm} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleChevronLeft, faCircleChevronRight } from "@fortawesome/free-solid-svg-icons";
+import CPopup from '../../Popup/Js/CPopup.js';
 
 function Create(){
   const inputRef = useRef();
   const onHandlerInput = () => {
     inputRef.current?.click();
+  }
+
+  const dimRef = useRef();
+  const handleDim = () => {
+    console.log('Dim Clicked');
   }
   const [files, setFiles] = useState([]);
   useEffect(()=>{
@@ -18,52 +24,59 @@ function Create(){
 
   const [text, setText] = useState('');
   // TODO: 게시물 만들기 Index State 
-  const viewIndex = 0;
   const [index, setIndex] = useState(0);
   // TODO: 미디어 Index State 
-  const mIndex = 0;
   const [mediaIndex, SetMediaIndex] = useState(0);
+
+  const [popUp, setPopup] = useState(false);
+
   return(
     <>
-      <div className='dim'></div>
-
-      <div className='.create-body'>
+      {
+        popUp == true ? <CPopup/> : null
+      }
+      <div className='create-body'>
         <div className='close'>
-          <img alt='Close' src={require('../Image/close.png')}/>
+          <img alt='Close' src={require('../../Image/close.png')}/>
         </div>
         <div className='create-panel'>
+            <div className='dim' onClick={()=>{ 
+              if(!popUp &&  index >= 1){
+                setPopup(true);
+              }
+            }}></div>
             <div className='create-main'>
               <div className={`create-box ${index > 1 ? 'write' : ''}`}>
                 <div>
                   {
                   <>
-                      {
-                      // TODO: 사진 또는 동영상 고르기
-                      // <>
-                      // <div className='create-post-top'>
-                      // <h1>새 게시물 만들기</h1>
-                      // </div>
-                      // <div className='create-post-body'>
-                      //   <div>
-                      //     <div className='files-icon'>
-                      //       <FontAwesomeIcon icon={faPhotoFilm} size='5x' />
-                      //     </div>
-                      //     <div className='files-upload-please'>
-                      //       사진과 동영상을 올려주세요
-                      //     </div>
-                      //     <div className='file-upload-btn'>
-                      //       <input type='file' multiple style={{display:'none'}} ref={inputRef} onChange={(e)=>{
-                      //         setFiles(Array.from(e.target.files));
-                      //       }} />
-                      //       <button onClick={() => {
-                      //         onHandlerInput();
-                      //       }}>
-                      //         컴퓨터에서 선택
-                      //       </button>
-                      //     </div>
-                      //   </div>
-                      // </div> 
-                      // </>
+                    {
+                    // TODO: 사진 또는 동영상 고르기
+                    // <>
+                    // <div className='create-post-top'>
+                    // <h1>새 게시물 만들기</h1>
+                    // </div>
+                    // <div className='create-post-body'>
+                    //   <div>
+                    //     <div className='files-icon'>
+                    //       <FontAwesomeIcon icon={faPhotoFilm} size='5x' />
+                    //     </div>
+                    //     <div className='files-upload-please'>
+                    //       사진과 동영상을 올려주세요
+                    //     </div>
+                    //     <div className='file-upload-btn'>
+                    //       <input type='file' multiple style={{display:'none'}} ref={inputRef} onChange={(e)=>{
+                    //         setFiles(Array.from(e.target.files));
+                    //       }} />
+                    //       <button onClick={() => {
+                    //         onHandlerInput();
+                    //       }}>
+                    //         컴퓨터에서 선택
+                    //       </button>
+                    //     </div>
+                    //   </div>
+                    // </div> 
+                    // </>
                     }
 
                     {
@@ -86,8 +99,14 @@ function Create(){
                         files.length > 1 ? <><span className='prev'><FontAwesomeIcon icon={faCircleChevronLeft} size="2x" /></span><span className='next'><FontAwesomeIcon icon={faCircleChevronRight} size="2x" /></span></> : null
                       }
                       <div>
-                        <img src={require('../Image/my.jpg')}/>
+                        <img src={require('../../Image/my.jpg')}/>
                       </div>
+                      {/* <div>
+                        <video controls={false} autoPlay={true} loop={false} preload={'auto'}>
+                          <source src={require('../../videos/video.mp4')}/>
+                        </video>
+                      </div> */}
+                      
                     </div>
                     </>
                     }
@@ -116,7 +135,7 @@ function Create(){
                     //         <FontAwesomeIcon icon={faCircleChevronRight} size="2x" />
                     //       </span>
                     //       <div>
-                    //         <img src={require('../Image/my.jpg')}/>
+                    //         <img src={require('../../Image/my.jpg')}/>
                     //       </div>
                     //     </div> 
                     //     <div className='w-create-main'>
@@ -124,7 +143,7 @@ function Create(){
                     //         <div className='w-create-profile'>
                     //           <div>
                     //             <div className='w-create-profile-img'>
-                    //               <img src={require('../Image/my.jpg')}/>
+                    //               <img src={require('../../Image/my.jpg')}/>
                     //             </div>
                     //             <div className='w-create-profile-nickname'>
                     //               닉네임

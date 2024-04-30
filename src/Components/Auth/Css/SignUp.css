@@ -4,7 +4,7 @@ html {
 
 @font-face {
   font-family: 'logoFont';
-  src: url(../Font/Billabong.otf);
+  src: url(../../Font/Billabong.otf);
 }
 
 .base {

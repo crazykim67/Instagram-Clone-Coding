@@ -1,13 +1,12 @@
 import logo from './logo.svg';
-import Body from './Components/Auth/Body.js';
-import SignUp from './Components/Auth/SignUp.js';
-import FindPass from './Components/Auth/FindPass.js';
+import Body from './Components/Auth/Js/Body.js';
+import SignUp from './Components/Auth/Js/SignUp.js';
+import FindPass from './Components/Auth/Js/FindPass.js';
 import { Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
-import Main from './Components/Main/Main.js';
-import Modal from './Components/Modal/Modal.js';
-import MyProfile from './Components/Main/MyProfile.js';
+import Main from './Components/Main/Js/Main.js';
+import MyProfile from './Components/Main/Js/MyProfile.js';
 
 function App() {
   return (

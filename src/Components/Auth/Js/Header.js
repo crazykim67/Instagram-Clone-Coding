@@ -1,5 +1,5 @@
 import Footer from './Footer'
-import './Header.css'
+import '../Css/Header.css'
 import { useNavigate } from 'react-router-dom';
 
 function Header() {

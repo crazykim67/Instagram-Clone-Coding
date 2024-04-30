@@ -1,5 +1,5 @@
-import './Footer.css';
-import Introduce from '../../introduce.js';
+import '../Css/Footer.css';
+import Introduce from '../../../introduce.js';
 import { useState } from 'react';
 
 function Footer(){
