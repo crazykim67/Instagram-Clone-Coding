@@ -29,7 +29,7 @@ function Main() {
   let userData = useSelector((state) => state.currentUser );
   
   // TODO: 로그인 후 프로필 이미지 설정
-  let [profile, setProfile] = useState('');
+  const [profile, setProfile] = useState('');
   useEffect(()=> {
     if(userData.email != ''){
       const storageRef = ref(storage, `userProfile/${userData.email}.jpg`)
@@ -40,11 +40,18 @@ function Main() {
     }
   });
 
+  // TODO: 게시물 만들기 팝업 열기/닫기 State
+  const [create, setCreate] = useState(false);
+  // TODO: 게시물 만들기 Index
+  const [index, setIndex] = useState(0);
+
   return (
     <>
       {/* {<CPopup/>} */}
       {/* <Post/> */}
-      {/* <Create/> */}
+      {
+        create == true ? <Create index={index} setIndex={setIndex} setCreate={setCreate}/> : null
+      }
       <div className='MainPanel'>
         {
           // TODO: left Menu
@@ -61,7 +68,9 @@ function Main() {
                 홈
               </span>
             </div>
-            <div className={`body-item`}>
+            <div className={`body-item`} onClick={()=>{
+              setCreate(true);
+            }}>
               <div className={`img create`}></div>
               <span>
                 만들기

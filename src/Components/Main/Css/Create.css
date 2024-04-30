@@ -25,6 +25,12 @@
   align-content: center;
   display: flex;
   flex-direction: column;
+  animation: Open 0.1s ease-out;
+}
+
+@keyframes Open {
+  0% {scale: 120%;}
+  100% {scale: 100%;}
 }
 
 .create-box {
@@ -229,12 +235,16 @@
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .create-select-body > div > video {
   width: 100%;
   height: 100%;
   background-color: black;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .create-select-body > .prev {
@@ -243,6 +253,7 @@
   margin: 8px;
   color: rgba(255, 255, 255, 0.5);
   cursor: pointer;
+  z-index: 1;
 }
 
 .create-select-body > .next {
@@ -251,6 +262,7 @@
   margin: 8px;
   color: rgba(255, 255, 255, 0.5);
   cursor: pointer;
+  z-index: 1;
 }
 
 .write {
@@ -307,6 +319,16 @@
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.w-create-select-body > div> video {
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .w-create-select-body > .prev {
@@ -315,6 +337,7 @@
   margin: 8px;
   color: rgba(255, 255, 255, 0.5);
   cursor: pointer;
+  z-index: 1;
 }
 
 .w-create-select-body > .next {
@@ -323,6 +346,7 @@
   margin: 8px;
   color: rgba(255, 255, 255, 0.5);
   cursor: pointer;
+  z-index: 1;
 }
 
 .w-create-main {

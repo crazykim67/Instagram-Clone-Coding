@@ -1,6 +1,6 @@
 .popupDim {
   position: fixed;
-  z-index: 6;
+  z-index: 8;
   width: 100%;
   height: 100%;
   background-color: rgba(0 , 0, 0, 0.5);
@@ -18,7 +18,7 @@
   position: fixed;
 }
 
-.popup-main > div {
+.popup-main > .popup-sub-main {
   width: 100%;
   display: flex;
   align-items: flex-start;
@@ -26,6 +26,7 @@
 }
 
 .popup-box {
+  z-index: 8;
   overflow: hidden;
   justify-content: center;
   display: flex;
