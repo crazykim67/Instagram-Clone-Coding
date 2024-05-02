@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import '../Css/Main.css';
 import { useNavigate } from 'react-router-dom';
 import { signOut, firebaseAuth, storage } from '../../firebase.js';
@@ -52,7 +52,7 @@ function Main() {
       {/* {<CPopup/>} */}
       {/* <Post/> */}
       {
-        create == true ? <Create index={index} setIndex={setIndex} setCreate={setCreate}/> : null
+        create == true ? <Create index={index} setIndex={setIndex} setCreate={setCreate} profile={profile}/> : null
       }
       <div className='MainPanel'>
         {
@@ -78,7 +78,7 @@ function Main() {
                 만들기
               </span>
             </div>
-            <div className={`body-item`}>
+            <div className={`body-item`} onClick={()=> {navigate('/profile')}}>
             <div className={`img my-profile`} style={{backgroundImage:`url(${profile})`}}></div>
               <span>
                 프로필
@@ -339,4 +339,4 @@ function Main() {
   )
 }
 
-export default Main
+export default memo(Main);

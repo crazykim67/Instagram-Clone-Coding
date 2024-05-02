@@ -1,10 +1,18 @@
 import '../Css/CPopup.css';
 
-function CPopup({setFiles, setPopup, setCreate, index, setIndex, exit, setText}){
+function CPopup({setFiles, setPopup, setCreate, index, setIndex, exit, setExit, setText, setMaxIndex}){
+  const InitPopup = () => {
+    setFiles([]);
+    setIndex(0);
+    setMaxIndex(0);
+    setText('');
+  }
+  
   return(
     <>
       <div className='popup-main'>
         <div onClick={()=>{
+            setExit(false);
             setPopup(false);
           }}className='popupDim'></div>
         <div className='popup-sub-main'>
@@ -17,22 +25,20 @@ function CPopup({setFiles, setPopup, setCreate, index, setIndex, exit, setText})
               <div className='popup-buttons'>
                 <button onClick={()=>{
                   if(exit === true){
-                    setPopup(false);
                     // TODO: 게시글 초기화
-                    setText('');
-                    setIndex(0);
+                    InitPopup();
                     setCreate(false);
-                    setFiles([]);
                   }
                   else {
-                    setIndex(index-1);
-                    setPopup(false);
-                    setText('');
-
-                    if(index-1 == 0){
-                      setFiles([]);
+                    if(index-1 <= 0){
+                      InitPopup();
+                    }
+                    else{
+                      setIndex(index-1);
+                      setText('');
                     }
                   }
+                  setPopup(false);
                 }} style={{color:'red', fontWeight:'600'}}>삭제</button>
                 <button onClick={()=>{
                   setPopup(false);

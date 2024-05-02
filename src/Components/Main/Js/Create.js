@@ -5,24 +5,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleChevronLeft, faCircleChevronRight } from "@fortawesome/free-solid-svg-icons";
 import CPopup from '../../Popup/Js/CPopup.js';
 import { fire, storage } from '../../firebase.js';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
 import { ref, uploadBytes, updateMetadata, getDownloadURL  } from "firebase/storage";
 import uuid from 'react-uuid';
 import { useSelector } from 'react-redux';
 import { type } from '@testing-library/user-event/dist/type/index.js';
 
-function Create({index, setIndex, setCreate}){
+function Create({index, setIndex, setCreate, profile}){
   const inputRef = useRef();
   const onHandlerInput = () => {
     inputRef.current?.click();
   }
 
   const [files, setFiles] = useState([]);
-  useEffect(()=>{
-    files.map((a)=>{
-      console.log(a);
-    })
-  }, [files]);
 
   const [text, setText] = useState('');
   // TODO: 미디어 Index State 
@@ -38,6 +33,7 @@ function Create({index, setIndex, setCreate}){
     if(files.length > 0){
       setIndex(1);
       setMaxIndex(files.length - 1);
+      setMediaIndex(0);
     }
   }, [files])
 
@@ -87,7 +83,7 @@ function Create({index, setIndex, setCreate}){
     for(const file of _files){
       const metaData = getMetaData(GetType(file));
 
-      const fileRef = ref(storage, `PostData/${_dirName}/${file.name}`);
+      const fileRef = ref(storage, `postData/${userData.email}/${_dirName}/${file.name}`);
       // TODO: 파일 Type 변환
       updateMetadata(fileRef, metaData);
       await uploadFile(fileRef, file);
@@ -102,17 +98,39 @@ function Create({index, setIndex, setCreate}){
 
 // TODO: 파이어베이스 Firestore 갱신
 const setFirestore = async (_dirName, _array) => {
-  await setDoc(doc(fire, 'postData', _dirName),{
-    "uuid": _dirName,
-    "date": new Date(),
-    "content": text,
-    "likes": 0,
-    "email": userData.email,
-    "likeByUser": false,
-    "nickname": userData.nickname,
-    "comment": {},
-    "media": _array
-  });
+  const docRef = doc(fire, `postData`, userData.email);
+
+  const docSnap = await getDoc(docRef);
+    if(!docSnap.exists()) {
+      await setDoc(docRef,{
+        [`${_dirName}`] : [{
+           "uuid": _dirName,
+           "date": new Date(),
+           "content": text,
+           "likes": 0,
+           "email": userData.email,
+           "likeByUser": false,
+           "nickname": userData.nickname,
+           "comment": {},
+           "media": _array
+         }]
+       });
+    }
+    else {
+      await updateDoc(docRef,{
+        [`${_dirName}`] : [{
+           "uuid": _dirName,
+           "date": new Date(),
+           "content": text,
+           "likes": 0,
+           "email": userData.email,
+           "likeByUser": false,
+           "nickname": userData.nickname,
+           "comment": {},
+           "media": _array
+         }]
+       });
+    }
 };
 
   const OnPost = async () => {
@@ -128,33 +146,35 @@ const setFirestore = async (_dirName, _array) => {
     }
   }
 
+  const InitPopup = () => {
+    setText('');
+    setFiles([]);
+    setIndex(0);
+    setMaxIndex(0);
+    setCreate(false);
+  }
   return(
     <>
       {
-        popUp == true ? <CPopup setFiles={setFiles} setPopup={setPopup} setCreate={setCreate} index={index} setIndex={setIndex} exit={exit} setText={setText}/> : null
+        popUp == true ? <CPopup setFiles={setFiles} setPopup={setPopup} setCreate={setCreate} index={index} setIndex={setIndex} exit={exit} setExit={setExit} setText={setText} setMaxIndex={setMaxIndex}/> : null
       }
       <div className='create-body'>
         <div className='close' onClick={()=>{
-          if(!popUp &&  index >= 1){
-            setExit(true);
+          setExit(true);
+          if(!popUp &&  index >= 1)
             setPopup(true);
-          }
-          else{
-            setExit(false);
+          else
             setCreate(false);
-          }
         }}>
           <img alt='Close' src={require('../../Image/close.png')}/>
         </div>
         <div className='create-panel'>
             <div className='dim' onClick={()=>{ 
-              setExit(true);
-              if(!popUp &&  index >= 1){
+              setExit(false);
+              if(!popUp &&  index >= 1)
                 setPopup(true);
-              }
-              else {
+              else 
                 setCreate(false);
-              }
           }}></div>
             <div className='create-main'>
               <div className={`create-box ${index > 1 ? 'write' : ''}`}>
@@ -213,37 +233,47 @@ const setFirestore = async (_dirName, _array) => {
                           다음
                         </div>
                       </div>
+
                       <div className='create-select-body'>
                         {
                           files.length > 1 ? 
                           <>
                           {
-                            mediaIndex > 0 ?
+                            mediaIndex > 0 &&
                             <span className='prev' onClick={()=>{setMediaIndex(mediaIndex - 1);}}>
                               <FontAwesomeIcon icon={faCircleChevronLeft} size="2x" />
-                            </span> : null
+                            </span>
                           }
                           {
-                            mediaIndex < maxMediaIndex ?
+                            mediaIndex < maxMediaIndex &&
                             <span className='next' onClick={()=>{setMediaIndex(mediaIndex + 1);}}>
                               <FontAwesomeIcon icon={faCircleChevronRight} size="2x" />
-                            </span> : null
+                            </span>
                           }
                             
                           </> 
                           : null
                         }
                         {
-                          files[mediaIndex].type != 'video/mp4' ?
-                          <div>
-                          {/* <img src={require('../../Image/my.jpg')}/> */}
-                          <img src={URL.createObjectURL(files[mediaIndex])}/>
-                          </div> :
-                          <div>
-                          <video controls={false} autoPlay={true} loop={false} preload={'auto'}>
-                            <source src={require('../../videos/video.mp4')}/>
-                          </video>
-                          </div>
+                          files[mediaIndex] && (
+                            <>
+                              {
+                                  console.log(files[mediaIndex].type)
+                              }
+                              {
+                                files[mediaIndex].type != 'video/mp4' ?
+                                <div>
+                                {/* <img src={require('../../Image/my.jpg')}/> */}
+                                <img src={URL.createObjectURL(files[mediaIndex])}/>
+                                </div> :
+                                <div>
+                                <video controls={false} autoPlay={true} loop={false} preload={'auto'}>
+                                  <source src={require('../../videos/video.mp4')}/>
+                                </video>
+                                </div>
+                              }
+                            </>
+                          )
                         }
                         
                       </div>
@@ -269,7 +299,7 @@ const setFirestore = async (_dirName, _array) => {
                         
                         <div className='create-selected-next' onClick={()=>{
                           OnPost();
-                          setCreate(false);
+                          InitPopup();
                         }}>
                           공유
                         </div>
@@ -281,32 +311,38 @@ const setFirestore = async (_dirName, _array) => {
                           files.length > 1 ? 
                           <>
                           {
-                            mediaIndex > 0 ?
+                            mediaIndex > 0 &&
                             <span className='prev' onClick={()=>{setMediaIndex(mediaIndex - 1);}}>
                               <FontAwesomeIcon icon={faCircleChevronLeft} size="2x" />
-                            </span> : null
+                            </span>
                           }
                           {
-                            mediaIndex < maxMediaIndex ?
+                            mediaIndex < maxMediaIndex &&
                             <span className='next' onClick={()=>{setMediaIndex(mediaIndex + 1);}}>
                               <FontAwesomeIcon icon={faCircleChevronRight} size="2x" />
-                            </span> : null
+                            </span>
                           }
                             
                           </> 
                           : null
                         }
                         {
-                          files[mediaIndex].type != 'video/mp4' ?
-                          <div>
-                          {/* <img src={require('../../Image/my.jpg')}/> */}
-                          <img src={URL.createObjectURL(files[mediaIndex])}/>
-                          </div> :
-                          <div>
-                          <video controls={false} autoPlay={true} loop={false} preload={'auto'}>
-                            <source src={require('../../videos/video.mp4')}/>
-                          </video>
-                          </div>
+                          files[mediaIndex] && (
+                            <>
+                            {
+                              files[mediaIndex].type != 'video/mp4' ?
+                              <div>
+                              {/* <img src={require('../../Image/my.jpg')}/> */}
+                              <img src={URL.createObjectURL(files[mediaIndex])}/>
+                              </div> :
+                              <div>
+                              <video controls={false} autoPlay={true} loop={false} preload={'auto'}>
+                                <source src={require('../../videos/video.mp4')}/>
+                              </video>
+                              </div>
+                            }
+                            </>
+                          ) 
                         }
                         </div> 
                         <div className='w-create-main'>
@@ -314,10 +350,10 @@ const setFirestore = async (_dirName, _array) => {
                             <div className='w-create-profile'>
                               <div>
                                 <div className='w-create-profile-img'>
-                                  <img src={require('../../Image/my.jpg')}/>
+                                  <img src={profile}/>
                                 </div>
                                 <div className='w-create-profile-nickname'>
-                                  닉네임
+                                  {userData.nickname}
                                 </div>
                               </div>
                             </div>

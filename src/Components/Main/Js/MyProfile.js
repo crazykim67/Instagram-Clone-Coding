@@ -15,15 +15,14 @@ function MyProfile() {
   let userData = useSelector((state) => state.currentUser );
   let [profile, setProfile] = useState('');
   useEffect(()=> {
-
     if(userData.email != ''){
       const storageRef = ref(storage, `userProfile/${userData.email}.jpg`)
       getDownloadURL(storageRef)
       .then((url)=>{
         setProfile(url);
+        console.log(url);
       })
     }
-
   });
 
   // TODO: 게시물 만들기 팝업 열기/닫기 State
@@ -37,7 +36,7 @@ function MyProfile() {
     <>
     {/* <Post/> */}
     {
-      create == true ? <Create index={index} setIndex={setIndex} setCreate={setCreate}/> : null
+      create == true ? <Create index={index} setIndex={setIndex} setCreate={setCreate} profile={profile}/> : null
     }
     <div className='MainPanel'>
       <div className='leftPanel'>
@@ -59,7 +58,7 @@ function MyProfile() {
                   만들기
                 </span>
               </div>
-              <div className={`body-item`}>
+              <div className={`body-item`} onClick={()=> {navigate('/profile')}}>
               <div className={`img my-profile`} style={{backgroundImage:`url(${profile})`}}></div>
                 <span>
                   프로필
@@ -86,7 +85,7 @@ function MyProfile() {
                   <div className='profile-img-area'>
                     <div>
                       <div>
-                        <img alt='프로필사진' src={require('../../Image/my.jpg')}/>
+                        <img src={profile}/>
                       </div>
                     </div>
                   </div>
