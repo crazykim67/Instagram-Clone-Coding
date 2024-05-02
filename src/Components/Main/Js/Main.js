@@ -44,6 +44,8 @@ function Main() {
   const [create, setCreate] = useState(false);
   // TODO: 게시물 만들기 Index
   const [index, setIndex] = useState(0);
+  // TODO: 게시물 상세보기
+  const [post, setPost] = useState(false);
 
   return (
     <>
@@ -196,12 +198,13 @@ function Main() {
 
                                   <ul>
                                     <li style={{transform: "translateX(0px)"}}>
-                                      <video className='post-video' controls={false} autoPlay={true} loop={true} preload={'auto'}>
+                                      {/* <video className='post-video' controls={false} autoPlay={true} loop={true} preload={'auto'}>
                                         <source src={require('../../videos/video.mp4')}/>
                                       </video>
                                       <div className='volumeBtn'>
                                         <img src={require('../../Image/volume.png')}/>
-                                      </div>
+                                      </div> */}
+                                      <img className='post-img' alt='이미지' src={require('../../Image/my.jpg')}/>
                                     </li>
                                     <li style={{transform: "translateX(468px)"}}>
                                       <img className='post-img' alt='이미지' src={require('../../Image/my.jpg')}/>

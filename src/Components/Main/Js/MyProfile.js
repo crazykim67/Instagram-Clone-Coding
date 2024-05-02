@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import { ref, getDownloadURL } from "firebase/storage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTableCells } from "@fortawesome/free-solid-svg-icons";
+import Post from './Post.js';
+import Create from './Create.js';
 
 function MyProfile() {
 
@@ -23,8 +25,20 @@ function MyProfile() {
     }
 
   });
+
+  // TODO: 게시물 만들기 팝업 열기/닫기 State
+  const [create, setCreate] = useState(false);
+  // TODO: 게시물 만들기 Index
+  const [index, setIndex] = useState(0);
+  // TODO: 게시물 상세보기
+  const [post, setPost] = useState(false);
+  
   return(
     <>
+    {/* <Post/> */}
+    {
+      create == true ? <Create index={index} setIndex={setIndex} setCreate={setCreate}/> : null
+    }
     <div className='MainPanel'>
       <div className='leftPanel'>
             <div className='l-top'>
@@ -37,13 +51,9 @@ function MyProfile() {
                   홈
                 </span>
               </div>
-              <div className={`body-item`}>
-                <div className={`img search`}></div>
-                <span>
-                  검색
-                </span>
-              </div>
-              <div className={`body-item`}>
+              <div className={`body-item`} onClick={()=>{
+              setCreate(true);
+            }}>
                 <div className={`img create`}></div>
                 <span>
                   만들기
@@ -95,9 +105,9 @@ function MyProfile() {
                     </div>
                     
                     <ul className='follow-ul'>
-                      <li>게시물 20</li>
-                      <li>팔로워 220</li>
-                      <li>팔로우 211</li>
+                      <li>게시물 0</li>
+                      <li>팔로워 0</li>
+                      <li>팔로우 0</li>
                     </ul>
                   </div>
 
@@ -114,7 +124,7 @@ function MyProfile() {
                   <div className='content-images'>
 
                     <div className='c-image'>
-                        <img alt='이미지' src={require('../../Image/my.jpg')}/>
+                      <img alt='이미지' src={require('../../Image/my.jpg')}/>
                     </div>
                     <div className='c-image'>
                       <img alt='이미지' src={require('../../Image/my.jpg')}/>
@@ -124,32 +134,7 @@ function MyProfile() {
                     </div>
 
                   </div>
-                  <div className='content-images'>
 
-                    <div className='c-image'>
-                        <img alt='이미지' src={require('../../Image/my.jpg')}/>
-                    </div>
-                    <div className='c-image'>
-                      <img alt='이미지' src={require('../../Image/my.jpg')}/>
-                    </div>
-                    <div className='c-image last'>
-                      <img alt='이미지' src={require('../../Image/my.jpg')}/>
-                    </div>
-
-                  </div>
-                  <div className='content-images'>
-
-                    <div className='c-image'>
-                        <img alt='이미지' src={require('../../Image/my.jpg')}/>
-                    </div>
-                    <div className='c-image'>
-                      <img alt='이미지' src={require('../../Image/my.jpg')}/>
-                    </div>
-                    <div className='c-image last'>
-                      <img alt='이미지' src={require('../../Image/my.jpg')}/>
-                    </div>
-
-                  </div>
                 </div>
               </div>
             </main>

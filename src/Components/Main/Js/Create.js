@@ -4,6 +4,12 @@ import { faPhotoFilm} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleChevronLeft, faCircleChevronRight } from "@fortawesome/free-solid-svg-icons";
 import CPopup from '../../Popup/Js/CPopup.js';
+import { fire, storage } from '../../firebase.js';
+import { doc, setDoc } from 'firebase/firestore';
+import { ref, uploadBytes, updateMetadata, getDownloadURL  } from "firebase/storage";
+import uuid from 'react-uuid';
+import { useSelector } from 'react-redux';
+import { type } from '@testing-library/user-event/dist/type/index.js';
 
 function Create({index, setIndex, setCreate}){
   const inputRef = useRef();
@@ -14,7 +20,7 @@ function Create({index, setIndex, setCreate}){
   const [files, setFiles] = useState([]);
   useEffect(()=>{
     files.map((a)=>{
-      console.log(a.type);
+      console.log(a);
     })
   }, [files]);
 
@@ -34,6 +40,93 @@ function Create({index, setIndex, setCreate}){
       setMaxIndex(files.length - 1);
     }
   }, [files])
+
+  let userData = useSelector((state) => state.currentUser );
+
+  // TODO: 고유 ID 생성
+  const GetUniqueId = () => {
+    return uuid();
+  };
+
+  // TODO: Get File Type Function 
+  const GetType = (_file) => {
+    let fileName = `${_file.name}`;
+    let lastIndex = fileName.lastIndexOf('.');
+    let fileType = fileName.slice(lastIndex);
+    
+    return fileType;
+  };
+
+  // TODO: 미디어 파일 메타데이터 설정
+  const getMetaData = (_type) => {
+    const metaData = _type === '.mp4' ? { contentType: 'video/mp4' } 
+    : _type === 'jpg' ? { contentType: 'image/jpeg' } : { contentType: 'image/png' }
+
+    return metaData
+  };
+
+  //TODO: 파일 업로드
+  const uploadFile = async (_fileRef, _file) => {
+    await uploadBytes(_fileRef, _file)
+  };
+
+  // TODO: 업로드한 파일 정보 불러오기
+  const getFileUrl = async (_fileRef) => {
+    return await getDownloadURL(_fileRef);
+  };
+
+  const setDocFileType = (_file) => {
+    const type = _file.type === 'video/mp4' ? 'video' : 'image'
+    return type;
+  }
+
+  // TODO: 스토리지 파일 업로드
+  const uploadMedia = async (_files, _dirName) => {
+    const mediaArray = [];
+
+    for(const file of _files){
+      const metaData = getMetaData(GetType(file));
+
+      const fileRef = ref(storage, `PostData/${_dirName}/${file.name}`);
+      // TODO: 파일 Type 변환
+      updateMetadata(fileRef, metaData);
+      await uploadFile(fileRef, file);
+
+      const url = await getFileUrl(fileRef);
+      const fileType = setDocFileType(file);
+      mediaArray.push({"type": fileType, "url": url});
+    }
+
+    return mediaArray;
+  }
+
+// TODO: 파이어베이스 Firestore 갱신
+const setFirestore = async (_dirName, _array) => {
+  await setDoc(doc(fire, 'postData', _dirName),{
+    "uuid": _dirName,
+    "date": new Date(),
+    "content": text,
+    "likes": 0,
+    "email": userData.email,
+    "likeByUser": false,
+    "nickname": userData.nickname,
+    "comment": {},
+    "media": _array
+  });
+};
+
+  const OnPost = async () => {
+    try {
+    // TODO: 고유 ID 생성
+      const dirName = GetUniqueId();
+      const mediaArray = await uploadMedia(files, dirName)
+  
+      await setFirestore(dirName, mediaArray);
+    }
+    catch(e){
+      console.error(e);
+    }
+  }
 
   return(
     <>
@@ -174,7 +267,10 @@ function Create({index, setIndex, setCreate}){
                           새 게시물 만들기
                         </div>
                         
-                        <div className='create-selected-next'>
+                        <div className='create-selected-next' onClick={()=>{
+                          OnPost();
+                          setCreate(false);
+                        }}>
                           공유
                         </div>
                       </div>
@@ -226,7 +322,7 @@ function Create({index, setIndex, setCreate}){
                               </div>
                             </div>
                             <div className='w-create-input'>
-                              <div value={text} onInput={(e)=>{setText(e.target.textContent)}} className='w-create-textBox' contentEditable="true" role="textbox" spellcheck="true" data-lexical-editor="true" style={{wordWrap:'break-word'}}>
+                              <div value={text} onInput={(e)=>{setText(e.target.textContent)}} className='w-create-textBox' contentEditable="true" role="textbox" spellCheck="true" data-lexical-editor="true" style={{wordWrap:'break-word'}}>
                                 
                               </div>
                               {

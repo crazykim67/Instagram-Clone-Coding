@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import { fire, firebaseAuth, createUserWithEmailAndPassword, storage } from '../../firebase.js';
 import { doc, setDoc } from 'firebase/firestore';
 import { ref, getDownloadURL, uploadBytes, updateMetadata  } from "firebase/storage";
-import { type } from '@testing-library/user-event/dist/type/index.js';
 
 function SignUp(){
 
@@ -67,20 +66,10 @@ function SignUp(){
     e.preventDefault();
     const createdUser = await createUserWithEmailAndPassword(firebaseAuth, user[0], user[3])
       try{
-      // const index = user[0].indexOf('@');
-      // const userId = user[0].substring(0, index);
-
-      // TODO: ReatimeDatabase Write
-      //   set(ref(db, `users/${userId}`), {
-      //     email : user[0],
-      //     name : user[1],
-      //     nickname : user[2],
-      // });
-      
       await setDoc(doc(fire, 'userList', user[0]), {
-        email: user[0],
-        name: user[1],
-        nickname: user[2],
+        "email": user[0],
+        "name": user[1],
+        "nickname": user[2],
       });
 
       // TODO: 초기 이미지 업로드
