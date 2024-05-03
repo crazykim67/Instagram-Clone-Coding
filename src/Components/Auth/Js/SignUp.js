@@ -73,7 +73,7 @@ function SignUp(){
       });
 
       // TODO: 초기 이미지 업로드
-      fetch(require('../Image/empty_profile.jpg'))
+      fetch(require('../../Image/empty_profile.jpg'))
       .then(response => response.blob({ type: 'image/jpeg'}))
       .then(blob => {
         const storageRef = ref(storage, `userProfile/${user[0]}.jpg`);

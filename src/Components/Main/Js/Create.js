@@ -104,15 +104,15 @@ const setFirestore = async (_dirName, _array) => {
     if(!docSnap.exists()) {
       await setDoc(docRef,{
         [`${_dirName}`] : [{
-           "uuid": _dirName,
-           "date": new Date(),
-           "content": text,
-           "likes": 0,
-           "email": userData.email,
-           "likeByUser": false,
-           "nickname": userData.nickname,
-           "comment": {},
-           "media": _array
+          "uuid": _dirName,
+          "date": new Date(),
+          "content": text,
+          "likes": 0,
+          "email": userData.email,
+          "likeByUser": false,
+          "nickname": userData.nickname,
+          "comment": {},
+          "media": _array
          }]
        });
     }
@@ -257,9 +257,6 @@ const setFirestore = async (_dirName, _array) => {
                         {
                           files[mediaIndex] && (
                             <>
-                              {
-                                  console.log(files[mediaIndex].type)
-                              }
                               {
                                 files[mediaIndex].type != 'video/mp4' ?
                                 <div>

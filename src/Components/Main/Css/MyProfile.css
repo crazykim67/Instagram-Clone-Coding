@@ -176,11 +176,26 @@
   flex-grow: 1;
 }
 
+.c-video {
+  margin-right: 4px;
+  width: 100%;
+  position: relative;
+  flex-grow: 1;
+}
+
 .last {
   margin: 0;
 }
 
 .c-image > img {
+  cursor: pointer;
+  position: relative;
+  object-fit: cover;
+  width: 294px;
+  height: 294px;
+}
+
+.c-video > video {
   cursor: pointer;
   position: relative;
   object-fit: cover;
