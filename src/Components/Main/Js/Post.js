@@ -84,7 +84,7 @@ function Post({post, setPost, postData}){
 
     for(let i = 0; i < index; i++){
       list.push(
-        <li className='detail-img-list' style={{transform: `translateX(${700*i}px)`}}>
+        <li className='detail-img-list' style={{transform: `translateX(${(700*i)+(-700*currentIndex)}px)`, transition:`transform ${0.2}s ease-in-out`}}>
           {
             getType(mediaData[i])
           }
