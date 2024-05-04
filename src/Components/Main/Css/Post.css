@@ -8,7 +8,7 @@
 
 .dim {
   position: fixed;
-  z-index: 3;
+  z-index: 2;
   width: 100%;
   height: 100%;
   background-color: rgba(0 , 0, 0, 0.5);
@@ -65,6 +65,13 @@
   width: 100%;
 }
 
+.post-detail-box {
+  z-index: 2;
+  justify-content: center;
+  display: flex;
+  position: relative;
+}
+
 .post-detail-content {
   height: 870px;
   width: 700px;
@@ -103,6 +110,17 @@
 }
 
 .post-detail-img {
+  object-fit: cover;
+  user-select: none;
+  top: 0;
+  left: 0;
+  border: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.post-detail-video {
+  cursor: pointer;
   object-fit: cover;
   user-select: none;
   top: 0;

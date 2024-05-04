@@ -29,15 +29,20 @@ function MyProfile() {
   const [create, setCreate] = useState(false);
   // TODO: 게시물 만들기 Index
   const [index, setIndex] = useState(0);
-  // TODO: 게시물 상세보기
-  const [post, setPost] = useState(false);
+
   // TODO: 게시물 수
   let [postSize, setSize] = useState(0);
   // TODO: 게시물 열 수
   let [rowSize, setRow] = useState(0);
   let [docData, setDocData] = useState();
-  let [mediaData, setMediaData] = useState();
 
+  // TODO: 게시물 상세보기
+  const [post, setPost] = useState(false);
+  // TODO: 미디어 정보
+  let [mediaDocData, setMediaData] = useState();
+  // TODO: 게시물 데이터
+  let [postData, setPostData] = useState(null);
+  
   // TODO: 게시물 데이터 불러오기
   const getPostDoc = () => {
     onSnapshot(
@@ -61,8 +66,6 @@ function MyProfile() {
 
           if(!docData || (docData && docData.length != values.length))
           setDocData(values);
-          
-          console.log('11');
           setMediaData(media);
           // TODO: 행열 설정
           setSize(dataValues.length);
@@ -72,36 +75,35 @@ function MyProfile() {
     )
   }
   
-useEffect(()=>{
+  useEffect(()=>{
     getPostDoc();
   },[docData])
 
   const setItem = (index) => {
     let item = null;
-    switch(mediaData[index]?.type){
+    switch(mediaDocData[index]?.type){
       case 'image':{
         item = 
-        <div onClick={()=>{console.log(index);}} key={index} className='c-image'>
-          <img alt='이미지' src={mediaData[index]?.url}/>
+        <div onClick={()=>{setPost(true); setPostData(docData[index]);}} key={index} className='c-image'>
+          <img alt='이미지' src={mediaDocData[index]?.url}/>
         </div>
       break;
       }
       case 'video':{
         item = 
-        <div onClick={()=>{console.log(index);}} key={index} className='c-video' >
+        <div onClick={()=>{setPost(true); setPostData(docData[index]);}} key={index} className='c-video' >
           <video controls={false} autoPlay={false} loop={false} preload={'auto'}>
-            <source src={mediaData[index]?.url}/>
+            <source src={mediaDocData[index]?.url}/>
           </video> 
         </div>
         break;
       }
       default:{
         item = 
-        <div onClick={()=>{console.log(index);}} key={index} className='c-image'>
+        <div onClick={()=>{setPost(true); setPostData(docData[index]);}} key={index} className='c-image'>
         </div>
       }
     }
-
     return item;
   }
 
@@ -130,11 +132,15 @@ useEffect(()=>{
     return posts;
   }
 
+  
+
   return(
     <>
-    {/* <Post/> */}
     {
-      create == true ? <Create index={index} setIndex={setIndex} setCreate={setCreate} profile={profile}/> : null
+      post && <Post post={post} setPost={setPost} postData = {postData}/>
+    }
+    {
+      create && <Create index={index} setIndex={setIndex} setCreate={setCreate} profile={profile}/>
     }
     <div className='MainPanel'>
       <div className='leftPanel'>

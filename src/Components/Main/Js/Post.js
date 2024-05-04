@@ -1,41 +1,148 @@
 import '../Css/Post.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleChevronLeft, faCircleChevronRight } from "@fortawesome/free-solid-svg-icons";
-import { height } from '@fortawesome/free-brands-svg-icons/fa42Group';
+import { fire, storage } from '../../firebase.js';
+import { ref, getDownloadURL } from "firebase/storage";
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
-function Post(){
+function Post({post, setPost, postData}){
+
+  let [index, setIndex] = useState(0);
+  let [currentIndex, setCurIndex] = useState(0);
+  let [mediaData, setMedia] = useState();
+
+  let userData = useSelector((state) => state.currentUser );
+  let [profile, setProfile] = useState('');
+  let [date, setDate] = useState('');
+
+  // TODO: 날짜 포맷
+  const dateFormat = (_date) => {
+    const timestamp = (_date.seconds * 1000) + Math.round(_date.nanoseconds / 1000000);
+
+    const dateTime = new Date(timestamp);
+    const year = dateTime.getFullYear();
+    const month = dateTime.getMonth() + 1;
+    const day = dateTime.getDate();
+
+    const formatDate = `${year}년${month}월${day}일`;
+    setDate(formatDate);
+  }
+
+  // TODO: 데이터 변경 감지 시
+  useEffect(()=>{
+
+    if(postData){
+      setIndex(postData.media.length);
+      setCurIndex(0);
+      setMedia(postData.media);
+
+      dateFormat(postData.date);
+    }
+    
+
+  }, [postData]);
+
+  // TODO: 미디어 데이터 변경 감지 시
+  useEffect(()=>{
+    if(mediaData)
+    console.log(mediaData);
+  }, [mediaData])
+
+  // TODO: 데이터 변경 감지 시 프로필 설정
+  useEffect(()=> {
+    if(userData.email != ''){
+      const storageRef = ref(storage, `userProfile/${postData.email}.jpg`)
+      getDownloadURL(storageRef)
+      .then((url)=>{
+        setProfile(url);
+      })
+    }
+  }, [postData]);
+
+  const getType = (_media) => {
+    let render = null;
+    switch(_media.type){
+      case 'image':{
+        render = 
+        <img className='post-detail-img' alt='이미지' src={_media.url} />
+        break;
+      }
+      case 'video':{
+        render =
+        <video className='post-detail-video' controls={false} autoPlay={true} loop={false} preload={'auto'}>
+          <source src={_media.url}/>
+        </video>
+        break;
+      }
+    }
+    return render;
+  }
+
+  const mediaList = () => {
+    let list = [];
+
+    for(let i = 0; i < index; i++){
+      list.push(
+        <li className='detail-img-list' style={{transform: `translateX(${700*i}px)`}}>
+          {
+            getType(mediaData[i])
+          }
+        </li>
+      )
+    }
+
+    return list;
+  }
+
   return(
     <>
-    <div className='dim'></div>
+    
     <div className='postBody'>
-      <div className='close'>
+      <div className='close' onClick={()=>{setPost(false);}}>
         <img alt='Close' src={require('../../Image/close.png')}/>
       </div>
       <div className='post-detail-panel'>
+          <div onClick={()=>{setPost(false);}} className='dim'></div>
           <div className='post-box'>
             <div>
+              <div className='post-detail-box'>
               <div className='post-detail-content'>
                 <div className='post-detail-content-div'>
                   {
                     // TODO: Image or Video
                   }
                   <ul>
-
-                    <li className='detail-img-list' style={{transform: "translateX(0px)"}}>
-                      <img className='post-detail-img' alt='이미지' src={require('../../Image/my.jpg')} />
+                    {mediaList()}
+                    {/* <li className='detail-img-list' style={{transform: "translateX(0px)"}}>
+                      <video className='post-detail-video' controls={false} autoPlay={false} loop={false} preload={'auto'}>
+                        <source src={require('../../videos/video.mp4')}/>
+                      </video>
                     </li>
 
                     <li className='detail-img-list' style={{transform: "translateX(700px)"}}>
                       <img className='post-detail-img' alt='이미지' src={require('../../Image/my.jpg')} />
-                    </li>
-
+                    </li> */}
                   </ul>
-                <button className='post-in-Btn prev'>
-                  <FontAwesomeIcon icon={faCircleChevronLeft} size="xl" />
-                </button>
-                <button className='post-in-Btn next'>
-                  <FontAwesomeIcon icon={faCircleChevronRight} size="xl" />
-                </button>
+                  {
+                    index > 1 ?
+                    <>
+                    {
+                      currentIndex > 0 &&
+                      <button className='post-in-Btn prev' onClick={()=>{setCurIndex(currentIndex-1);}}>
+                      <FontAwesomeIcon icon={faCircleChevronLeft} size="xl" />
+                      </button>
+                    }
+                    {
+                      currentIndex < index-1 &&
+                      <button className='post-in-Btn next' onClick={()=>{setCurIndex(currentIndex+1);}}>
+                      <FontAwesomeIcon icon={faCircleChevronRight} size="xl" />
+                      </button>
+                    }
+                    </>
+                    : null
+                  }
+                
                 </div>
                 
               </div>
@@ -47,12 +154,12 @@ function Post(){
                       <div>
                         <div className='detail-profile'>
                           <div>
-                            <img alt='이미지' src={require('../../Image/my.jpg')} />
+                            <img src={profile} />
                           </div>
 
                           <div className='detail-nick'>
                             <div>
-                              <span>닉네임</span>
+                              <span>{postData.nickname}</span>
                               <span style={{fontSize:'10px', alignItems:'center', padding:'0 10px 0 10px'}}>●</span>
                               <button>팔로우</button>
                             </div>
@@ -223,7 +330,7 @@ function Post(){
                       </section>
 
                       <div className='detail-date'>
-                        4월 25일
+                        {date}
                       </div>
 
                       <section className='detail-input'>
@@ -242,6 +349,7 @@ function Post(){
 
                   </div>
                 </div>
+              </div>
               </div>
             </div>
           </div>
