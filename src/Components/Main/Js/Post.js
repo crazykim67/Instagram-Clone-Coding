@@ -2,11 +2,13 @@ import '../Css/Post.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleChevronLeft, faCircleChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { fire, storage } from '../../firebase.js';
+import { doc, setDoc, getDoc, updateDoc, update } from 'firebase/firestore';
 import { ref, getDownloadURL } from "firebase/storage";
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import Comment from './Comment.js';
 
-function Post({post, setPost, postData}){
+function Post({post, setPost, postData, setPostData}){
 
   let [index, setIndex] = useState(0);
   let [currentIndex, setCurIndex] = useState(0);
@@ -15,6 +17,10 @@ function Post({post, setPost, postData}){
   let userData = useSelector((state) => state.currentUser );
   let [profile, setProfile] = useState('');
   let [date, setDate] = useState('');
+
+  // TODO: 좋아요 관련 state
+  let [like, setLike] = useState(false);
+  let [likeData, setLikeData] = useState();
 
   // TODO: 날짜 포맷
   const dateFormat = (_date) => {
@@ -36,17 +42,16 @@ function Post({post, setPost, postData}){
       setIndex(postData.media.length);
       setCurIndex(0);
       setMedia(postData.media);
-
+      setLikeData(postData.likes);
       dateFormat(postData.date);
     }
-    
 
   }, [postData]);
 
   // TODO: 미디어 데이터 변경 감지 시
   useEffect(()=>{
-    if(mediaData)
-    console.log(mediaData);
+    // if(mediaData)
+    // console.log(mediaData);
   }, [mediaData])
 
   // TODO: 데이터 변경 감지 시 프로필 설정
@@ -60,6 +65,12 @@ function Post({post, setPost, postData}){
     }
   }, [postData]);
 
+  // TODO: 현재 게시물에 좋아요를 눌렀는지 안눌렸는지
+  useEffect(()=>{
+    if(likeData){
+      setLike(likeData.some(_like => like.email !== userData.email));
+    }
+  }, [likeData])
   const getType = (_media) => {
     let render = null;
     switch(_media.type){
@@ -84,7 +95,7 @@ function Post({post, setPost, postData}){
 
     for(let i = 0; i < index; i++){
       list.push(
-        <li className='detail-img-list' style={{transform: `translateX(${(700*i)+(-700*currentIndex)}px)`, transition:`transform ${0.2}s ease-in-out`}}>
+        <li key={i} className='detail-img-list' style={{transform: `translateX(${(700*i)+(-700*currentIndex)}px)`, transition:`transform ${0.2}s ease-in-out`}}>
           {
             getType(mediaData[i])
           }
@@ -95,15 +106,59 @@ function Post({post, setPost, postData}){
     return list;
   }
 
+  useEffect(()=>{
+    if(likeData){
+      for(let data in likeData){
+        if(data.email === userData.email){
+          setLike(true)
+          break;
+        }
+      }
+    }
+  }, [likeData])
+
+  // TODO: 파이어베이스 Firestore 좋아요 데이터 갱신
+  const setLikes = async (isLike) => {
+    const docRef = doc(fire, `postData`, postData.email);
+    
+    const docSnap = await getDoc(docRef);
+
+    if(docSnap.exists()){
+      if(!isLike){
+        // TODO: 좋아요 추가
+        const updateData = {
+          [`${postData.uuid}`] : [{
+           ...postData,
+           "likes": [{"email":userData.email, "nickname":userData.nickname, "url":profile}, ...postData.likes, ],
+          }]
+        };
+        setPostData(updateData[postData.uuid][0]);
+        await updateDoc(docRef,updateData);
+      }
+      else {
+        // TODO: 좋아요 제거
+        const unLikeData = postData.likes.filter(_like => _like.email !== userData.email);
+        const updateData = {
+          [`${postData.uuid}`] : [{
+           ...postData,
+           "likes": unLikeData,
+          }]
+        };
+        setPostData(updateData[postData.uuid][0]);
+        await updateDoc(docRef,updateData);
+      }
+    }
+  }
+
   return(
     <>
     
     <div className='postBody'>
-      <div className='close' onClick={()=>{setPost(false);}}>
+      <div className='close' onClick={()=>{setPost(false); setLikeData(); setLike();}}>
         <img alt='Close' src={require('../../Image/close.png')}/>
       </div>
       <div className='post-detail-panel'>
-          <div onClick={()=>{setPost(false);}} className='dim'></div>
+          <div onClick={()=>{setPost(false); setLikeData(); setLike();}} className='dim'></div>
           <div className='post-box'>
             <div>
               <div className='post-detail-box'>
@@ -114,15 +169,6 @@ function Post({post, setPost, postData}){
                   }
                   <ul>
                     {mediaList()}
-                    {/* <li className='detail-img-list' style={{transform: "translateX(0px)"}}>
-                      <video className='post-detail-video' controls={false} autoPlay={false} loop={false} preload={'auto'}>
-                        <source src={require('../../videos/video.mp4')}/>
-                      </video>
-                    </li>
-
-                    <li className='detail-img-list' style={{transform: "translateX(700px)"}}>
-                      <img className='post-detail-img' alt='이미지' src={require('../../Image/my.jpg')} />
-                    </li> */}
                   </ul>
                   {
                     index > 1 ?
@@ -186,7 +232,7 @@ function Post({post, setPost, postData}){
                                     <img alt='프로필' src={require('../../Image/my.jpg')}/>
                                   </div>
                                   <div className='write-comment'>
-                                    <h2>닉네임</h2>
+                                    <h2>{postData.nickname}</h2>
                                     <span className='main-text'>
                                     프리온보딩 FE 챌린지로 취업 준비 끝!<br/>
                                     성장 프레임워크: 주니어를 위한 네 가지 질문<br/>
@@ -211,114 +257,20 @@ function Post({post, setPost, postData}){
                           {/* 
                             // TODO: 팔로워 댓글 부분
                           */}
-                          <div className='follower-comment-area'>
-                              <ul>
-                                <div className='follower-comment'>
-                                  <li>
-                                    <div className='comment-writing'>
-                                      <div>
-                                        <div className='write-profile'>
-                                          <img alt='프로필' src={require('../../Image/my.jpg')}/>
-                                        </div>
-
-                                        <div className='write-comment'>
-
-                                          <h2>닉네임</h2>
-                                          <span className='main-text'>
-                                            내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용
-                                          </span>
-                                          
-                                          <div className='text-content'>
-                                            <span>41주</span>
-                                            <span>답글달기</span>
-                                          </div>
-
-                                        </div>
-                                      </div>
-                                    </div>
-                                    
-                                  </li>
-                                  <li>
-                                    <ul className='reply-panel'>
-                                      <li>
-                                        <div className='comment-Hide-Show'>
-                                          - 답글 숨기기
-                                        </div>
-                                      </li>
-                                        {/*
-                                          // TODO: 대댓글
-                                        */}
-                                          <div className='reply-comment'>
-                                            <li>
-                                              <div className='comment-writing'>
-                                                <div>
-
-                                                  <div className='write-profile'>
-                                                    <img alt='프로필' src={require('../../Image/my.jpg')}/>
-                                                  </div>
-
-                                                  <div className='write-comment'>
-
-                                                    <h2>닉네임</h2>
-                                                    <span className='main-text'>
-                                                      내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용
-                                                    </span>
-
-                                                    <div className='text-content'>
-                                                      <span>41주</span>
-                                                      <span>답글달기</span>
-                                                    </div>
-
-                                                  </div>
-
-                                                </div>
-                                              </div>
-                                            </li>
-                                          </div>
-
-                                          <div className='reply-comment'>
-                                            <li>
-                                              <div className='comment-writing'>
-                                                <div>
-
-                                                  <div className='write-profile'>
-                                                    <img alt='프로필' src={require('../../Image/my.jpg')}/>
-                                                  </div>
-
-                                                  <div className='write-comment'>
-
-                                                    <h2>닉네임</h2>
-                                                    <span className='main-text'>
-                                                      내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용
-                                                    </span>
-
-                                                    <div className='text-content'>
-                                                      <span>41주</span>
-                                                      <span>답글달기</span>
-                                                    </div>
-
-                                                  </div>
-
-                                                </div>
-                                              </div>
-                                            </li>
-                                          </div>
-
-                                    </ul>
-                                  </li>
-
-                                </div>
-
-                              </ul>
-                          </div>
-
+                          <Comment/> 
                         </ul>
 
                       </div>
 
                       <section className='detail-content'>
-                        <span>
-                          <img src={require('../../Image/un_like.png')}/>
+                        <span onClick={()=>{
+                          setLikes(likeData.some(_like => like.email !== userData.email));
+                          setLike(like => !like);
+                        }}>
+                          {
+                            like === false ? <img src={require('../../Image/un_like.png')}/> : <img src={require('../../Image/like.png')}/>
+                          }
+                          
                         </span>
                         <span>
                           <img src={require('../../Image/bubble.png')}/>
@@ -326,7 +278,7 @@ function Post({post, setPost, postData}){
                       </section>
 
                       <section className='detail-like'>
-                        좋아요 1.2만개
+                        좋아요 {postData.likes.length}개 
                       </section>
 
                       <div className='detail-date'>

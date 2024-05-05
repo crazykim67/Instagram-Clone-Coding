@@ -137,7 +137,7 @@ function MyProfile() {
   return(
     <>
     {
-      post && <Post post={post} setPost={setPost} postData = {postData}/>
+      post && <Post post={post} setPost={setPost} postData = {postData} setPostData={setPostData}/>
     }
     {
       create && <Create index={index} setIndex={setIndex} setCreate={setCreate} profile={profile}/>

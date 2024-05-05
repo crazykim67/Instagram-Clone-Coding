@@ -313,6 +313,7 @@
   font-size: inherit;
   border-style: none;
   resize: none;
+  overflow: hidden;
   padding: 0;
   margin: 0;
   display: flex;

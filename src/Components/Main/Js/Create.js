@@ -107,11 +107,10 @@ const setFirestore = async (_dirName, _array) => {
           "uuid": _dirName,
           "date": new Date(),
           "content": text,
-          "likes": 0,
+          "likes": [],
           "email": userData.email,
-          "likeByUser": false,
           "nickname": userData.nickname,
-          "comment": {},
+          "comment": [],
           "media": _array
          }]
        });
@@ -122,11 +121,10 @@ const setFirestore = async (_dirName, _array) => {
            "uuid": _dirName,
            "date": new Date(),
            "content": text,
-           "likes": 0,
+           "likes": [],
            "email": userData.email,
-           "likeByUser": false,
            "nickname": userData.nickname,
-           "comment": {},
+           "comment": [],
            "media": _array
          }]
        });
