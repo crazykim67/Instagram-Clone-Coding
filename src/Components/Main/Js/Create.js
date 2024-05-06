@@ -257,13 +257,13 @@ const setFirestore = async (_dirName, _array) => {
                             <>
                               {
                                 files[mediaIndex].type != 'video/mp4' ?
-                                <div>
+                                <div key={mediaIndex}>
                                 {/* <img src={require('../../Image/my.jpg')}/> */}
                                 <img src={URL.createObjectURL(files[mediaIndex])}/>
                                 </div> :
-                                <div>
+                                <div key={mediaIndex}>
                                 <video controls={false} autoPlay={true} loop={false} preload={'auto'}>
-                                  <source src={require('../../videos/video.mp4')}/>
+                                  <source src={URL.createObjectURL(files[mediaIndex])}/>
                                 </video>
                                 </div>
                               }
@@ -326,13 +326,13 @@ const setFirestore = async (_dirName, _array) => {
                             <>
                             {
                               files[mediaIndex].type != 'video/mp4' ?
-                              <div>
+                              <div key={mediaIndex}>
                               {/* <img src={require('../../Image/my.jpg')}/> */}
                               <img src={URL.createObjectURL(files[mediaIndex])}/>
                               </div> :
-                              <div>
+                              <div key={mediaIndex}>
                               <video controls={false} autoPlay={true} loop={false} preload={'auto'}>
-                                <source src={require('../../videos/video.mp4')}/>
+                                <source src={URL.createObjectURL(files[mediaIndex])}/>
                               </video>
                               </div>
                             }

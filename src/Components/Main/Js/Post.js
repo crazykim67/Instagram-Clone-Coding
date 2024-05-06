@@ -4,7 +4,7 @@ import { faCircleChevronLeft, faCircleChevronRight } from "@fortawesome/free-sol
 import { fire, storage } from '../../firebase.js';
 import { doc, setDoc, getDoc, updateDoc, update } from 'firebase/firestore';
 import { ref, getDownloadURL } from "firebase/storage";
-import { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Comment from './Comment.js';
 
@@ -21,6 +21,9 @@ function Post({post, setPost, postData, setPostData}){
   // TODO: 좋아요 관련 state
   let [like, setLike] = useState(false);
   let [likeData, setLikeData] = useState();
+
+  // TODO: 비디오 Index state
+  let [videoIndex, setVideoIndex] = useState([]);
 
   // TODO: 날짜 포맷
   const dateFormat = (_date) => {
@@ -41,6 +44,7 @@ function Post({post, setPost, postData, setPostData}){
     if(postData){
       setIndex(postData.media.length);
       setCurIndex(0);
+      setVideoIndex([]);
       setMedia(postData.media);
       setLikeData(postData.likes);
       dateFormat(postData.date);
@@ -71,7 +75,30 @@ function Post({post, setPost, postData, setPostData}){
       setLike(likeData.some(_like => like.email !== userData.email));
     }
   }, [likeData])
-  const getType = (_media) => {
+
+  // TODO: 비디오 Ref 저장
+  let videoRef = useRef([]);
+  let [prevVideoIndex, setPrevVideoIndex] = useState(0);
+  // TODO: currentIndex 변환 시 비디오인지 체크 후 재생 여부
+  useEffect(()=>{
+    if(videoRef.current.length > 0){
+      // 현재 index가 비디오
+      if(videoRef.current[currentIndex]){
+        videoRef.current[currentIndex]?.play();
+        setPrevVideoIndex(currentIndex);
+      }
+      // 현재 index가 비디오가 아니라면
+      else{
+        if(videoRef.current[prevVideoIndex]){
+          videoRef.current[prevVideoIndex]?.pause();
+          videoRef.current[prevVideoIndex].currentTime = 0
+          setPrevVideoIndex(currentIndex);
+        }
+      }
+    }
+  }, [currentIndex, mediaData])
+
+  const getType = (_media, index) => {
     let render = null;
     switch(_media.type){
       case 'image':{
@@ -80,8 +107,12 @@ function Post({post, setPost, postData, setPostData}){
         break;
       }
       case 'video':{
+        let _videoIndex = index;
+        if (!videoIndex.includes(_videoIndex)){
+          setVideoIndex(videoIndex => [...videoIndex, _videoIndex]);
+        }
         render =
-        <video className='post-detail-video' controls={false} autoPlay={true} loop={false} preload={'auto'}>
+        <video ref={(e)=>{videoRef.current[_videoIndex] = e}} className='post-detail-video' controls={false} loop={false} preload={'auto'}>
           <source src={_media.url}/>
         </video>
         break;
@@ -90,6 +121,7 @@ function Post({post, setPost, postData, setPostData}){
     return render;
   }
 
+  // TODO: 미디어 데이터 렌더링
   const mediaList = () => {
     let list = [];
 
@@ -97,7 +129,7 @@ function Post({post, setPost, postData, setPostData}){
       list.push(
         <li key={i} className='detail-img-list' style={{transform: `translateX(${(700*i)+(-700*currentIndex)}px)`, transition:`transform ${0.2}s ease-in-out`}}>
           {
-            getType(mediaData[i])
+            getType(mediaData[i], i)
           }
         </li>
       )

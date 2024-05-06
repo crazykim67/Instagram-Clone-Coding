@@ -47,5 +47,8 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://crazykim67.github.io/Instagram/"
+  "homepage": "https://crazykim67.github.io/Instagram/",
+  "devDependencies": {
+    "@babel/plugin-proposal-optional-chaining": "^7.21.0"
+  }
 }
