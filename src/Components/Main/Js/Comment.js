@@ -1,32 +1,74 @@
-import { fire, storage } from '../../firebase.js';
-import { ref, getDownloadURL } from "firebase/storage";
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import Reply from './Reply.js';
+import moment from 'moment';
 
-function Comment(){
+function Comment({key, data, inputRef, userData}){
+
+  const inputFocus = () => {
+    inputRef.current.focus();
+  }
+
+  let [dateTime, setDateTime] = useState('');
+  const dateFormat = (date) => {
+    const currentTime = moment(date);
+    console.log(currentTime);
+  }
+
+  useEffect(()=>{
+    if(data){
+      const seconds = (data.date).seconds;
+      const nanoseconds = (data.date).nanoseconds;
+      const postDate = moment.unix(seconds).add(nanoseconds / 1000000, 'milliseconds');
+      const currentDate = moment();
+      const diff = currentDate.diff(postDate, 'seconds');
+
+      if(diff < 60)
+        setDateTime(`${diff}초`);
+      else if(diff < 3600)
+        setDateTime(`${Math.floor(diff / 60)}분`);
+      else if(diff < 86400)
+        setDateTime(`${Math.floor(diff / 3600)}시간`);
+      else if(diff < 604800)
+        setDateTime(`${Math.floor(diff / 86400)}일`);
+      else if(diff < 2628000)
+        setDateTime(`${Math.floor(diff / 604800)}주`);
+      else
+        setDateTime(`방금`);
+    }
+  }, [data])
+
   let [reply, setReply] = useState(false);
+  useEffect(()=>{
 
+  }, [reply])
   return(
-    <div className='follower-comment-area'>
+    <div key={key} className='follower-comment-area'>
       <ul>
         <div className='follower-comment'>
           <li>
             <div className='comment-writing'>
               <div>
                 <div className='write-profile'>
-                  <img alt='프로필' src={require('../../Image/my.jpg')}/>
+                  <img alt='프로필' src={data.url}/>
                 </div>
 
                 <div className='write-comment'>
 
-                  <h2>닉네임</h2>
+                  <h2>{data.nickname}</h2>
                   <span className='main-text'>
-                    내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용
+                    {data.comment}
                   </span>
                   
                   <div className='text-content'>
-                    <span>41주</span>
-                    <span>답글달기</span>
+                    <span>{dateTime}</span>
+                    <span onClick={()=>{inputFocus();}} className='Leave-comment'>답글달기</span>
+                    {
+                      data.email === userData.email ?
+                    <div className='dot-menu'>
+                      <img src={require('../../Image/dots_icon.png')}/>
+                    </div> :
+                    null
+                    }
                   </div>
 
                 </div>
@@ -37,69 +79,18 @@ function Comment(){
           <li>
             <ul className='reply-panel'>
               <li>
-                <div className='comment-Hide-Show'>
-                  - 답글 숨기기
+                <div onClick={()=>{setReply(reply => !reply)}} className='comment-Hide-Show'>
+                  {
+                    reply === true ? '- 답글 숨기기' : `- 답글 보이기 (${data.reply.length}개)`
+                  }
                 </div>
               </li>
                 {/*
                   // TODO: 대댓글 - 답글 보기(1개)
                 */}
-                  <div className='reply-comment'>
-                    <li>
-                      <div className='comment-writing'>
-                        <div>
-
-                          <div className='write-profile'>
-                            <img alt='프로필' src={require('../../Image/my.jpg')}/>
-                          </div>
-
-                          <div className='write-comment'>
-
-                            <h2>닉네임</h2>
-                            <span className='main-text'>
-                              내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용
-                            </span>
-
-                            <div className='text-content'>
-                              <span>41주</span>
-                              <span>답글달기</span>
-                            </div>
-
-                          </div>
-
-                        </div>
-                      </div>
-                    </li>
-                  </div>
-
-                  <div className='reply-comment'>
-                    <li>
-                      <div className='comment-writing'>
-                        <div>
-
-                          <div className='write-profile'>
-                            <img alt='프로필' src={require('../../Image/my.jpg')}/>
-                          </div>
-
-                          <div className='write-comment'>
-
-                            <h2>닉네임</h2>
-                            <span className='main-text'>
-                              내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용
-                            </span>
-
-                            <div className='text-content'>
-                              <span>41주</span>
-                              <span>답글달기</span>
-                            </div>
-
-                          </div>
-
-                        </div>
-                      </div>
-                    </li>
-                  </div>
-
+                {
+                    reply && <Reply/>
+                }
             </ul>
           </li>
 

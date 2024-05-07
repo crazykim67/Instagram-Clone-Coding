@@ -198,13 +198,13 @@ function Main() {
 
                                   <ul>
                                     <li style={{transform: "translateX(0px)"}}>
-                                      {/* <video className='post-video' controls={false} autoPlay={true} loop={true} preload={'auto'}>
+                                      <video className='post-video' controls={false} autoPlay={true} loop={true} preload={'auto'}>
                                         <source src={require('../../videos/video.mp4')}/>
                                       </video>
                                       <div className='volumeBtn'>
                                         <img src={require('../../Image/volume.png')}/>
-                                      </div> */}
-                                      <img className='post-img' alt='이미지' src={require('../../Image/my.jpg')}/>
+                                      </div>
+                                      {/* <img className='post-img' alt='이미지' src={require('../../Image/my.jpg')}/> */}
                                     </li>
                                     <li style={{transform: "translateX(468px)"}}>
                                       <img className='post-img' alt='이미지' src={require('../../Image/my.jpg')}/>

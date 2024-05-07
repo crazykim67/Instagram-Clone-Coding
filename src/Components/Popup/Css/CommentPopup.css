@@ -1,0 +1,78 @@
+.m-popupDim {
+  position: fixed;
+  z-index: 9;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0 , 0, 0, 0.5);
+}
+
+.m-popup-main {
+  z-index: 7;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  position: fixed;
+}
+
+.m-close {
+  height: 46px;
+  z-index: 10;
+  top: 10px;
+  right: 10px;
+  position: absolute;
+  padding: 8px;
+  justify-content: center;
+}
+
+.m-close > img {
+  cursor: pointer;
+  color: white;
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+}
+
+.m-popup-sub-main {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.m-popup-box {
+  z-index: 10;
+  overflow: hidden;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  background-color: white;
+  border-radius: 12px;
+  animation: Open 0.1s ease-out;
+}
+
+.m-popup-box > div {
+  width: 400px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
+.m-popup-box > div > button {
+  width: 100%;
+  height: 50%;
+  align-items: center;
+}
+
+@keyframes Open {
+  0% {scale: 120%;}
+  100% {scale: 100%;}
+}

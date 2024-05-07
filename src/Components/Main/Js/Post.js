@@ -2,11 +2,12 @@ import '../Css/Post.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleChevronLeft, faCircleChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { fire, storage } from '../../firebase.js';
-import { doc, setDoc, getDoc, updateDoc, update } from 'firebase/firestore';
+import { Timestamp, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { ref, getDownloadURL } from "firebase/storage";
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Comment from './Comment.js';
+import moment from 'moment';
 
 function Post({post, setPost, postData, setPostData}){
 
@@ -38,29 +39,52 @@ function Post({post, setPost, postData, setPostData}){
     setDate(formatDate);
   }
 
+  // TODO: 작성자 댓글 시간
+  let [dateTime, setDateTime] = useState('');
+  useEffect(()=>{
+    if(postData){
+      const seconds = (postData.date).seconds;
+      const nanoseconds = (postData.date).nanoseconds;
+      const postDate = moment.unix(seconds).add(nanoseconds / 1000000, 'milliseconds');
+      const currentDate = moment();
+      const diff = currentDate.diff(postDate, 'seconds');
+
+      if(diff < 60)
+        setDateTime(`${diff}초`);
+      else if(diff < 3600)
+        setDateTime(`${Math.floor(diff / 60)}분`);
+      else if(diff < 86400)
+        setDateTime(`${Math.floor(diff / 3600)}시간`);
+      else if(diff < 604800)
+        setDateTime(`${Math.floor(diff / 86400)}일`);
+      else if(diff < 2628000)
+        setDateTime(`${Math.floor(diff / 604800)}주`);
+      else
+        setDateTime(`방금`);
+    }
+  }, [postData])
+
   // TODO: 데이터 변경 감지 시
   useEffect(()=>{
-
     if(postData){
       setIndex(postData.media.length);
-      setCurIndex(0);
       setVideoIndex([]);
       setMedia(postData.media);
+      setCommentData(postData.comment);
       setLikeData(postData.likes);
       dateFormat(postData.date);
     }
-
   }, [postData]);
 
-  // TODO: 미디어 데이터 변경 감지 시
+  // TODO: 게시물 상세보기 켜고 끌 때
   useEffect(()=>{
-    // if(mediaData)
-    // console.log(mediaData);
-  }, [mediaData])
+    if(postData)
+      setCurIndex(0);
+  }, [post])
 
   // TODO: 데이터 변경 감지 시 프로필 설정
   useEffect(()=> {
-    if(userData.email != ''){
+    if(postData.email != ''){
       const storageRef = ref(storage, `userProfile/${postData.email}.jpg`)
       getDownloadURL(storageRef)
       .then((url)=>{
@@ -81,17 +105,25 @@ function Post({post, setPost, postData, setPostData}){
   let [prevVideoIndex, setPrevVideoIndex] = useState(0);
   // TODO: currentIndex 변환 시 비디오인지 체크 후 재생 여부
   useEffect(()=>{
-    if(videoRef.current.length > 0){
+    if(videoRef.current){
       // 현재 index가 비디오
       if(videoRef.current[currentIndex]){
-        videoRef.current[currentIndex]?.play();
+          videoRef.current[currentIndex]?.play();
         setPrevVideoIndex(currentIndex);
+        // TODO: 다른 비디오로 넘겼을 시에
+        if(prevVideoIndex != currentIndex){
+          videoRef.current[prevVideoIndex]?.pause();
+          if(videoRef.current[prevVideoIndex])
+            videoRef.current[prevVideoIndex].currentTime = 0
+          setPrevVideoIndex(currentIndex);
+        }
       }
       // 현재 index가 비디오가 아니라면
       else{
-        if(videoRef.current[prevVideoIndex]){
+        {
           videoRef.current[prevVideoIndex]?.pause();
-          videoRef.current[prevVideoIndex].currentTime = 0
+          if(videoRef.current[prevVideoIndex])
+            videoRef.current[prevVideoIndex].currentTime = 0
           setPrevVideoIndex(currentIndex);
         }
       }
@@ -112,9 +144,13 @@ function Post({post, setPost, postData, setPostData}){
           setVideoIndex(videoIndex => [...videoIndex, _videoIndex]);
         }
         render =
+        <>
         <video ref={(e)=>{videoRef.current[_videoIndex] = e}} className='post-detail-video' controls={false} loop={false} preload={'auto'}>
           <source src={_media.url}/>
         </video>
+        </>
+        
+        
         break;
       }
     }
@@ -138,6 +174,7 @@ function Post({post, setPost, postData, setPostData}){
     return list;
   }
 
+  // TODO: 해당 게시물 좋아요 여부
   useEffect(()=>{
     if(likeData){
       for(let data in likeData){
@@ -153,33 +190,113 @@ function Post({post, setPost, postData, setPostData}){
   const setLikes = async (isLike) => {
     const docRef = doc(fire, `postData`, postData.email);
     
-    const docSnap = await getDoc(docRef);
-
-    if(docSnap.exists()){
-      if(!isLike){
-        // TODO: 좋아요 추가
-        const updateData = {
-          [`${postData.uuid}`] : [{
-           ...postData,
-           "likes": [{"email":userData.email, "nickname":userData.nickname, "url":profile}, ...postData.likes, ],
-          }]
-        };
-        setPostData(updateData[postData.uuid][0]);
-        await updateDoc(docRef,updateData);
-      }
-      else {
-        // TODO: 좋아요 제거
-        const unLikeData = postData.likes.filter(_like => _like.email !== userData.email);
-        const updateData = {
-          [`${postData.uuid}`] : [{
-           ...postData,
-           "likes": unLikeData,
-          }]
-        };
-        setPostData(updateData[postData.uuid][0]);
-        await updateDoc(docRef,updateData);
-      }
+    if(!isLike){
+      // TODO: 좋아요 추가
+      const updateData = {
+        [`${postData.uuid}`] : [{
+          ...postData,
+          "likes": [{"email":userData.email, "nickname":userData.nickname, "url":profile}, ...postData.likes, ],
+        }]
+      };
+      setPostData(updateData[postData.uuid][0]);
+      await updateDoc(docRef,updateData);
     }
+    else {
+      // TODO: 좋아요 제거
+      const unLikeData = postData.likes.filter(_like => _like.email !== userData.email);
+      const updateData = {
+        [`${postData.uuid}`] : [{
+          ...postData,
+          "likes": unLikeData,
+        }]
+      };
+      setPostData(updateData[postData.uuid][0]);
+      await updateDoc(docRef,updateData);
+    }
+  }
+
+  // FIXME: 댓글 관련
+  let inputRef = useRef();
+  let [inputAct, setInputAct] = useState(false);
+  let [comment, setComment] = useState('');
+
+  // TODO: 댓글 데이터
+  let [commentData, setCommentData] = useState();
+  // TODO: 게시 버튼 활성/비활성
+  useEffect(()=>{
+    if(comment.length > 0)
+      setInputAct(true);
+    else
+      setInputAct(false);
+  }, [comment])
+
+  let [comProfile, setComProfile] = useState('');
+  // TODO: 유저 댓글 프로필
+  useEffect(()=> {
+    if(userData.email != ''){
+      const storageRef = ref(storage, `userProfile/${userData.email}.jpg`)
+      getDownloadURL(storageRef)
+      .then((url)=>{
+        setComProfile(url);
+      })
+    }
+  });
+
+  const commentInfo = () => {
+    const reply = replyData();
+    const commentInfo = {
+      "email":String,
+      "nickname":String,
+      "url":String,
+      "comment":String,
+      "date":Timestamp,
+      "reply":reply
+    }
+  
+    return commentInfo;
+  }
+  
+  const replyData = () =>{
+    const replyData = [{
+      "email":String,
+      "nickname":String,
+      "url":String,
+      "comment":String,
+      "date":Timestamp
+    }]
+  
+    return replyData;
+  }
+
+  // TODO: 댓글 데이터 갱신
+  const setCommentInfo = async () => {
+    const curComment = commentInfo();
+    curComment.email = userData.email;
+    curComment.nickname = userData.nickname;
+    curComment.url = comProfile;
+    curComment.comment = comment;
+    curComment.date = new Date();
+    curComment.reply = [];
+
+    const updateData = {
+      [`${postData.uuid}`] : [{
+       ...postData,
+       "comment": [curComment, ...postData.comment, ],
+      }]
+    };
+    const docRef = doc(fire, `postData`, postData.email);
+
+    setPostData(updateData[postData.uuid][0]);
+    await updateDoc(docRef,updateData);
+  }
+
+  const commentRender = () =>{
+    let commentRender = [];
+
+    commentRender.push(
+      <Comment/>
+    )
+    return commentRender;
   }
 
   return(
@@ -266,19 +383,12 @@ function Post({post, setPost, postData, setPostData}){
                                   <div className='write-comment'>
                                     <h2>{postData.nickname}</h2>
                                     <span className='main-text'>
-                                    프리온보딩 FE 챌린지로 취업 준비 끝!<br/>
-                                    성장 프레임워크: 주니어를 위한 네 가지 질문<br/>
-                                    <br/>
-                                    ✅참가자격<br/>
-                                    커리어 시작을 준비하는 분<br/>
-                                    이직을 희망하는 주니어<br/>
-
-                                    📆 5월 2일 모집 마감<br/>
-
-                                    일하는 사람들의 모든 가능성<br/>
+                                    {
+                                      postData.content
+                                    }
                                     </span>
                                     <div className='text-time'>
-                                      15시간
+                                      {dateTime}
                                     </div>
                                   </div>
                                 </div>
@@ -289,7 +399,16 @@ function Post({post, setPost, postData, setPostData}){
                           {/* 
                             // TODO: 팔로워 댓글 부분
                           */}
-                          <Comment/> 
+                          {
+                            commentData != undefined ?
+                            commentData.map((a, i)=>{
+                              return(
+                                <Comment key={i} data={commentData[i]} inputRef={inputRef} userData={userData}/>
+                              )
+                            })
+                            :
+                            null
+                          }
                         </ul>
 
                       </div>
@@ -320,14 +439,16 @@ function Post({post, setPost, postData, setPostData}){
                       <section className='detail-input'>
                         <div>
                           <form methods='POST'>
-                            <textarea aria-label='댓글 달기' placeholder='댓글 달기...' autoComplete='off' autoCorrect='off' />
-                              <span>
-                                게시
-                              </span>
+                            <textarea ref={inputRef} onChange={(e)=>{
+                              setComment(e.target.value);
+                            }} value={comment} aria-label='댓글 달기' placeholder='댓글 달기...' autoComplete='off' autoCorrect='off' />
+                              {
+                                inputAct === false ? <span className='post-un-act'>게시</span> : <span onClick={()=>{setCommentInfo(); setComment(''); }} className='post-act'>게시</span>
+                              }
                           </form>
                           
                         </div>
-                        
+                         
                       </section>
                     </div>
 

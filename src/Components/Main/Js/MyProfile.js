@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTableCells } from "@fortawesome/free-solid-svg-icons";
 import Post from './Post.js';
 import Create from './Create.js';
+import CommentPopup from '../../Popup/Js/CommentPopup.js';
 
 function MyProfile() {
 
@@ -100,7 +101,7 @@ function MyProfile() {
       }
       default:{
         item = 
-        <div onClick={()=>{setPost(true); setPostData(docData[index]);}} key={index} className='c-image'>
+        <div key={index} className='c-image'>
         </div>
       }
     }
@@ -132,10 +133,11 @@ function MyProfile() {
     return posts;
   }
 
-  
-
   return(
     <>
+    
+    <CommentPopup/>
+    
     {
       post && <Post post={post} setPost={setPost} postData = {postData} setPostData={setPostData}/>
     }
