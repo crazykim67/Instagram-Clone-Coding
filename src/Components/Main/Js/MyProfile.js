@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTableCells } from "@fortawesome/free-solid-svg-icons";
 import Post from './Post.js';
 import Create from './Create.js';
-import CommentPopup from '../../Popup/Js/CommentPopup.js';
+import CommentPopup from '../../Popup/Js/commentPopup.js';
 
 function MyProfile() {
 
@@ -133,13 +133,16 @@ function MyProfile() {
     return posts;
   }
 
+  // TODO: 댓글 삭제 state
+  let [mPopup, setMPopup] = useState(false);
+
   return(
     <>
-    
-    <CommentPopup/>
-    
     {
-      post && <Post post={post} setPost={setPost} postData = {postData} setPostData={setPostData}/>
+      mPopup && <CommentPopup setPopup={setMPopup}/>
+    }
+    {
+      post && <Post post={post} setPost={setPost} postData = {postData} setPostData={setPostData} setPopup={setMPopup}/>
     }
     {
       create && <Create index={index} setIndex={setIndex} setCreate={setCreate} profile={profile}/>

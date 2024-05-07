@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Reply from './Reply.js';
 import moment from 'moment';
 
-function Comment({key, data, inputRef, userData}){
+function Comment({key, data, inputRef, userData, setPopup}){
 
   const inputFocus = () => {
     inputRef.current.focus();
@@ -64,7 +64,7 @@ function Comment({key, data, inputRef, userData}){
                     <span onClick={()=>{inputFocus();}} className='Leave-comment'>답글달기</span>
                     {
                       data.email === userData.email ?
-                    <div className='dot-menu'>
+                    <div onClick={()=>{setPopup(true);}} className='dot-menu'>
                       <img src={require('../../Image/dots_icon.png')}/>
                     </div> :
                     null

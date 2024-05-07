@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import Comment from './Comment.js';
 import moment from 'moment';
 
-function Post({post, setPost, postData, setPostData}){
+function Post({post, setPost, postData, setPostData, setPopup}){
 
   let [index, setIndex] = useState(0);
   let [currentIndex, setCurIndex] = useState(0);
@@ -290,15 +290,6 @@ function Post({post, setPost, postData, setPostData}){
     await updateDoc(docRef,updateData);
   }
 
-  const commentRender = () =>{
-    let commentRender = [];
-
-    commentRender.push(
-      <Comment/>
-    )
-    return commentRender;
-  }
-
   return(
     <>
     
@@ -403,7 +394,7 @@ function Post({post, setPost, postData, setPostData}){
                             commentData != undefined ?
                             commentData.map((a, i)=>{
                               return(
-                                <Comment key={i} data={commentData[i]} inputRef={inputRef} userData={userData}/>
+                                <Comment key={i} data={commentData[i]} inputRef={inputRef} userData={userData} setPopup={setPopup}/>
                               )
                             })
                             :

@@ -1,16 +1,18 @@
+import { useState } from 'react';
 import '../Css/CommentPopup.css';
 
-function CommentPopup(){
+function CommentPopup({setPopup}){
+
   return(
     <>
       <div className="m-popup-main">
-      <div className='m-close'><img alt='Close' src={require('../../Image/close.png')}/></div>
-      <div className='m-popupDim' onClick={()=>{console.log('클릭')}}></div>
+      <div onClick={()=>{setPopup(false);}} className='m-close'><img alt='Close' src={require('../../Image/close.png')}/></div>
+      <div className='m-popupDim' onClick={()=>{setPopup(false);}}></div>
         <div className='m-sub-main'>
           <div className='m-popup-box'>
             <div className='popup-buttons'>
               <button style={{color: 'red', fontWeight:600}}>삭제</button>
-              <button>취소</button>
+              <button onClick={()=>{setPopup(false);}}>취소</button>
             </div>
           </div> 
         </div>
