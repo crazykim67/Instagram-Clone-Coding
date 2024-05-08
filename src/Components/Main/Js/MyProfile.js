@@ -133,16 +133,10 @@ function MyProfile() {
     return posts;
   }
 
-  // TODO: 댓글 삭제 state
-  let [mPopup, setMPopup] = useState(false);
-
   return(
     <>
     {
-      mPopup && <CommentPopup setPopup={setMPopup}/>
-    }
-    {
-      post && <Post post={post} setPost={setPost} postData = {postData} setPostData={setPostData} setPopup={setMPopup}/>
+      post && <Post post={post} setPost={setPost} postData = {postData} setPostData={setPostData}/>
     }
     {
       create && <Create index={index} setIndex={setIndex} setCreate={setCreate} profile={profile}/>

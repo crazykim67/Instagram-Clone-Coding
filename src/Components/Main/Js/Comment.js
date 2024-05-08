@@ -2,17 +2,13 @@ import { useEffect, useState } from 'react';
 import Reply from './Reply.js';
 import moment from 'moment';
 
-function Comment({key, data, inputRef, userData, setPopup}){
+function Comment({key, data, inputRef, userData, setPopup, setSelectCommentData}){
 
   const inputFocus = () => {
     inputRef.current.focus();
   }
 
   let [dateTime, setDateTime] = useState('');
-  const dateFormat = (date) => {
-    const currentTime = moment(date);
-    console.log(currentTime);
-  }
 
   useEffect(()=>{
     if(data){
@@ -38,66 +34,66 @@ function Comment({key, data, inputRef, userData, setPopup}){
   }, [data])
 
   let [reply, setReply] = useState(false);
-  useEffect(()=>{
 
-  }, [reply])
   return(
-    <div key={key} className='follower-comment-area'>
-      <ul>
-        <div className='follower-comment'>
-          <li>
-            <div className='comment-writing'>
-              <div>
-                <div className='write-profile'>
-                  <img alt='프로필' src={data.url}/>
-                </div>
-
-                <div className='write-comment'>
-
-                  <h2>{data.nickname}</h2>
-                  <span className='main-text'>
-                    {data.comment}
-                  </span>
-                  
-                  <div className='text-content'>
-                    <span>{dateTime}</span>
-                    <span onClick={()=>{inputFocus();}} className='Leave-comment'>답글달기</span>
-                    {
-                      data.email === userData.email ?
-                    <div onClick={()=>{setPopup(true);}} className='dot-menu'>
-                      <img src={require('../../Image/dots_icon.png')}/>
-                    </div> :
-                    null
-                    }
-                  </div>
-
-                </div>
-              </div>
-            </div>
-            
-          </li>
-          <li>
-            <ul className='reply-panel'>
+    <>
+      {
+        <div key={key} className='follower-comment-area'>
+          <ul>
+            <div className='follower-comment'>
               <li>
-                <div onClick={()=>{setReply(reply => !reply)}} className='comment-Hide-Show'>
-                  {
-                    reply === true ? '- 답글 숨기기' : `- 답글 보이기 (${data.reply.length}개)`
-                  }
+                <div className='comment-writing'>
+                  <div>
+                    <div className='write-profile'>
+                      <img alt='프로필' src={data.url}/>
+                    </div>
+
+                    <div className='write-comment'>
+
+                      <h2>{data.nickname}</h2>
+                      <span className='main-text'>
+                        {data.comment}
+                      </span>
+                      
+                      <div className='text-content'>
+                        <span>{dateTime}</span>
+                        <span onClick={()=>{inputFocus();}} className='Leave-comment'>답글달기</span>
+                        {
+                          data.email === userData.email ?
+                        <div onClick={()=>{setPopup(true); setSelectCommentData(data);}} className='dot-menu'>
+                          <img src={require('../../Image/dots_icon.png')}/>
+                        </div> :
+                        null
+                        }
+                      </div>
+
+                    </div>
+                  </div>
                 </div>
+                
               </li>
-                {/*
-                  // TODO: 대댓글 - 답글 보기(1개)
-                */}
-                {
-                    reply && <Reply/>
-                }
-            </ul>
-          </li>
+              <li>
+                <ul className='reply-panel'>
+                  <li>
+                    <div onClick={()=>{setReply(reply => !reply)}} className='comment-Hide-Show'>
+                      {
+                        data.reply.length > 0 ? reply === true ? '- 답글 숨기기' : `- 답글 보이기 (${data.reply.length}개)` : null
+                      }
+                    </div>
+                  </li>
+                    {
+                        reply && <Reply/>
+                    }
+                </ul>
+              </li>
 
+            </div>
+
+          </ul>
         </div>
-
-      </ul>
-    </div>
+      }
+    </>
+      
   )
 }
 

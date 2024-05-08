@@ -8,8 +8,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Comment from './Comment.js';
 import moment from 'moment';
+import CommentPopup from '../../Popup/Js/commentPopup.js';
 
-function Post({post, setPost, postData, setPostData, setPopup}){
+function Post({post, setPost, postData, setPostData}){
 
   let [index, setIndex] = useState(0);
   let [currentIndex, setCurIndex] = useState(0);
@@ -228,6 +229,7 @@ function Post({post, setPost, postData, setPostData, setPopup}){
       setInputAct(true);
     else
       setInputAct(false);
+
   }, [comment])
 
   let [comProfile, setComProfile] = useState('');
@@ -289,9 +291,33 @@ function Post({post, setPost, postData, setPostData, setPopup}){
     setPostData(updateData[postData.uuid][0]);
     await updateDoc(docRef,updateData);
   }
+  
+  // TODO: 댓글 데이터 삭제
+  const deleteCommentInfo = async () => {
+    if(selectCommentData){
+      const delComment = postData.comment.filter(_comment => _comment !== selectCommentData);
 
+      const updateData = {
+        [`${postData.uuid}`] : [{
+         ...postData,
+         "comment": delComment,
+        }]
+      };
+  
+      const docRef = doc(fire, `postData`, postData.email);
+  
+      setPostData(updateData[postData.uuid][0]);
+      await updateDoc(docRef,updateData);
+    }
+  }
+  
+  let [selectCommentData, setSelectCommentData] = useState();
+  let [popup, setPopup] = useState(false);
   return(
     <>
+    {
+      popup && <CommentPopup setPopup={setPopup} deleteCommentInfo={deleteCommentInfo}/>
+    }
     
     <div className='postBody'>
       <div className='close' onClick={()=>{setPost(false); setLikeData(); setLike();}}>
@@ -394,7 +420,7 @@ function Post({post, setPost, postData, setPostData, setPopup}){
                             commentData != undefined ?
                             commentData.map((a, i)=>{
                               return(
-                                <Comment key={i} data={commentData[i]} inputRef={inputRef} userData={userData} setPopup={setPopup}/>
+                                <Comment key={i} data={a} inputRef={inputRef} userData={userData} setPopup={setPopup} setSelectCommentData={setSelectCommentData}/>
                               )
                             })
                             :
