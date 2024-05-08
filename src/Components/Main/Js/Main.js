@@ -9,8 +9,13 @@ import { ref, getDownloadURL } from "firebase/storage";
 import Post from './Post.js';
 import Create from './Create.js';
 import CPopup from '../../Popup/Js/CPopup.js';
+import default_img from '../../Image/empty_profile.jpg';
 
 function Main() {
+
+  const onErrorImg = (e) => {
+    e.target.src = default_img
+  }
 
   let navigate = useNavigate();
   const [dummy] = useState([false,false,false]);
@@ -106,7 +111,7 @@ function Main() {
                         <div className='list-in-panel'>
                           <div className='list-profile'>
                             <span>
-                              <img src={profile}/>
+                              <img onError={onErrorImg} src={profile}/>
                             </span>
                           </div>
                           <div className='list-nickname'>
@@ -278,7 +283,7 @@ function Main() {
                 <div>
                   <div className='profile-img'>
                     <a>
-                      <img src={profile}/>
+                      <img onError={onErrorImg} src={profile}/>
                     </a>
                   </div>
                   <div className='user-info'>

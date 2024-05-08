@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Reply from './Reply.js';
 import moment from 'moment';
 
-function Comment({key, data, inputRef, userData, setPopup, setSelectCommentData}){
+function Comment({data, inputRef, userData, setPopup, setSelectCommentData, setIsPost}){
 
   const inputFocus = () => {
     inputRef.current.focus();
@@ -38,7 +38,7 @@ function Comment({key, data, inputRef, userData, setPopup, setSelectCommentData}
   return(
     <>
       {
-        <div key={key} className='follower-comment-area'>
+        <div className='follower-comment-area'>
           <ul>
             <div className='follower-comment'>
               <li>
@@ -60,7 +60,7 @@ function Comment({key, data, inputRef, userData, setPopup, setSelectCommentData}
                         <span onClick={()=>{inputFocus();}} className='Leave-comment'>답글달기</span>
                         {
                           data.email === userData.email ?
-                        <div onClick={()=>{setPopup(true); setSelectCommentData(data);}} className='dot-menu'>
+                        <div onClick={()=>{setIsPost(false); setPopup(true); setSelectCommentData(data);}} className='dot-menu'>
                           <img src={require('../../Image/dots_icon.png')}/>
                         </div> :
                         null

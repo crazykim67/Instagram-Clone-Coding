@@ -136,7 +136,7 @@ const setFirestore = async (_dirName, _array) => {
     // TODO: 고유 ID 생성
       const dirName = GetUniqueId();
       const mediaArray = await uploadMedia(files, dirName)
-  
+      
       await setFirestore(dirName, mediaArray);
     }
     catch(e){

@@ -4,14 +4,18 @@ import { useSelector } from 'react-redux';
 import { fire, storage } from '../../firebase.js';
 import { useEffect, useState } from 'react';
 import { ref, getDownloadURL } from "firebase/storage";
-import { doc, getDoc, onSnapshot } from 'firebase/firestore';
+import { doc, updateDoc, onSnapshot, deleteField } from 'firebase/firestore';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTableCells } from "@fortawesome/free-solid-svg-icons";
 import Post from './Post.js';
 import Create from './Create.js';
-import CommentPopup from '../../Popup/Js/commentPopup.js';
+import default_img from '../../Image/empty_profile.jpg';
 
 function MyProfile() {
+
+  const onErrorImg = (e) => {
+    e.target.src = default_img
+  }
 
   let navigate = useNavigate();
   let userData = useSelector((state) => state.currentUser );
@@ -133,10 +137,22 @@ function MyProfile() {
     return posts;
   }
 
+  // TODO: 게시물 삭제
+  const deletePost = async () => {
+    if(postData){
+      const postUuid = postData.uuid;
+      const docRef = doc(fire, `postData`, userData.email);
+
+      const updateData = {};
+      updateData[postUuid] = deleteField(); // 동적 속성 이름 설정
+      await updateDoc(docRef, updateData);
+    }
+  }
+
   return(
     <>
     {
-      post && <Post post={post} setPost={setPost} postData = {postData} setPostData={setPostData}/>
+      post && <Post post={post} setPost={setPost} postData = {postData} setPostData={setPostData} deletePost={deletePost}/>
     }
     {
       create && <Create index={index} setIndex={setIndex} setCreate={setCreate} profile={profile}/>
@@ -188,7 +204,7 @@ function MyProfile() {
                   <div className='profile-img-area'>
                     <div>
                       <div>
-                        <img src={profile}/>
+                        <img onError={onErrorImg} src={profile}/>
                       </div>
                     </div>
                   </div>
@@ -222,23 +238,6 @@ function MyProfile() {
                   </a>
                 </div>
                 {contentRow()}
-                {/* <div className='profile-body'>
-                  <div className='content-images'>
-
-                    <div className='c-image'>
-                      <img alt='이미지' src={require('../../Image/my.jpg')}/>
-                    </div>
-                    <div className='c-image'>
-                      <img alt='이미지' src={require('../../Image/my.jpg')}/>
-                    </div>
-                    <div className='c-video'>
-                      <video controls={false} autoPlay={false} loop={false} preload={'auto'}>
-                        <source src={require('../../videos/video.mp4')}/>
-                      </video>
-                    </div>
-
-                  </div>
-                </div> */}
               </div>
             </main>
           </div>

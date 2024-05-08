@@ -8,9 +8,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Comment from './Comment.js';
 import moment from 'moment';
-import CommentPopup from '../../Popup/Js/commentPopup.js';
+import PostPopup from '../../Popup/Js/PostPopup.js';
+import default_img from '../../Image/empty_profile.jpg';
 
-function Post({post, setPost, postData, setPostData}){
+function Post({post, setPost, postData, setPostData, deletePost}){
+
+  const onErrorImg = (e) => {
+    e.target.src = default_img
+  }
 
   let [index, setIndex] = useState(0);
   let [currentIndex, setCurIndex] = useState(0);
@@ -114,9 +119,9 @@ function Post({post, setPost, postData, setPostData}){
         // TODO: 다른 비디오로 넘겼을 시에
         if(prevVideoIndex != currentIndex){
           videoRef.current[prevVideoIndex]?.pause();
-          if(videoRef.current[prevVideoIndex])
+        if(videoRef.current[prevVideoIndex])
             videoRef.current[prevVideoIndex].currentTime = 0
-          setPrevVideoIndex(currentIndex);
+        setPrevVideoIndex(currentIndex);
         }
       }
       // 현재 index가 비디오가 아니라면
@@ -130,6 +135,16 @@ function Post({post, setPost, postData, setPostData}){
       }
     }
   }, [currentIndex, mediaData])
+
+  const onClickVideo = () => {
+    if(videoRef.current){
+      // TODO: 현재 보는 비디오가 정지상태이면
+      if(videoRef.current[currentIndex]?.paused)
+        videoRef.current[currentIndex]?.play();
+      else
+        videoRef.current[currentIndex]?.pause();
+    }
+  }
 
   const getType = (_media, index) => {
     let render = null;
@@ -146,7 +161,7 @@ function Post({post, setPost, postData, setPostData}){
         }
         render =
         <>
-        <video ref={(e)=>{videoRef.current[_videoIndex] = e}} className='post-detail-video' controls={false} loop={false} preload={'auto'}>
+        <video onClick={()=>{onClickVideo();}} ref={(e)=>{videoRef.current[_videoIndex] = e}} className='post-detail-video' controls={false} loop={false} preload={'auto'}>
           <source src={_media.url}/>
         </video>
         </>
@@ -313,10 +328,11 @@ function Post({post, setPost, postData, setPostData}){
   
   let [selectCommentData, setSelectCommentData] = useState();
   let [popup, setPopup] = useState(false);
+  let [isPost, setIsPost] = useState(false);
   return(
     <>
     {
-      popup && <CommentPopup setPopup={setPopup} deleteCommentInfo={deleteCommentInfo}/>
+      popup && <PostPopup isPost={isPost} setPost={setPost} setPopup={setPopup} deleteCommentInfo={deleteCommentInfo} deletePost={deletePost}/>
     }
     
     <div className='postBody'>
@@ -366,7 +382,7 @@ function Post({post, setPost, postData, setPostData}){
                       <div>
                         <div className='detail-profile'>
                           <div>
-                            <img src={profile} />
+                            <img onError={onErrorImg} src={profile} />
                           </div>
 
                           <div className='detail-nick'>
@@ -374,6 +390,9 @@ function Post({post, setPost, postData, setPostData}){
                               <span>{postData.nickname}</span>
                               <span style={{fontSize:'10px', alignItems:'center', padding:'0 10px 0 10px'}}>●</span>
                               <button>팔로우</button>
+                              <div onClick={()=>{setIsPost(true); setPopup(true);}} className='post-dot-menu'>
+                                <img src={require('../../Image/dots_icon.png')}/>
+                              </div>
                             </div>
                           </div>
 
@@ -420,7 +439,7 @@ function Post({post, setPost, postData, setPostData}){
                             commentData != undefined ?
                             commentData.map((a, i)=>{
                               return(
-                                <Comment key={i} data={a} inputRef={inputRef} userData={userData} setPopup={setPopup} setSelectCommentData={setSelectCommentData}/>
+                                <Comment key={i} data={a} inputRef={inputRef} userData={userData} setPopup={setPopup} setSelectCommentData={setSelectCommentData} setIsPost={setIsPost}/>
                               )
                             })
                             :

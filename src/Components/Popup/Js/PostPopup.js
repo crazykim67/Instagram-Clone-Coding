@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import '../Css/CommentPopup.css';
+import '../Css/PostPopup.css';
 
-function CommentPopup({setPopup, deleteCommentInfo}){
+function PostPopup({isPost, setPost, setPopup, deleteCommentInfo, deletePost}){
 
   return(
     <>
@@ -11,7 +11,7 @@ function CommentPopup({setPopup, deleteCommentInfo}){
         <div className='m-sub-main'>
           <div className='m-popup-box'>
             <div className='popup-buttons'>
-              <button onClick={()=>{deleteCommentInfo(); setPopup(false);}} style={{color: 'red', fontWeight:600}}>삭제</button>
+              <button onClick={()=>{isPost ? deletePost() : deleteCommentInfo(); setPopup(false); isPost && setPost(false); }} style={{color: 'red', fontWeight:600}}>삭제</button>
               <button onClick={()=>{setPopup(false);}}>취소</button>
             </div>
           </div> 
@@ -21,4 +21,4 @@ function CommentPopup({setPopup, deleteCommentInfo}){
   )
 }
 
-export default CommentPopup;
+export default PostPopup;

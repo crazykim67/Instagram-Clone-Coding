@@ -259,6 +259,23 @@
   font-weight: 600;
 }
 
+.post-dot-menu {
+  width: 12px;
+  height: 100%;
+  display: inline-block;
+  cursor: pointer;
+  right: 0;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+.post-dot-menu > img {
+  width: 100%;
+  height: 100%;
+}
+
 .detail-comment-main {
   width: 100%;
   display: flex;
