@@ -40,7 +40,7 @@ function SignUp(){
 
   // TODO: 성명 체크
   function nameCheck(name){
-    if(name.length < 3)
+    if(name.length < 2)
       return false
     else
       return true
@@ -70,6 +70,8 @@ function SignUp(){
         "email": user[0],
         "name": user[1],
         "nickname": user[2],
+        "follower": [],
+        "follow":[]
       });
 
       // TODO: 초기 이미지 업로드

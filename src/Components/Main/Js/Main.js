@@ -1,15 +1,17 @@
 import { memo, useEffect, useState } from 'react';
 import '../Css/Main.css';
 import { useNavigate } from 'react-router-dom';
-import { signOut, firebaseAuth, storage } from '../../firebase.js';
-import { useSelector, useDispatch } from 'react-redux';
+import { signOut, firebaseAuth, fire, storage } from '../../firebase.js';
+import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleChevronLeft, faCircleChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { ref, getDownloadURL } from "firebase/storage";
-import Post from './Post.js';
+import { collection, where, getDocs, doc, updateDoc, getDoc } from 'firebase/firestore';
 import Create from './Create.js';
-import CPopup from '../../Popup/Js/CPopup.js';
 import default_img from '../../Image/empty_profile.jpg';
+import Recommend from './Recommend.js';
+import { query } from 'firebase/database';
+import SearchItem from './SearchItem.js';
 
 function Main() {
 
@@ -18,7 +20,6 @@ function Main() {
   }
 
   let navigate = useNavigate();
-  const [dummy] = useState([false,false,false]);
 
   const onSignOut = async () => {
     try{
@@ -46,15 +47,14 @@ function Main() {
   });
 
   // TODO: 게시물 만들기 팝업 열기/닫기 State
-  const [create, setCreate] = useState(false);
+  let [create, setCreate] = useState(false);
   // TODO: 게시물 만들기 Index
-  const [index, setIndex] = useState(0);
-  // TODO: 게시물 상세보기
-  const [post, setPost] = useState(false);
+  let [index, setIndex] = useState(0);
+
+  let [search, setSearch] = useState(false);
 
   return (
     <>
-      {/* {<CPopup/>} */}
       {/* <Post/> */}
       {
         create == true ? <Create index={index} setIndex={setIndex} setCreate={setCreate} profile={profile}/> : null
@@ -63,39 +63,78 @@ function Main() {
         {
           // TODO: left Menu
         }
-        <div className='leftPanel'>
+        <div className='leftPanel' style={{width: `${!search ? 240 : 72}px`, transition:`width 0.2s ease-in-out`}}>
           <div className='l-top'>
 
-            <span onClick={()=>{navigate('/main')}}>Pilstagram</span>
+            {
+              search === false ? <span onClick={()=>{navigate('/main')}}>Pilstagram</span> : <span onClick={()=>{navigate('/main')}}><img src={require('../../Image/instaLogo.png')}/></span>
+            }
+            
           </div>
           <div className='l-body'>
-            <div onClick={()=>{navigate('/main')}} className={`body-item`}>
+            <div onClick={()=>{}} className={`body-item`}>
               <div className={`img home`}></div>
-              <span>
-                홈
-              </span>
+              {
+                !search && <span>홈</span>
+              }
+              
             </div>
             <div className={`body-item`} onClick={()=>{
               setCreate(true);
             }}>
               <div className={`img create`}></div>
-              <span>
-                만들기
-              </span>
+              {
+                !search && <span>만들기</span>
+              }
+            </div>
+            <div onClick={()=>{setSearch(search => !search)}} className={`body-item`}>
+              <div className={`img search`}></div>
+              {
+                !search && <span>검색</span>
+              }
             </div>
             <div className={`body-item`} onClick={()=> {navigate('/profile')}}>
             <div className={`img my-profile`} style={{backgroundImage:`url(${profile})`}}></div>
-              <span>
-                프로필
-              </span>
+              {
+                !search && <span>프로필</span>
+              }
             </div>
           </div>
           <div className='l-footer'>
             <div className={`body-item`}>
               <div className={`img more`}></div>
-              <span>
-                더 보기
-              </span>
+              {
+                !search &&<span>더 보기</span>
+              }
+            </div>
+          </div>
+        </div>
+        <div className='searchPanel' style={{transform: `translateX(${!search ? -470 : 0}px)`, transition:`transform 0.3s ease-in-out`}}>
+          <div>
+            <div className='search-display'>
+              <div className='search-top'>
+                <span>검색</span>
+              </div>
+              <div className='search-body'>
+                <div className='search-input'>
+                  <input placeholder='검색' type='text'/>
+                  <div className='search-remove'></div>
+                </div>
+                <div className='search-hr'></div>
+                <div className='search-result-panel'>
+                  <div>
+                    <div className='search-result-top'>
+                      <span>검색 항목</span>
+                    </div>
+                    <div className='search-result-main'>
+                      <SearchItem/>
+                      <SearchItem/>
+                      <SearchItem/>
+                      <SearchItem/>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -203,13 +242,13 @@ function Main() {
 
                                   <ul>
                                     <li style={{transform: "translateX(0px)"}}>
-                                      <video className='post-video' controls={false} autoPlay={true} loop={true} preload={'auto'}>
+                                      {/* <video className='post-video' controls={false} autoPlay={true} loop={true} preload={'auto'}>
                                         <source src={require('../../videos/video.mp4')}/>
                                       </video>
                                       <div className='volumeBtn'>
                                         <img src={require('../../Image/volume.png')}/>
-                                      </div>
-                                      {/* <img className='post-img' alt='이미지' src={require('../../Image/my.jpg')}/> */}
+                                      </div> */}
+                                      <img className='post-img' alt='이미지' src={require('../../Image/my.jpg')}/>
                                     </li>
                                     <li style={{transform: "translateX(468px)"}}>
                                       <img className='post-img' alt='이미지' src={require('../../Image/my.jpg')}/>
@@ -299,42 +338,6 @@ function Main() {
                   </div>
                 </div>
               </div>
-            </div>
-            <div className='recommend-panel'>
-              <div className='for-recommend'>
-                회원님을 위한 추천
-              </div>
-            </div>
-
-            <div className='re-user-list'>
-              {
-                dummy.map((item, i)=>{
-                  return(
-                <div key={i} className='profile'>
-                  <div>
-                    <div className='profile-img'>
-                      <a>
-                        <img src={require('../../Image/empty_profile.jpg')}/>
-                      </a>
-                    </div>
-                    <div className='user-info'>
-                      <div>
-                        아이디
-                      </div>
-                      <span>
-                        닉네임
-                      </span>
-                    </div>
-                    <div className='profile_Btn'>
-                      팔로우
-                    </div>
-                  </div>
-                </div>
-                  )
-                })
-              }
-            
-              
             </div>
 
           </div>

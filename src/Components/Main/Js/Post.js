@@ -2,7 +2,7 @@ import '../Css/Post.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleChevronLeft, faCircleChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { fire, storage } from '../../firebase.js';
-import { Timestamp, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { Timestamp, doc, updateDoc } from 'firebase/firestore';
 import { ref, getDownloadURL } from "firebase/storage";
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -257,7 +257,7 @@ function Post({post, setPost, postData, setPostData, deletePost}){
         setComProfile(url);
       })
     }
-  });
+  }, [comProfile]);
 
   const commentInfo = () => {
     const reply = replyData();
@@ -390,9 +390,12 @@ function Post({post, setPost, postData, setPostData, deletePost}){
                               <span>{postData.nickname}</span>
                               <span style={{fontSize:'10px', alignItems:'center', padding:'0 10px 0 10px'}}>●</span>
                               <button>팔로우</button>
-                              <div onClick={()=>{setIsPost(true); setPopup(true);}} className='post-dot-menu'>
-                                <img src={require('../../Image/dots_icon.png')}/>
-                              </div>
+                              {
+                                userData.email === postData.email && 
+                                <div onClick={()=>{setIsPost(true); setPopup(true);}} className='post-dot-menu'>
+                                  <img src={require('../../Image/dots_icon.png')}/>
+                                </div>
+                              }
                             </div>
                           </div>
 

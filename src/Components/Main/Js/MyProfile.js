@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { fire, storage } from '../../firebase.js';
 import { useEffect, useState } from 'react';
 import { ref, getDownloadURL } from "firebase/storage";
-import { doc, updateDoc, onSnapshot, deleteField } from 'firebase/firestore';
+import { doc, updateDoc, onSnapshot, deleteField, getDoc } from 'firebase/firestore';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTableCells } from "@fortawesome/free-solid-svg-icons";
 import Post from './Post.js';
@@ -149,6 +149,24 @@ function MyProfile() {
     }
   }
 
+  // TODO: 유저 정보 가져오기
+  let [userInfo, setUserInfo] = useState();
+  useEffect(()=>{
+    if(!userInfo){
+      getUserInfo();
+      console.log(userInfo);
+    }
+  },[userInfo])
+
+  const getUserInfo = async () => {
+    const docRef = doc(fire, `userList`, userData.email);
+    const snapshot = await getDoc(docRef);
+    let userFollowInfo = null;
+    if(snapshot.exists()){
+      userFollowInfo = snapshot.data();
+    }
+    setUserInfo(userFollowInfo);
+  }
   return(
     <>
     {
@@ -158,7 +176,7 @@ function MyProfile() {
       create && <Create index={index} setIndex={setIndex} setCreate={setCreate} profile={profile}/>
     }
     <div className='MainPanel'>
-      <div className='leftPanel'>
+      <div className='leftPanel' style={{width: '240px'}}>
             <div className='l-top'>
               <span onClick={()=>{navigate('/main')}}>Pilstagram</span>
             </div>
@@ -224,8 +242,8 @@ function MyProfile() {
                     
                     <ul className='follow-ul'>
                       <li>게시물 {postSize}</li>
-                      <li>팔로워 0</li>
-                      <li>팔로우 0</li>
+                      <li>팔로워 { userInfo ? userInfo.follow.length : 0}</li>
+                    <li>팔로잉 { userInfo ? userInfo.follower.length : 0}</li>
                     </ul>
                   </div>
 

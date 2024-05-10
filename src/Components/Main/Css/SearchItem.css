@@ -1,0 +1,63 @@
+.search-item {
+  width: 100%;
+  flex-shrink: 0;
+  cursor: pointer;
+  position: relative;
+}
+
+.search-item > div {
+  padding: 8px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.search-box {
+  max-width: 100%;
+  flex-shrink: 0;
+  align-items: center;
+  flex-direction: row;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
+.search-item-profile {
+  flex-direction: column;
+  display: flex;
+  align-self: center;
+  position: relative;
+  overflow: visible;
+  margin-right: 12px;
+}
+
+.search-item-profile > img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.search-item-info {
+  max-width: 80%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: visible;
+  align-self: auto;
+}
+
+.search-info-nick {
+  font-size: 14px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.search-info-name {
+  font-size: 14px;
+  color: rgb(115, 115, 115);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
