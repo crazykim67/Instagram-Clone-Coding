@@ -6,7 +6,7 @@ import { Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import Main from './Components/Main/Js/Main.js';
-import MyProfile from './Components/Main/Js/MyProfile.js';
+import Profile from './Components/Main/Js/Profile.js';
 
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
       <Route path='/main/' element={<Main/>}/>
       <Route path='/register' element={<SignUp/>}/>
       <Route path='/find' element={<FindPass/>}/>
-      <Route path='/profile' element={<MyProfile/>}/>
+      <Route path='/profile/:curUserEmail' element={<Profile/>}/>
     </Routes>
     </>
   );

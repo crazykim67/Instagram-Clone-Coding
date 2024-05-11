@@ -3,12 +3,15 @@ import { storage } from '../../firebase.js';
 import { ref, getDownloadURL } from "firebase/storage";
 import { useEffect, useState } from 'react';
 import default_img from '../../Image/empty_profile.jpg';
+import { useNavigate } from 'react-router-dom';
 
 function SearchItem({sUserData}){
 
   const onErrorImg = (e) => {
     e.target.src = default_img
   }
+
+  let navigate = useNavigate();
 
   const [profile, setProfile] = useState('');
   useEffect(()=> {
@@ -22,7 +25,7 @@ function SearchItem({sUserData}){
   });
 
   return (
-    <div onClick={()=>{}} className='search-item'>
+    <div onClick={()=>{ navigate(`/profile/${sUserData.email}`)}} className='search-item'>
       <div>
         <div className='search-box'>
           <div className='search-item-profile'>

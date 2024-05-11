@@ -1,4 +1,4 @@
-import '../Css/MyProfile.css';
+import '../Css/Profile.css';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { fire, storage } from '../../firebase.js';
@@ -10,8 +10,11 @@ import { faTableCells } from "@fortawesome/free-solid-svg-icons";
 import Post from './Post.js';
 import Create from './Create.js';
 import default_img from '../../Image/empty_profile.jpg';
+import { useParams } from 'react-router-dom';
 
 function Profile() {
+
+  let { curUserEmail } = useParams();
 
   const onErrorImg = (e) => {
     e.target.src = default_img
@@ -19,16 +22,45 @@ function Profile() {
 
   let navigate = useNavigate();
   let userData = useSelector((state) => state.currentUser );
+
+  let [myProfile, setMyProfile] = useState('');
+
   let [profile, setProfile] = useState('');
   useEffect(()=> {
-    if(userData.email != ''){
-      const storageRef = ref(storage, `userProfile/${userData.email}.jpg`)
+    if(curUserEmail != ''){
+      if(curUserEmail !== userData.email)
+        getProfile(false);
+      else
+        getProfile(true);
+    }
+    setUserInfo();
+    setDocData();
+    setMediaData();
+    console.log('hi');
+  }, [curUserEmail]);
+
+  const getProfile = (isMine) => {
+    if(isMine){
+      const storageRef = ref(storage, `userProfile/${curUserEmail}.jpg`)
+      getDownloadURL(storageRef)
+      .then((url)=>{
+        setProfile(url);
+        setMyProfile(url);
+      })
+    }
+    else {
+      const storageRef = ref(storage, `userProfile/${curUserEmail}.jpg`)
       getDownloadURL(storageRef)
       .then((url)=>{
         setProfile(url);
       })
+      const myRef = ref(storage, `userProfile/${userData.email}.jpg`)
+      getDownloadURL(myRef)
+      .then((url)=>{
+        setMyProfile(url);
+      })
     }
-  }, [userData.email]);
+  }
 
   // TODO: 게시물 만들기 팝업 열기/닫기 State
   const [create, setCreate] = useState(false);
@@ -51,7 +83,7 @@ function Profile() {
   // TODO: 게시물 데이터 불러오기
   const getPostDoc = () => {
     onSnapshot(
-      doc(fire, 'postData', userData.email), (snapshot) => {
+      doc(fire, 'postData', curUserEmail), (snapshot) => {
         const refData = snapshot.data();
         if(refData){
           const dataValues = Object.values(refData);
@@ -82,7 +114,7 @@ function Profile() {
   
   useEffect(()=>{
     getPostDoc();
-  },[docData])
+  },[docData, curUserEmail])
 
   const setItem = (index) => {
     let item = null;
@@ -152,14 +184,12 @@ function Profile() {
   // TODO: 유저 정보 가져오기
   let [userInfo, setUserInfo] = useState();
   useEffect(()=>{
-    if(!userInfo){
+    if(!userInfo)
       getUserInfo();
-      console.log(userInfo);
-    }
   },[userInfo])
 
   const getUserInfo = async () => {
-    const docRef = doc(fire, `userList`, userData.email);
+    const docRef = doc(fire, `userList`, curUserEmail);
     const snapshot = await getDoc(docRef);
     let userFollowInfo = null;
     if(snapshot.exists()){
@@ -195,8 +225,8 @@ function Profile() {
                   만들기
                 </span>
               </div>
-              <div className={`body-item`} onClick={()=> {navigate('/profile')}}>
-              <div className={`img my-profile`} style={{backgroundImage:`url(${profile})`}}></div>
+              <div className={`body-item`} onClick={()=> {navigate(`/profile/${userData.email}`)}}>
+              <div className={`img my-profile`} style={{backgroundImage:`url(${myProfile})`}}></div>
                 <span>
                   프로필
                 </span>
@@ -231,13 +261,17 @@ function Profile() {
 
                     <div>
                       <span className='profile-content-nick'>
-                        {userData.nickname}
+                        {userInfo ? userInfo.nickname : ""}
                       </span>
-                      <div className='profile-change'>
+                      {
+                        curUserEmail === userData.email &&
+                        <div className='profile-change'>
                         <span>
                           프로필 편집
                         </span>
                       </div>
+                      }
+                      
                     </div>
                     
                     <ul className='follow-ul'>

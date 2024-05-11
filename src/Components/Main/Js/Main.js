@@ -51,8 +51,6 @@ function Main() {
   // TODO: 게시물 만들기 Index
   let [index, setIndex] = useState(0);
 
-  
-
   // TODO: 검색 관련
   let [search, setSearch] = useState(false);
   let [searchText, setSearchText] = useState('');
@@ -137,7 +135,7 @@ function Main() {
                 !search && <span>검색</span>
               }
             </div>
-            <div className={`body-item`} onClick={()=> {navigate('/profile')}}>
+            <div className={`body-item`} onClick={()=> {navigate(`/profile/${userData.email}`)}}>
             <div className={`img my-profile`} style={{backgroundImage:`url(${profile})`}}></div>
               {
                 !search && <span>프로필</span>
