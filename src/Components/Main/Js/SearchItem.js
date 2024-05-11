@@ -1,16 +1,36 @@
 import '../Css/SearchItem.css';
+import { storage } from '../../firebase.js';
+import { ref, getDownloadURL } from "firebase/storage";
+import { useEffect, useState } from 'react';
+import default_img from '../../Image/empty_profile.jpg';
 
-function SearchItem(){
+function SearchItem({sUserData}){
+
+  const onErrorImg = (e) => {
+    e.target.src = default_img
+  }
+
+  const [profile, setProfile] = useState('');
+  useEffect(()=> {
+    if(sUserData.email != ''){
+      const storageRef = ref(storage, `userProfile/${sUserData.email}.jpg`)
+      getDownloadURL(storageRef)
+      .then((url)=>{
+        setProfile(url);
+      })
+    }
+  });
+
   return (
-    <div className='search-item'>
+    <div onClick={()=>{}} className='search-item'>
       <div>
         <div className='search-box'>
           <div className='search-item-profile'>
-            <img src={require('../../Image/my.jpg')}/>
+            <img onError={onErrorImg} src={profile}/>
           </div>
           <div className='search-item-info'>
-            <span className='search-info-nick'>닉네임</span>
-            <span className='search-info-name'>이름</span>
+            <span className='search-info-nick'>{sUserData ? sUserData.nickname : "닉네임"}</span>
+            <span className='search-info-name'>{sUserData ? sUserData.name : "이름"}</span>
           </div>
         </div>
       </div>

@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleChevronLeft, faCircleChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { ref, getDownloadURL } from "firebase/storage";
-import { collection, where, getDocs, doc, updateDoc, getDoc } from 'firebase/firestore';
+import { collection, where, getDocs, getDoc } from 'firebase/firestore';
 import Create from './Create.js';
 import default_img from '../../Image/empty_profile.jpg';
 import Recommend from './Recommend.js';
@@ -51,7 +51,51 @@ function Main() {
   // TODO: 게시물 만들기 Index
   let [index, setIndex] = useState(0);
 
+  
+
+  // TODO: 검색 관련
   let [search, setSearch] = useState(false);
+  let [searchText, setSearchText] = useState('');
+  let [userList, setUserList] = useState();
+  let [searchUserList, setSearchUserList] = useState([]);
+
+  useEffect(()=>{
+    getUser();
+  }, []) 
+
+  useEffect(()=>{
+    if(searchText.length > 0)
+      getSearchUser(searchText);
+    else
+      setSearchUserList([]);
+  }, [searchText])
+
+  const getUser = async () => {
+    const q = query(collection(fire, 'userList'), where('email', '!=', null));
+    const snapShot = await getDocs(q);
+    let userValue = [];
+    snapShot.forEach((doc)=>{
+      userValue.push(doc.data());
+    })
+
+    const userListData = userValue.filter(_user => _user.email !== userData.email);
+    setUserList(userListData);
+  }
+
+  const getSearchUser = (_text) => {
+    if(!userList)
+      return;
+
+    let _searchText = _text.toLowerCase();
+
+    let _searchUserList = userList.filter(_user => {
+      const nicknameMatches = _user.nickname.toLowerCase().includes(_searchText);
+      const nameMatches = _user.name.toLowerCase().includes(_searchText);
+      return nicknameMatches || nameMatches;
+    });
+
+    setSearchUserList(_searchUserList);
+  }
 
   return (
     <>
@@ -87,7 +131,7 @@ function Main() {
                 !search && <span>만들기</span>
               }
             </div>
-            <div onClick={()=>{setSearch(search => !search)}} className={`body-item`}>
+            <div onClick={()=>{search && setSearchText(''); setSearch(search => !search);}} className={`body-item`}>
               <div className={`img search`}></div>
               {
                 !search && <span>검색</span>
@@ -117,8 +161,10 @@ function Main() {
               </div>
               <div className='search-body'>
                 <div className='search-input'>
-                  <input placeholder='검색' type='text'/>
-                  <div className='search-remove'></div>
+                  <input value={searchText} onChange={(e)=>{setSearchText(e.target.value)}} placeholder='검색' type='text'/>
+                  {
+                    searchText.length > 0 && <div className='search-remove' onClick={()=>{setSearchText('')}}><img src={require('../../Image/close.png')}/></div>
+                  }
                 </div>
                 <div className='search-hr'></div>
                 <div className='search-result-panel'>
@@ -127,10 +173,13 @@ function Main() {
                       <span>검색 항목</span>
                     </div>
                     <div className='search-result-main'>
-                      <SearchItem/>
-                      <SearchItem/>
-                      <SearchItem/>
-                      <SearchItem/>
+                      {
+                        searchUserList.map((a, i)=>{
+                          return(
+                            <SearchItem key={i} sUserData={a}/>
+                          )
+                        })
+                      }
                     </div>
                   </div>
                 </div>
@@ -139,7 +188,7 @@ function Main() {
           </div>
         </div>
         <div className='MainContent'>
-          <div className='main-content'>
+          <div className='main-content' onClick={()=>{search && setSearch(false); search && setSearchText('');}}>
             <div>
               <div className='main-top'>
                 <div>
@@ -316,7 +365,7 @@ function Main() {
             </div>
           </div>
 
-          <div className='rightPanel'>
+          <div className='rightPanel' onClick={()=>{search && setSearch(false); search && setSearchText('');}}>
             <div>
               <div className='profile'>
                 <div>
