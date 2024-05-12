@@ -83,6 +83,7 @@
   position: relative;
   flex-shrink: 1;
   margin-bottom: 20px;
+  height: 50px;
 }
 
 .profile-content-nick {
@@ -95,9 +96,45 @@
   justify-content: center;
 }
 
+.followBtn {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin-left: 8px;
+  align-content: center;
+  justify-content: center;
+}
+
+.followBtn > span {
+  background-color: rgb(0, 149, 246);
+  border-radius: 8px;
+  position: relative;
+  color: white;
+  text-align: center;
+  font-size: 14px;
+  padding: 6px 16px;
+  width: auto;
+  font-weight: 600;
+}
+
+.un > span {
+  background-color: rgb(239, 239, 239);
+  border-radius: 8px;
+  position: relative;
+  color: black;
+  text-align: center;
+  font-size: 14px;
+  padding: 6px 16px;
+  width: auto;
+  font-weight: 600;
+}
+
 .profile-change {
-  flex-grow: 1;
-  height: 32px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin-left: 8px;
   align-content: center;
   justify-content: center;
 }
@@ -107,7 +144,7 @@
   border-radius: 8px;
   font-weight: 600;
   text-align: center;
-  padding: 0 16px 0 16px;
+  padding: 6px 16px;
   cursor: pointer;
 }
 

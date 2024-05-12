@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { fire, firebaseAuth, signInWithEmailAndPassword } from '../../firebase.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { setEmail, setName, setNickName } from '../../userSlice.js'
-import { doc, onSnapshot } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 
 function Body(){
 
@@ -66,37 +66,23 @@ function Body(){
   const onLogin = async (e) => {
     try {
       e.preventDefault();
-      await signInWithEmailAndPassword(firebaseAuth, value[0], value[1])
-      onSnapshot(
-        doc(fire, 'userList', value[0]), (snapshot) => {
-            const userData = snapshot.data();
-            dispatch(setEmail(userData.email));
-            dispatch(setName(userData.name));
-            dispatch(setNickName(userData.nickname));
-            navigate('/main');
-          }
-      )
+      await signInWithEmailAndPassword(firebaseAuth, value[0], value[1]);
+      const docRef = doc(fire, 'userList', value[0]);
+      const snapshot = await getDoc(docRef);
+
+      const userData = snapshot.data();
+      dispatch(setEmail(userData.email));
+      console.log('이메일 설정');
+      dispatch(setName(userData.name));
+      console.log('이름 설정');
+      dispatch(setNickName(userData.nickname));
+      console.log('닉네임 설정');
+      navigate('/main');
     }
     catch(err){
       console.log(err);
       LoginFailed('잘못된 계정입니다.');
     }
-    // e.preventDefault();
-    // await signInWithEmailAndPassword(firebaseAuth, value[0], value[1])
-    // .then(() => {
-    //   onSnapshot(
-    //     doc(fire, 'userList', value[0]), (snapshot) => {
-    //       const userData = snapshot.data();
-    //       dispatch(setEmail(userData.email));
-    //       dispatch(setName(userData.name));
-    //       dispatch(setNickName(userData.nickname));
-    //       navigate('/main');
-    //       }
-    //   )
-    // })
-    // .catch((err) => {
-      
-    // });
   }
 
   return(

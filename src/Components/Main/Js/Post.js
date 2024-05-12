@@ -2,7 +2,7 @@ import '../Css/Post.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleChevronLeft, faCircleChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { fire, storage } from '../../firebase.js';
-import { Timestamp, doc, updateDoc } from 'firebase/firestore';
+import { Timestamp, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { ref, getDownloadURL } from "firebase/storage";
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -25,9 +25,7 @@ function Post({post, setPost, postData, setPostData, deletePost}){
   let [profile, setProfile] = useState('');
   let [date, setDate] = useState('');
 
-  // TODO: 좋아요 관련 state
-  let [like, setLike] = useState(false);
-  let [likeData, setLikeData] = useState();
+
 
   // TODO: 비디오 Index state
   let [videoIndex, setVideoIndex] = useState([]);
@@ -77,7 +75,6 @@ function Post({post, setPost, postData, setPostData, deletePost}){
       setVideoIndex([]);
       setMedia(postData.media);
       setCommentData(postData.comment);
-      setLikeData(postData.likes);
       dateFormat(postData.date);
     }
   }, [postData]);
@@ -98,13 +95,6 @@ function Post({post, setPost, postData, setPostData, deletePost}){
       })
     }
   }, [postData]);
-
-  // TODO: 현재 게시물에 좋아요를 눌렀는지 안눌렸는지
-  useEffect(()=>{
-    if(likeData){
-      setLike(likeData.some(_like => like.email !== userData.email));
-    }
-  }, [likeData])
 
   // TODO: 비디오 Ref 저장
   let videoRef = useRef([]);
@@ -190,46 +180,58 @@ function Post({post, setPost, postData, setPostData, deletePost}){
     return list;
   }
 
-  // TODO: 해당 게시물 좋아요 여부
-  useEffect(()=>{
-    if(likeData){
-      for(let data in likeData){
-        if(data.email === userData.email){
-          setLike(true)
-          break;
-        }
-      }
-    }
-  }, [likeData])
+  // TODO: 좋아요 관련 state
+  let [like, setLike] = useState(false);
 
-  // TODO: 파이어베이스 Firestore 좋아요 데이터 갱신
-  const setLikes = async (isLike) => {
+  useEffect(()=>{
+    getLike();
+  }, [])
+
+  const getLike = () => {
+    if(!postData)
+      return;
+
+    const likeData = postData.likes;
+    let isLike = likeData.some(_like => _like.email === userData.email);
+
+    setLike(isLike);
+  }
+
+  const setLikes = async () => {
+    if(!postData)
+      return;
+
+    const likeData = postData.likes;
+    let isLike = likeData.some(_like => _like.email === userData.email);
+
     const docRef = doc(fire, `postData`, postData.email);
-    
+    let updateData = null;
+
+    // 좋아요 안되어있음
     if(!isLike){
-      // TODO: 좋아요 추가
-      const updateData = {
+      updateData = {
         [`${postData.uuid}`] : [{
           ...postData,
           "likes": [{"email":userData.email, "nickname":userData.nickname, "url":profile}, ...postData.likes, ],
         }]
       };
-      setPostData(updateData[postData.uuid][0]);
-      await updateDoc(docRef,updateData);
     }
-    else {
-      // TODO: 좋아요 제거
+    // 좋아요 되어있음
+    else{
       const unLikeData = postData.likes.filter(_like => _like.email !== userData.email);
-      const updateData = {
+      updateData = {
         [`${postData.uuid}`] : [{
           ...postData,
           "likes": unLikeData,
         }]
       };
-      setPostData(updateData[postData.uuid][0]);
-      await updateDoc(docRef,updateData);
     }
+
+    setLike(!isLike);
+    setPostData(updateData[postData.uuid][0]);
+    await updateDoc(docRef,updateData)
   }
+
 
   // FIXME: 댓글 관련
   let inputRef = useRef();
@@ -336,11 +338,11 @@ function Post({post, setPost, postData, setPostData, deletePost}){
     }
     
     <div className='postBody'>
-      <div className='close' onClick={()=>{setPost(false); setLikeData(); setLike();}}>
+      <div className='close' onClick={()=>{setPost(false);}}>
         <img alt='Close' src={require('../../Image/close.png')}/>
       </div>
       <div className='post-detail-panel'>
-          <div onClick={()=>{setPost(false); setLikeData(); setLike();}} className='dim'></div>
+          <div onClick={()=>{setPost(false);}} className='dim'></div>
           <div className='post-box'>
             <div>
               <div className='post-detail-box'>
@@ -417,7 +419,7 @@ function Post({post, setPost, postData, setPostData, deletePost}){
                               <div className='comment-writing'>
                                 <div>
                                   <div className='write-profile'>
-                                    <img alt='프로필' src={require('../../Image/my.jpg')}/>
+                                    <img onError={onErrorImg} alt='프로필' src={profile}/>
                                   </div>
                                   <div className='write-comment'>
                                     <h2>{postData.nickname}</h2>
@@ -453,10 +455,7 @@ function Post({post, setPost, postData, setPostData, deletePost}){
                       </div>
 
                       <section className='detail-content'>
-                        <span onClick={()=>{
-                          setLikes(likeData.some(_like => like.email !== userData.email));
-                          setLike(like => !like);
-                        }}>
+                        <span onClick={setLikes}>
                           {
                             like === false ? <img src={require('../../Image/un_like.png')}/> : <img src={require('../../Image/like.png')}/>
                           }

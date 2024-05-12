@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../Css/Main.css';
 import { useNavigate } from 'react-router-dom';
 import { signOut, firebaseAuth, fire, storage } from '../../firebase.js';
@@ -394,4 +394,4 @@ function Main() {
   )
 }
 
-export default memo(Main);
+export default Main;

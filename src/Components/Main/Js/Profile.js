@@ -36,7 +36,6 @@ function Profile() {
     setUserInfo();
     setDocData();
     setMediaData();
-    console.log('hi');
   }, [curUserEmail]);
 
   const getProfile = (isMine) => {
@@ -118,6 +117,10 @@ function Profile() {
 
   const setItem = (index) => {
     let item = null;
+
+    if(!mediaDocData)
+      return;
+
     switch(mediaDocData[index]?.type){
       case 'image':{
         item = 
@@ -185,7 +188,7 @@ function Profile() {
   let [userInfo, setUserInfo] = useState();
   useEffect(()=>{
     if(!userInfo)
-      getUserInfo();
+    getUserInfo();
   },[userInfo])
 
   const getUserInfo = async () => {
@@ -196,6 +199,102 @@ function Profile() {
       userFollowInfo = snapshot.data();
     }
     setUserInfo(userFollowInfo);
+  }
+
+  // TODO: 날 팔로우한 사람
+  const getFollower = () => {
+    if(!userInfo)
+      return;
+
+  }
+
+  useEffect(()=>{
+    getFollowing();
+  }, [userInfo])
+
+  let [follow, setFollow] = useState(false);
+
+  // TODO: 내가 팔로우한 사람
+  const getFollowing = () => {
+    if(!userInfo || curUserEmail === userData.email)
+      return;
+    // 해당 유저 데이터에 내 이름이 포함되어있는지 확인
+    const followingData = userInfo.follower;
+    const isFollowing = followingData.some(_following => _following.email === userData.email);
+    setFollow(!isFollowing);
+  }
+
+  // TODO: 팔로잉
+  const setFollower = async () => {
+    try {
+      if(!userInfo)
+        return;
+  
+      const followingData = userInfo.follower;
+      let isFollowing = followingData.some(_follow => _follow.email === userData.email);
+  
+      // TODO: 해당 유저 Document
+      const docRef = doc(fire, 'userList', userInfo.email);
+      let updateData = null;
+  
+      // 팔로잉 안되어있음
+      if(!isFollowing){
+        updateData = {
+          ...userInfo,
+          "follower":[{"email":userData.email, "nickname":userData.nickname, "name":userData.name}]
+        };
+      }
+      // 팔로잉 되어있음
+      else {
+        const unFollower = userInfo.follower.filter(_follower => _follower.email !== userData.email);
+        updateData = {
+          ...userInfo,
+          "follower":unFollower
+        };
+      }
+      await updateDoc(docRef,updateData);
+      setUserInfo(updateData);
+      await updateMyFollowing();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const updateMyFollowing = async() => {
+    try {
+      const followingData = userInfo.follower;
+      let isFollowing = followingData.some(_follow => _follow.email === userData.email);
+
+      // TODO: 내 정보 Document
+      const docRef = doc(fire, 'userList', userData.email);
+      const snapshot = await getDoc(docRef);
+      let myUserData = null;
+
+      if(snapshot.exists())
+        myUserData = snapshot.data();
+      
+      let updateData = null;
+
+      // 팔로잉 안되어있음
+      if(!isFollowing){
+        updateData = {
+          ...myUserData,
+          "follow":[{"email":userInfo.email, "nickname":userInfo.nickname, "name":userInfo.name}]
+        }
+      }
+      // 팔로잉 되어있음
+      else {
+        const unFollowing = myUserData.follow.filter(_follow => _follow.email !== userInfo.email)
+        updateData = {
+          ...myUserData,
+          "follow":unFollowing
+        };
+      }
+      await updateDoc(docRef,updateData);
+    } catch (error) {
+      console.log(error);
+    }
+    
   }
   return(
     <>
@@ -208,10 +307,10 @@ function Profile() {
     <div className='MainPanel'>
       <div className='leftPanel' style={{width: '240px'}}>
             <div className='l-top'>
-              <span onClick={()=>{navigate('/main')}}>Pilstagram</span>
+              <span onClick={()=>{navigate('/main');}}>Pilstagram</span>
             </div>
             <div className='l-body'>
-              <div onClick={()=>{navigate('/main')}} className={`body-item`}>
+              <div onClick={()=>{navigate('/main');}} className={`body-item`}>
                 <div className={`img home`}></div>
                 <span>
                   홈
@@ -225,7 +324,7 @@ function Profile() {
                   만들기
                 </span>
               </div>
-              <div className={`body-item`} onClick={()=> {navigate(`/profile/${userData.email}`)}}>
+              <div className={`body-item`} onClick={()=> {navigate(`/profile/${userData.email}`); console.log('hi')}}>
               <div className={`img my-profile`} style={{backgroundImage:`url(${myProfile})`}}></div>
                 <span>
                   프로필
@@ -263,6 +362,16 @@ function Profile() {
                       <span className='profile-content-nick'>
                         {userInfo ? userInfo.nickname : ""}
                       </span>
+                      { 
+                        curUserEmail !== userData.email &&
+                        <>
+                          {
+                            !follow ? <div className='followBtn un' onClick={()=> {setFollower();}}><span>팔로잉</span></div>
+                            : <div className='followBtn' onClick={()=> {setFollower();}}><span>팔로우</span></div>
+                          }
+                        </>
+                      }
+                      
                       {
                         curUserEmail === userData.email &&
                         <div className='profile-change'>
@@ -276,8 +385,8 @@ function Profile() {
                     
                     <ul className='follow-ul'>
                       <li>게시물 {postSize}</li>
-                      <li>팔로워 { userInfo ? userInfo.follow.length : 0}</li>
-                    <li>팔로잉 { userInfo ? userInfo.follower.length : 0}</li>
+                      <li>팔로워 { userInfo ? userInfo.follower.length : 0}</li>
+                    <li>팔로잉 { userInfo ? userInfo.follow.length : 0}</li> 
                     </ul>
                   </div>
 
