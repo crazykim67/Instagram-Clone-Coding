@@ -14,7 +14,7 @@ function FollowingItem({data, userInfo, setFollowData, setUserInfo}){
   let [profile, setProfile] = useState('');
   useEffect(()=>{
     getProfile();
-  },[])
+  })
 
   const getProfile = () => {
       const storageRef = ref(storage, `userProfile/${data.email}.jpg`)

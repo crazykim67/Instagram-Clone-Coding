@@ -22,7 +22,7 @@ function SearchItem({sUserData}){
         setProfile(url);
       })
     }
-  });
+  }, []);
 
   return (
     <div onClick={()=>{ navigate(`/profile/${sUserData.email}`)}} className='search-item'>

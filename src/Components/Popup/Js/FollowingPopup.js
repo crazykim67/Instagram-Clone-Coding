@@ -4,11 +4,34 @@ import Followingitem from './Followingitem.js';
 
 function FollowPopup({setFollowingList, following, userInfo, setUserInfo}){
 
-  let [followData, setFollowData] = useState();
+  useEffect(()=>{
+    setSearchFollowData(following);
+  }, [])
+
+  let [searchText, setSearchText] = useState('');
+  let [searchFollowData, setSearchFollowData] = useState([]);
 
   useEffect(()=>{
-    setFollowData(following);
-  }, [])
+    if(searchText.length > 1)
+      getSearchUser(searchText);
+    else
+      setSearchFollowData(following);
+  }, [searchText])
+
+  const getSearchUser = (_text) => {
+    if(!userInfo)
+      return;
+
+    let _searchText = _text.toLowerCase();
+
+    let _searchUserList = userInfo.follow.filter(_user => {
+      const nicknameMatches = _user.nickname.toLowerCase().includes(_searchText);
+      const nameMatches = _user.name.toLowerCase().includes(_searchText);
+      return nicknameMatches || nameMatches;
+    });
+
+    setSearchFollowData(_searchUserList);
+  }
 
   return(
     <div className="f-popup-main">
@@ -25,17 +48,17 @@ function FollowPopup({setFollowingList, following, userInfo, setUserInfo}){
                 </div>
                 <div className='f-popup-search'>
                   <div>
-                    <input placeholder='검색' type='text'/>
+                    <input value={searchText} onChange={(e)=>{setSearchText(e.target.value)}} placeholder='검색' type='text'/>
                   </div>
                 </div>
                 <div className='f-popup-body'>
                   <div>
                     <div className='follow-list'>
                       {
-                        followData != null &&
-                        followData.map((a, i)=>{
+                        searchFollowData != null &&
+                        searchFollowData.map((a, i)=>{
                           return(
-                            <Followingitem key={i} data={a} userInfo={userInfo} setFollowData={setFollowData} setUserInfo={setUserInfo}/>
+                            <Followingitem key={i} data={a} userInfo={userInfo} setFollowData={setSearchFollowData} setUserInfo={setUserInfo}/>
                           )
                         })
                       }

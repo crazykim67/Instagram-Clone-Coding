@@ -110,7 +110,7 @@ function Post({post, setPost, postData, setPostData, deletePost}){
         if(prevVideoIndex != currentIndex){
           videoRef.current[prevVideoIndex]?.pause();
         if(videoRef.current[prevVideoIndex])
-            videoRef.current[prevVideoIndex].currentTime = 0
+            videoRef.current[prevVideoIndex].currentTime = 0;
         setPrevVideoIndex(currentIndex);
         }
       }

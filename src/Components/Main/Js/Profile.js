@@ -203,13 +203,6 @@ function Profile() {
     setUserInfo(userFollowInfo);
   }
 
-  // TODO: 날 팔로우한 사람
-  const getFollower = () => {
-    if(!userInfo)
-      return;
-
-  }
-
   useEffect(()=>{
     getFollowing();
   }, [userInfo])

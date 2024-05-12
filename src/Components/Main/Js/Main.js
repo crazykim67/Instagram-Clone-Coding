@@ -3,15 +3,14 @@ import '../Css/Main.css';
 import { useNavigate } from 'react-router-dom';
 import { signOut, firebaseAuth, fire, storage } from '../../firebase.js';
 import { useSelector } from 'react-redux';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleChevronLeft, faCircleChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { ref, getDownloadURL } from "firebase/storage";
-import { collection, where, getDocs, getDoc } from 'firebase/firestore';
+import { collection, where, getDocs, doc, getDoc } from 'firebase/firestore';
 import Create from './Create.js';
 import default_img from '../../Image/empty_profile.jpg';
 import Recommend from './Recommend.js';
 import { query } from 'firebase/database';
 import SearchItem from './SearchItem.js';
+import MainPost from './MainPost.js';
 
 function Main() {
 
@@ -93,6 +92,76 @@ function Main() {
     });
 
     setSearchUserList(_searchUserList);
+  }
+
+  let [myFollowData, setMyFollowData] = useState();
+  let [postDatas, setPostDatas] = useState();
+  useEffect(()=>{
+    getFollowData();
+  },[])
+
+  useEffect(()=>{
+    if(myFollowData){
+      getPostData();
+    }
+  }, [myFollowData])
+
+  // TODO: 현재 유저가 팔로잉한 유저들 데이터를 가져옴
+  const getFollowData = async() => {
+    const docRef = doc(fire, `userList`, userData.email);
+    const snapShot = await getDoc(docRef);
+    let userList = null;
+    if(snapShot.exists())
+      userList = snapShot.data();
+
+    setMyFollowData(userList.follow);
+  }
+
+  // TODO: 현재 유저가 팔로잉한 모든 유저들의 게시물을 가져옴
+  const getPostData = async() => {
+    if(!myFollowData || myFollowData.length === 0)
+      return;
+
+    let _postDatas = [];
+    // TODO: 자신의 게시물 가져오기
+    const myRef = doc(fire, `postData`, userData.email);
+    const myDoc = await getDocData(myRef)
+    if(myDoc)
+      _postDatas.push(myDoc);
+
+    // TODO: 팔로잉한 유저 게시물 가져오기
+    let dataArray = [];
+    for(const a of myFollowData){
+      const docRef = doc(fire, `postData`, a.email);
+      const _postDoc = await getDocData(docRef)
+      if(_postDoc)
+        _postDatas.push(_postDoc);
+    }
+
+    _postDatas.map((_data)=>{
+      let values = Object.values(_data);
+      for(let value of values){
+        dataArray.push(value[0]);
+      }
+
+    })
+
+    // TODO: DATE 내림차순
+    dataArray.sort((a,b)=> {
+      if(a.date > b.date) return -1;
+      if(a.date < b.date) return 1;
+      return 0;
+    })
+    setPostDatas(dataArray);
+  }
+
+  const getDocData = async(_ref) => {
+    const snapShot = await getDoc(_ref);
+    let postDoc = null;
+    if(snapShot.exists() && snapShot.data())
+        postDoc = snapShot.data();
+    
+    return postDoc;
   }
 
   return (
@@ -243,119 +312,13 @@ function Main() {
                   <div>
                   {
                     // TODO: 게시물 List
+                    postDatas && postDatas.map((a, i)=>{
+                      return(
+                        <MainPost key={i} data={a}/>
+                      )
+                    })
                   }
-                    <section className='post-panel'>
-                      <div className='post-top'>
-                        <div>
-                          <div className='post-top-profile'>
-
-                            <div>
-                              <span>
-                                <img src={require('../../Image/my.jpg')}/>
-                              </span>
-                            </div>
-
-                          </div>
-
-                          <div className='post-top-info'>
-                            <div className='post-top-info-nick'>
-                              <div className='info-nick'>닉네임</div>
-                              <span>●</span>
-                              <div className='info-date'>1시간</div>
-                            </div>
-                            <div className='info-type'>
-                              <span>
-                                원본 오디오
-                              </span>
-                            </div>
-                          </div>
-
-                          <div className='post-top-more'>
-                            <div>
-                              <span>
-                                ●●●
-                              </span>
-                            </div>
-                          </div>
-
-                        </div>
-                      </div>
-                      <div className='post-body'>
-
-                          <div style={{width: '468px'}}>
-                            <div className='post-pic-content'>
-                                <div className={`img-list`}>
-
-                                  <ul>
-                                    <li style={{transform: "translateX(0px)"}}>
-                                      {/* <video className='post-video' controls={false} autoPlay={true} loop={true} preload={'auto'}>
-                                        <source src={require('../../videos/video.mp4')}/>
-                                      </video>
-                                      <div className='volumeBtn'>
-                                        <img src={require('../../Image/volume.png')}/>
-                                      </div> */}
-                                      <img className='post-img' alt='이미지' src={require('../../Image/my.jpg')}/>
-                                    </li>
-                                    <li style={{transform: "translateX(468px)"}}>
-                                      <img className='post-img' alt='이미지' src={require('../../Image/my.jpg')}/>
-                                    </li>
-                                    <li style={{transform: "translateX(936px)"}}>
-                                      <img className='post-img' alt='이미지' src={require('../../Image/my.jpg')}/>
-                                    </li>
-                                  </ul>
-                                  {
-                                    <button className='prev postBtn'>
-                                      <div>
-                                        <FontAwesomeIcon icon={faCircleChevronLeft} size="xl" />
-                                      </div>
-                                    </button>
-                                  }
-                                  {
-                                    <button className='next postBtn'>
-                                      <div>
-                                        <FontAwesomeIcon icon={faCircleChevronRight} size="xl" />
-                                      </div>
-                                    </button>
-                                  }
-                                  
-                                  
-                                </div>
-                              
-                            </div>
-                          </div>
-
-                      </div>
-
-                      <div className='post-footer'>
-                        <div className='footer-content'>
-                          <div>
-                            <span className='like'>
-                              <img className='footer-content-img' src={require('../../Image/un_like.png')}/>
-                            </span>
-                            <span className='comment'>
-                              <img className='footer-content-img' src={require('../../Image/bubble.png')}/>
-                            </span>
-                          </div>
-                        </div>
-                        <div className='footer-like'>
-                          좋아요 0개
-                        </div>
-                        <div className='post-write'>
-                          <span className='post-write-nick'>
-                            닉네임
-                          </span>
-                          <div className='post-writing'>
-                            <span>
-                              게시물 글
-                            </span>
-                          </div>
-                        </div>
-                        <div className='post-write-comment'>
-                            댓글 0개 보기
-                        </div>
-                      </div>
-
-                    </section>
+                    
                   </div>
                 </div>
               </div>
