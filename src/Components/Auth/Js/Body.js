@@ -72,11 +72,8 @@ function Body(){
 
       const userData = snapshot.data();
       dispatch(setEmail(userData.email));
-      console.log('이메일 설정');
       dispatch(setName(userData.name));
-      console.log('이름 설정');
       dispatch(setNickName(userData.nickname));
-      console.log('닉네임 설정');
       navigate('/main');
     }
     catch(err){

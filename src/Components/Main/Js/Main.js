@@ -97,7 +97,6 @@ function Main() {
 
   return (
     <>
-      {/* <Post/> */}
       {
         create == true ? <Create index={index} setIndex={setIndex} setCreate={setCreate} profile={profile}/> : null
       }
@@ -142,14 +141,14 @@ function Main() {
               }
             </div>
           </div>
-          <div className='l-footer'>
+          {/* <div className='l-footer'>
             <div className={`body-item`}>
               <div className={`img more`}></div>
               {
                 !search &&<span>더 보기</span>
               }
             </div>
-          </div>
+          </div> */}
         </div>
         <div className='searchPanel' style={{transform: `translateX(${!search ? -470 : 0}px)`, transition:`transform 0.3s ease-in-out`}}>
           <div>

@@ -11,6 +11,8 @@ import Post from './Post.js';
 import Create from './Create.js';
 import default_img from '../../Image/empty_profile.jpg';
 import { useParams } from 'react-router-dom';
+import FollowerPopup from '../../Popup/Js/FollowerPopup.js';
+import FollowingPopup from '../../Popup/Js/FollowingPopup.js';
 
 function Profile() {
 
@@ -226,9 +228,10 @@ function Profile() {
 
   // TODO: 팔로잉
   const setFollower = async () => {
+    if(!userInfo)
+      return;
+
     try {
-      if(!userInfo)
-        return;
   
       const followingData = userInfo.follower;
       let isFollowing = followingData.some(_follow => _follow.email === userData.email);
@@ -241,7 +244,7 @@ function Profile() {
       if(!isFollowing){
         updateData = {
           ...userInfo,
-          "follower":[{"email":userData.email, "nickname":userData.nickname, "name":userData.name}]
+          "follower":[{"email":userData.email, "nickname":userData.nickname, "name":userData.name}, ...userInfo.follower]
         };
       }
       // 팔로잉 되어있음
@@ -261,6 +264,9 @@ function Profile() {
   }
 
   const updateMyFollowing = async() => {
+    if(!userInfo)
+      return;
+
     try {
       const followingData = userInfo.follower;
       let isFollowing = followingData.some(_follow => _follow.email === userData.email);
@@ -279,7 +285,7 @@ function Profile() {
       if(!isFollowing){
         updateData = {
           ...myUserData,
-          "follow":[{"email":userInfo.email, "nickname":userInfo.nickname, "name":userInfo.name}]
+          "follow":[{"email":userInfo.email, "nickname":userInfo.nickname, "name":userInfo.name}, ...myUserData.follow]
         }
       }
       // 팔로잉 되어있음
@@ -296,8 +302,19 @@ function Profile() {
     }
     
   }
+
+  // TODO: 팔로워 리스트
+  let [followerList, setFollowerList] = useState(false);
+  // TODO: 팔로잉 리스트
+  let[followingList, setFollowingList] = useState(false);
   return(
     <>
+    {
+      followingList && <FollowingPopup setFollowingList={setFollowingList} following={userInfo.follow} userInfo={userInfo} setUserInfo={setUserInfo}/>
+    }
+    {
+      followerList && <FollowerPopup setFollowerList={setFollowerList} follower={userInfo.follower} userInfo={userInfo} setUserInfo={setUserInfo}/>
+    }
     {
       post && <Post post={post} setPost={setPost} postData = {postData} setPostData={setPostData} deletePost={deletePost}/>
     }
@@ -324,21 +341,21 @@ function Profile() {
                   만들기
                 </span>
               </div>
-              <div className={`body-item`} onClick={()=> {navigate(`/profile/${userData.email}`); console.log('hi')}}>
+              <div className={`body-item`} onClick={()=> {navigate(`/profile/${userData.email}`);}}>
               <div className={`img my-profile`} style={{backgroundImage:`url(${myProfile})`}}></div>
                 <span>
                   프로필
                 </span>
               </div>
             </div>
-            <div className='l-footer'>
+            {/* <div className='l-footer'>
               <div className={`body-item`}>
                 <div className={`img more`}></div>
                 <span>
                   더 보기
                 </span>
               </div>
-            </div>
+            </div> */}
       </div>
       <div className='profile-panel'>
         <div>
@@ -385,8 +402,13 @@ function Profile() {
                     
                     <ul className='follow-ul'>
                       <li>게시물 {postSize}</li>
-                      <li>팔로워 { userInfo ? userInfo.follower.length : 0}</li>
-                    <li>팔로잉 { userInfo ? userInfo.follow.length : 0}</li> 
+                      {
+                        userData.email === curUserEmail ? 
+                        <><li style={{cursor:'pointer'}} onClick={()=>{setFollowerList(followerList => !followerList)}}>팔로워 { userInfo ? userInfo.follower.length : 0}</li>
+                        <li style={{cursor:'pointer'}} onClick={()=>{setFollowingList(followingList => !followingList)}}>팔로잉 { userInfo ? userInfo.follow.length : 0}</li></>
+                        : <><li>팔로워 { userInfo ? userInfo.follower.length : 0}</li><li>팔로잉 { userInfo ? userInfo.follow.length : 0}</li></>
+                      }
+                      
                     </ul>
                   </div>
 

@@ -1,0 +1,76 @@
+.follow-item {
+  width: 100%;
+}
+
+.follow-item > div {
+  padding: 8px 16px;
+  flex-direction: column;
+  position: relative;
+  justify-content: center;
+  display: flex;
+  flex-grow: 0;
+}
+
+.follow-item-main {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  flex-wrap: nowrap;
+}
+
+.follow-item-profile {
+  margin-right: 12px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.follow-item-profile > img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.follow-item-info {
+  display: flex;
+  flex-direction: column;
+  align-self: auto;
+  justify-content: flex-start;
+  flex-grow: 1;
+  align-items: flex-start;
+}
+
+.follow-item-nickname {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.follow-item-name {
+  font-size: 14px;
+  color: #737373;
+}
+
+.follow-item-ex {
+  font-size: 12px;
+  color: #737373;
+}
+
+.follow-item-button {
+  flex-direction: column;
+  align-self: center;
+  display: flex;
+  position: relative;
+  margin-left: 12px;
+}
+
+.follow-item-button > div {
+  cursor: pointer;
+  border-radius: 10px;
+  padding: 8px 16px;
+  background-color: rgb(239, 239, 239);
+  font-size: 14px;
+  font-weight: 600;
+}
