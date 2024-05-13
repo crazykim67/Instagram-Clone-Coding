@@ -5,7 +5,7 @@ function MainPostItem({mediaData, mediaIndex, transX, videoRef, onClickVideo, on
   let [data, setData] = useState();
   useEffect(()=>{
     setData(mediaData);
-  }, [])
+  })
 
   let [isMute, setMute] = useState(false);
 

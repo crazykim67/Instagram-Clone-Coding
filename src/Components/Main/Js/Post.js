@@ -390,8 +390,6 @@ function Post({post, setPost, postData, setPostData, deletePost}){
                           <div className='detail-nick'>
                             <div>
                               <span>{postData.nickname}</span>
-                              <span style={{fontSize:'10px', alignItems:'center', padding:'0 10px 0 10px'}}>●</span>
-                              <button>팔로우</button>
                               {
                                 userData.email === postData.email && 
                                 <div onClick={()=>{setIsPost(true); setPopup(true);}} className='post-dot-menu'>

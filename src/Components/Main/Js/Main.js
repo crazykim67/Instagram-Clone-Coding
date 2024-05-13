@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { signOut, firebaseAuth, fire, storage } from '../../firebase.js';
 import { useSelector } from 'react-redux';
 import { ref, getDownloadURL } from "firebase/storage";
-import { collection, where, getDocs, doc, getDoc } from 'firebase/firestore';
+import { collection, where, getDocs, doc, getDoc, deleteField, updateDoc } from 'firebase/firestore';
 import Create from './Create.js';
 import default_img from '../../Image/empty_profile.jpg';
 import Recommend from './Recommend.js';
@@ -172,13 +172,28 @@ function Main() {
     if(!post)
       if(myFollowData){
         getPostData();
-        console.log()
       }
   }, [post])
+
+  // TODO: 게시물 삭제
+  const deletePost = async () => {
+    if(currentPost){
+      const postUuid = currentPost.uuid;
+      const docRef = doc(fire, `postData`, currentPost.email);
+
+      const updateData = {};
+      updateData[postUuid] = deleteField(); // 동적 속성 이름 설정
+      await updateDoc(docRef, updateData);
+
+      const deletepostData = postDatas.filter(_data => _data.uuid !== postUuid);
+      setPostDatas(deletepostData);
+    }
+  }
+
   return (
     <>
       {
-        post && <Post post={post} setPost={setPost} postData={currentPost} setPostData={setCurrentPost}/>
+        post && <Post post={post} setPost={setPost} postData={currentPost} setPostData={setCurrentPost} deletePost={deletePost}/>
       }
 
       {
