@@ -85,7 +85,7 @@ function Create({index, setIndex, setCreate, profile}){
 
       const fileRef = ref(storage, `postData/${userData.email}/${_dirName}/${file.name}`);
       // TODO: 파일 Type 변환
-      updateMetadata(fileRef, metaData);
+      await updateMetadata(fileRef, metaData);
       await uploadFile(fileRef, file);
 
       const url = await getFileUrl(fileRef);

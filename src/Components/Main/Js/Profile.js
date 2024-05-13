@@ -2,8 +2,8 @@ import '../Css/Profile.css';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { fire, storage } from '../../firebase.js';
-import { useEffect, useState } from 'react';
-import { ref, getDownloadURL } from "firebase/storage";
+import { useEffect, useRef, useState } from 'react';
+import { ref, getDownloadURL, updateMetadata, uploadBytes } from "firebase/storage";
 import { doc, updateDoc, onSnapshot, deleteField, getDoc } from 'firebase/firestore';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTableCells } from "@fortawesome/free-solid-svg-icons";
@@ -300,6 +300,37 @@ function Profile() {
   let [followerList, setFollowerList] = useState(false);
   // TODO: 팔로잉 리스트
   let[followingList, setFollowingList] = useState(false);
+
+  const inputRef = useRef();
+  const onHandlerInput = () => {
+    inputRef.current?.click();
+  }
+
+  const [file, setFile] = useState([]);
+
+  useEffect(()=>{
+    if(file[0]){
+      console.log('파일 바뀜')
+      updateProfile(file[0]);
+    }
+    
+  }, [file])
+  const updateProfile = async (_file) => {
+    const metaData = { contentType: 'image/jpeg' };
+
+    const fileRef = ref(storage, `userProfile/${userData.email}.jpg`);
+    await updateMetadata(fileRef, metaData);
+    await uploadBytes(fileRef, _file)
+    .then(()=>{
+      if(curUserEmail != ''){
+        if(curUserEmail !== userData.email)
+          getProfile(false);
+        else
+          getProfile(true);
+      }
+    });
+  }
+
   return(
     <>
     {
@@ -385,9 +416,12 @@ function Profile() {
                       {
                         curUserEmail === userData.email &&
                         <div className='profile-change'>
-                        <span>
+                        <span onClick={()=>{onHandlerInput();}}>
                           프로필 편집
                         </span>
+                        <input type='file' accept='.jpg, .jpeg' style={{display:'none'}} ref={inputRef} onChange={(e)=>{
+                          setFile(Array.from(e.target.files));
+                        }}/>
                       </div>
                       }
                       
