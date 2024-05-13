@@ -11,6 +11,7 @@ import Recommend from './Recommend.js';
 import { query } from 'firebase/database';
 import SearchItem from './SearchItem.js';
 import MainPost from './MainPost.js';
+import Post from './Post.js';
 
 function Main() {
 
@@ -164,8 +165,22 @@ function Main() {
     return postDoc;
   }
 
+  let [post, setPost] = useState(false);
+  let [currentPost, setCurrentPost] = useState();
+  
+  useEffect(()=>{
+    if(!post)
+      if(myFollowData){
+        getPostData();
+        console.log()
+      }
+  }, [post])
   return (
     <>
+      {
+        post && <Post post={post} setPost={setPost} postData={currentPost} setPostData={setCurrentPost}/>
+      }
+
       {
         create == true ? <Create index={index} setIndex={setIndex} setCreate={setCreate} profile={profile}/> : null
       }
@@ -314,7 +329,7 @@ function Main() {
                     // TODO: 게시물 List
                     postDatas && postDatas.map((a, i)=>{
                       return(
-                        <MainPost key={i} data={a}/>
+                        <MainPost key={i} data={a} postDatas={postDatas} setPostDatas={setPostDatas} setPost={setPost} setCurrentPost={setCurrentPost}/>
                       )
                     })
                   }

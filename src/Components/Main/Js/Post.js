@@ -212,7 +212,7 @@ function Post({post, setPost, postData, setPostData, deletePost}){
       updateData = {
         [`${postData.uuid}`] : [{
           ...postData,
-          "likes": [{"email":userData.email, "nickname":userData.nickname, "url":profile}, ...postData.likes, ],
+          "likes": [{"email":userData.email, "nickname":userData.nickname}, ...postData.likes],
         }]
       };
     }

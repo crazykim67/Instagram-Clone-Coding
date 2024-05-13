@@ -3,12 +3,14 @@ import { faCircleChevronLeft, faCircleChevronRight } from "@fortawesome/free-sol
 import { useEffect, useRef, useState } from 'react';
 import moment from 'moment';
 import { ref, getDownloadURL } from "firebase/storage";
-import { storage } from '../../firebase.js';
+import { fire, storage } from '../../firebase.js';
 import default_img from '../../Image/empty_profile.jpg';
 import { useSelector } from 'react-redux';
 import MainPostItem from "./MainPostItem.js";
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import Post from "./Post.js";
 
-function MainPost({data}) {
+function MainPost({data, postDatas, setPostDatas, setPost, setCurrentPost}) {
 
   let userData = useSelector((state) => state.currentUser );
 
@@ -82,7 +84,6 @@ function MainPost({data}) {
     if(!videoRef.current[prevVideoIndex])
       return;
 
-    console.log(prevVideoIndex)
     if(!videoRef.current[prevVideoIndex].paused){
       videoRef.current[prevVideoIndex]?.pause();
       videoRef.current[prevVideoIndex].currentTime = 0;
@@ -96,7 +97,71 @@ function MainPost({data}) {
     videoRef.current[index].muted = !isMute;
   }
 
+  // TODO: 좋아요 관련
+  let [like, setLike] = useState(false);
+  useEffect(()=>{
+    getLike();
+  },[ , data])
+  
+  const getLike = () => {
+    if(!data)
+      return;
+
+    const likeData = data.likes;
+    let isLike = likeData.some(_like => _like.email === userData.email);
+    
+    setLike(isLike);
+  }
+
+  const setLikes = async () => {
+    if(!data)
+      return;
+
+    const likeData = data.likes;
+    let isLike = likeData.some(_like => _like.email === userData.email);
+
+    const docRef = doc(fire, 'postData', data.email);
+    let updateData = null;
+
+    // UnLike
+    if(!isLike){
+      updateData = {
+        [`${data.uuid}`] : [{
+          ...data,
+          "likes": [{"email":userData.email, "nickname":userData.nickname}, ...data.likes, ],
+        }]
+      };
+    }
+    // Like
+    else {
+      const unLikeData = data.likes.filter(_like => _like.email !== userData.email);
+      updateData = {
+        [`${data.uuid}`] : [{
+          ...data,
+          "likes": unLikeData,
+        }]
+      };
+    }
+
+    setLike(!isLike);
+    await updateDoc(docRef,updateData);
+    updateState(updateData[data.uuid][0]);
+  }
+
+  const updateState = (_updateData) => {
+
+    let updatePostDatas = postDatas.map((item) => {
+      if(item.uuid === _updateData.uuid)
+        return _updateData;
+      else
+        return item;
+    });
+
+    setPostDatas(updatePostDatas);
+  }
+
   return(
+    <>
     <section className='post-panel'>
       <div className='post-top'>
         <div>
@@ -174,10 +239,12 @@ function MainPost({data}) {
       <div className='post-footer'>
         <div className='footer-content'>
           <div>
-            <span className='like'>
-              <img className='footer-content-img' src={require('../../Image/un_like.png')}/>
+            <span onClick={()=>{setLikes();}} className='like'>
+              {
+                like === false ? <img className='footer-content-img' src={require('../../Image/un_like.png')}/> : <img className='footer-content-img' src={require('../../Image/like.png')}/>
+              }
             </span>
-            <span className='comment'>
+            <span onClick={()=>{setCurrentPost(data); setPost(true);}} className='comment'>
               <img className='footer-content-img' src={require('../../Image/bubble.png')}/>
             </span>
           </div>
@@ -195,12 +262,13 @@ function MainPost({data}) {
             </span>
           </div>
         </div>
-        <div style={{cursor:'pointer'}} className='post-write-comment'>
+        <div onClick={()=>{setCurrentPost(data); setPost(true);}} style={{cursor:'pointer'}} className='post-write-comment'>
             댓글 {data.comment.length}개 보기
         </div>
       </div>
 
     </section>
+  </>
   )
 }
 
