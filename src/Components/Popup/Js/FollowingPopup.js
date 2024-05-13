@@ -43,7 +43,7 @@ function FollowPopup({setFollowingList, following, userInfo, setUserInfo}){
               <div>
                 <div className='f-popup-top'>
                   <div className='f-popup-top-box'>
-                    <h1>팔로워</h1>
+                    <h1>팔로잉</h1>
                   </div>
                 </div>
                 <div className='f-popup-search'>

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { signOut, firebaseAuth, fire, storage } from '../../firebase.js';
 import { useSelector } from 'react-redux';
 import { ref, getDownloadURL } from "firebase/storage";
-import { collection, where, getDocs, doc, getDoc, deleteField, updateDoc } from 'firebase/firestore';
+import { collection, where, getDocs, doc, getDoc, deleteField, updateDoc, Timestamp, setDoc } from 'firebase/firestore';
 import Create from './Create.js';
 import default_img from '../../Image/empty_profile.jpg';
 import Recommend from './Recommend.js';
@@ -104,6 +104,7 @@ function Main() {
   useEffect(()=>{
     if(myFollowData){
       getPostData();
+      // getStory();
     }
   }, [myFollowData])
 
@@ -120,7 +121,7 @@ function Main() {
 
   // TODO: 현재 유저가 팔로잉한 모든 유저들의 게시물을 가져옴
   const getPostData = async() => {
-    if(!myFollowData || myFollowData.length === 0)
+    if(!myFollowData)
       return;
 
     let _postDatas = [];
@@ -144,7 +145,6 @@ function Main() {
       for(let value of values){
         dataArray.push(value[0]);
       }
-
     })
 
     // TODO: DATE 내림차순
@@ -188,6 +188,25 @@ function Main() {
       const deletepostData = postDatas.filter(_data => _data.uuid !== postUuid);
       setPostDatas(deletepostData);
     }
+  }
+
+  let [storyUrl] = useState([
+    {"url":'https://firebasestorage.googleapis.com/v0/b/react-portfolio-fa05a.appspot.com/o/storyData%2F0.jpg?alt=media&token=4c60b8a1-e26e-4afc-b6bb-4e3be79646ed'},
+    {"url":'https://firebasestorage.googleapis.com/v0/b/react-portfolio-fa05a.appspot.com/o/storyData%2F1.jpg?alt=media&token=301617d1-d5b1-4cfb-bbe2-f5cd37318cbb'},
+    {"url":'https://firebasestorage.googleapis.com/v0/b/react-portfolio-fa05a.appspot.com/o/storyData%2F2.jpg?alt=media&token=801797a5-e0d6-430e-b5b0-d2f0f7f8e347'},
+    {"url":'https://firebasestorage.googleapis.com/v0/b/react-portfolio-fa05a.appspot.com/o/storyData%2F3.jpg?alt=media&token=f6e1567e-5fed-4155-ace1-ea14270e1f8a'},
+  ])
+
+  let [myStory, setMyStory] = useState();
+  let [view, setView] = useState(false);
+  useEffect(()=>{
+    setStoryInfo();
+  }, [])
+  // 더미 스토리 뿌리기
+  const setStoryInfo = () => {
+
+    let imgUrl = storyUrl[Math.floor(Math.random(0, storyUrl.length-1) * storyUrl.length)];
+    setMyStory({"email": userData.email,"nickname": userData.nickname,"name":userData.name,"date": new Date(),"url":imgUrl,"view":view});
   }
 
   return (
@@ -240,14 +259,14 @@ function Main() {
               }
             </div>
           </div>
-          {/* <div className='l-footer'>
-            <div className={`body-item`}>
+          <div className='l-footer'>
+            <div className={`body-item`} onClick={()=>{ /*setStoryInfo();*/ }}>
               <div className={`img more`}></div>
               {
-                !search &&<span>더 보기</span>
+                !search &&<span>더미 스토리 올리기</span>
               }
             </div>
-          </div> */}
+          </div>
         </div>
         <div className='searchPanel' style={{transform: `translateX(${!search ? -470 : 0}px)`, transition:`transform 0.3s ease-in-out`}}>
           <div>
@@ -293,8 +312,9 @@ function Main() {
                   <li className='main-to-list'>
                       <div>
                         <div className='list-in-panel'>
-                          <div className='list-profile'>
-                            <span>
+                          <div className='list-profile' style={{cursor:'pointer'}} onClick={()=>{navigate('/stories');}}>
+                            <span className={myStory && !myStory.view ? 'story-wrap' : 'none-story-wrap'}>
+                            {/* <span className={'none-story-wrap'}> */}
                               <img onError={onErrorImg} src={profile}/>
                             </span>
                           </div>
@@ -304,7 +324,7 @@ function Main() {
                         </div>
                       </div>
                     </li>
-                    <li className='main-to-list'>
+                      {/* <li className='main-to-list'>
                       <div>
                         <div className='list-in-panel on-story'>
                           <div className='list-profile'>
@@ -317,22 +337,8 @@ function Main() {
                           </div>
                         </div>
                       </div>
-                    </li>
-                    <li className='main-to-list'>
-                      <div>
-                        <div className='list-in-panel on-story'>
-                          <div className='list-profile'>
-                            <span className='none-story-wrap'>
-                              <img src={require('../../Image/my.jpg')}/>
-                            </span>
-                          </div>
-                          <div className='list-nickname'>
-                            닉네임
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-
+                    </li> */}
+                    
                   </ul>
                 </div>
               </div>
@@ -360,7 +366,7 @@ function Main() {
               <div className='profile'>
                 <div>
                   <div className='profile-img'>
-                    <a>
+                    <a onClick={()=>{navigate(`/profile/${userData.email}`);}}>
                       <img onError={onErrorImg} src={profile}/>
                     </a>
                   </div>

@@ -57,7 +57,6 @@ function Comment({data, inputRef, userData, setPopup, setSelectCommentData, setI
                       
                       <div className='text-content'>
                         <span>{dateTime}</span>
-                        <span onClick={()=>{inputFocus();}} className='Leave-comment'>답글달기</span>
                         {
                           data.email === userData.email ?
                         <div onClick={()=>{setIsPost(false); setPopup(true); setSelectCommentData(data);}} className='dot-menu'>

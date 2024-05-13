@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import Main from './Components/Main/Js/Main.js';
 import Profile from './Components/Main/Js/Profile.js';
+import Stories from './Components/Main/Js/Stories.js';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
     <Routes>
       <Route path='/Instagram/' element={<Body/>}/>
       <Route path='/main/' element={<Main/>}/>
+      <Route path='/stories' element={<Stories/>}/>
       <Route path='/register' element={<SignUp/>}/>
       <Route path='/find' element={<FindPass/>}/>
       <Route path='/profile/:curUserEmail' element={<Profile/>}/>
