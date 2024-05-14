@@ -310,7 +310,6 @@ function Profile() {
 
   useEffect(()=>{
     if(file[0]){
-      console.log('파일 바뀜')
       updateProfile(file[0]);
     }
     

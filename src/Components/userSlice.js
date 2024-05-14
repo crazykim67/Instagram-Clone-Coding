@@ -9,7 +9,6 @@ let currentUser = createSlice({
       state.email = email;
       state.name = name;
       state.nickname = nickname;
-      console.log(state.email + " " + state.name + " " + state.nickname);
     }
   }
 })
