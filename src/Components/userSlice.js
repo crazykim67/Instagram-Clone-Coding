@@ -4,18 +4,16 @@ let currentUser = createSlice({
   name : 'currentUser',
   initialState : {email : '', name : '', nickname : ''},
   reducers : {
-    setEmail(state, _email){
-      state.email = _email.payload;
-    },
-    setName(state, _name){
-      state.name = _name.payload
-    },
-    setNickName(state, _nickname){
-      state.nickname = _nickname.payload
-    },
+    setUser(state, action) {
+      const {email, name, nickname} = action.payload;
+      state.email = email;
+      state.name = name;
+      state.nickname = nickname;
+      console.log(state.email + " " + state.name + " " + state.nickname);
+    }
   }
 })
 
-export let { setEmail, setName, setNickName } = currentUser.actions
+export let { setUser } = currentUser.actions
 
 export default currentUser;

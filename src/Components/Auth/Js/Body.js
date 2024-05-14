@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fire, firebaseAuth, signInWithEmailAndPassword } from '../../firebase.js';
 import { useSelector, useDispatch } from 'react-redux';
-import { setEmail, setName, setNickName } from '../../userSlice.js'
+import { setUser } from '../../userSlice.js'
 import { doc, getDoc } from 'firebase/firestore';
 
 function Body(){
@@ -71,9 +71,7 @@ function Body(){
       const snapshot = await getDoc(docRef);
 
       const userData = snapshot.data();
-      dispatch(setEmail(userData.email));
-      dispatch(setName(userData.name));
-      dispatch(setNickName(userData.nickname));
+      dispatch(setUser({email:userData.email, name:userData.name, nickname:userData.nickname}));
       navigate('/main');
     }
     catch(err){
