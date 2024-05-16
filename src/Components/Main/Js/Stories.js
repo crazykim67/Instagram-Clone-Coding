@@ -54,7 +54,7 @@ function Stories(){
         <div className='stroy-body'>
           <div>
 
-            <div className='story-item' style={{transform: `translate(${460*1}px)`, scale: '1'}}>
+            <div className='story-item' style={{transform: `translate(${460*1.6}px)`, scale: '1'}}>
               <section>
                 <div className='story-img'>
                   <img src={require('../../Image/1.jpg')}/>
