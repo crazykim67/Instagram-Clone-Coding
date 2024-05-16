@@ -44,7 +44,7 @@ function Create({index, setIndex, setCreate, profile}){
     return uuid();
   };
 
-  // TODO: Get File Type Function 
+  // TODO: 파일 타입 식별 
   const GetType = (_file) => {
     let fileName = `${_file.name}`;
     let lastIndex = fileName.lastIndexOf('.');
@@ -102,6 +102,7 @@ const setFirestore = async (_dirName, _array) => {
 
   const docSnap = await getDoc(docRef);
     if(!docSnap.exists()) {
+      // TODO: Document가 존재하지 않을 시
       await setDoc(docRef,{
         [`${_dirName}`] : [{
           "uuid": _dirName,
@@ -116,6 +117,7 @@ const setFirestore = async (_dirName, _array) => {
        });
     }
     else {
+      // TODO: Document가 존재할 시
       await updateDoc(docRef,{
         [`${_dirName}`] : [{
            "uuid": _dirName,
