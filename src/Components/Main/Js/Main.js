@@ -259,14 +259,14 @@ function Main() {
               }
             </div>
           </div>
-          <div className='l-footer'>
-            <div className={`body-item`} onClick={()=>{ /*setStoryInfo();*/ }}>
+          {/* <div className='l-footer'>
+            <div className={`body-item`} onClick={()=>{ /*setStoryInfo(); }}>
               <div className={`img more`}></div>
               {
                 !search &&<span>더미 스토리 올리기</span>
               }
             </div>
-          </div>
+          </div> */}
         </div>
         <div className='searchPanel' style={{transform: `translateX(${!search ? -470 : 0}px)`, transition:`transform 0.3s ease-in-out`}}>
           <div>
